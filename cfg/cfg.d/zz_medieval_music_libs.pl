@@ -12,6 +12,7 @@ push @{$c->{fields}->{eprint}},
 
 #work fields
 #work to do
+	#title -- exists in default cfg.
 
 #reading fields
 	{ name => "audience", type => "text" },
@@ -39,6 +40,7 @@ push @{$c->{fields}->{eprint}},
 	{ name => "parent_t_indices", type => "text", multiple => 1 },
 	{ name => "parent_vdb_index", type => "text" },
 
+	#note that master_text is used as an internal field to use one of the reading_text fields for the purposes of citations
 	{ name => "reading_text", type => "text" },
 	{
 		name => "reading_texts",
@@ -61,17 +63,103 @@ push @{$c->{fields}->{eprint}},
 ;
 
 
+$c->{medmus_render_refrain} = sub
+{
+	my ($refrain, $readingid_to_highlight) = @_;
+
+	my $repo = $refrain->repository;
+	my $xml = $repo->xml;
+	my $frag = $xml->create_document_fragment;
+
+	my $div = $xml->create_element('div');
+	$frag->appendChild($div);
+	$div->appendChild($repo->html_phrase('eprint_fieldname_reference_number'));
+	$div->appendChild($xml->create_text_node(': '));
+	$div->appendChild($refrain->render_value('reference_number'));
+
+	my $reading_ids = $refrain->value('readings');
+
+	foreach my $id (@{$reading_ids})
+	{
+		my $reading = $repo->eprint($id);
+
+		my %box_args = (
+			'title' => $reading->render_citation('brief'),
+			'content' => $reading->render_citation('reading_box_content'),
+			'id' => 'medmus_reading_box_' . $id,
+			'session' => $repo,
+			'collapsed' => 1,
+		);
+
+		$frag->appendChild(EPrints::Box::render(%box_args));
+	}
+
+
+	return $frag;
+};
+
 #disable default functionality
-$c->{set_eprint_automatic_fields} = undef;
+$c->{set_eprint_automatic_fields} = sub
+{
+	my ($eprint) = @_;
+
+	if ($eprint->is_set('medmus_type') and $eprint->value('medmus_type') eq 'reading')
+	{
+		my $master_text = $eprint->value('reading_text');
+		if (!$master_text)
+		{
+			my $texts = $eprint->value('reading_texts');
+			$master_text = $texts->[0]->{text};
+		}
+		$eprint->set_value('master_text', $master_text);
+	}
+
+
+};
+
+$c->{medmus_get_reading_abstract_refrain} = sub
+{
+	my ($reading) = @_;
+
+	my $ds = $reading->dataset;
+
+	my $search = $ds->prepare_search;
+	$search->add_field($ds->get_field('readings'), $reading->id);
+
+	my $list = $search->execute;
+	if ($list->count)
+	{
+		return $list->item(0); #should only be one.
+	}
+	return undef;
+};
 
 #override eprint render
 $c->{eprint_render} = sub
 {
 	my( $eprint, $repository, $preview ) = @_;
 
-	my $page = $eprint->render_citation( "medmus_summary", %fragments, flags=>$flags );
+	my %fragments;
+	my $flags;
 
-	my $title = $eprint->render_citation("medmus_brief");
+	my $page = $repository->xml()->create_document_fragment();
+	my $title = $eprint->render_citation("brief");
+
+	my $type = $eprint->value('medmus_type');
+
+	if ($type eq 'refrain')
+	{
+		$page->appendChild($repository->call('medmus_render_refrain', $eprint));
+	}
+	if ($type eq 'reading')
+	{
+		my $refrain = $repository->call('medmus_get_reading_abstract_refrain', $eprint);
+		if ($refrain)
+		{
+			$page->appendChild($repository->call('medmus_render_refrain', $refrain, $eprint->id));
+		}	
+	}
+
 
 	my $links = $repository->xml()->create_document_fragment();
 
