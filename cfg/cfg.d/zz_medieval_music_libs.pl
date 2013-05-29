@@ -63,6 +63,68 @@ push @{$c->{fields}->{eprint}},
 ;
 
 
+$c->{medmus_render_reading_box} = sub
+{
+	my ($reading) = @_;
+
+	my $repo = $reading->repository;
+	my $xml = $repo->xml;
+	my $frag = $xml->create_document_fragment;
+
+
+	$frag->appendChild($repo->html_phrase('reading_box_heading_text'));
+	if ($reading->is_set('reading_text'))
+	{
+		my $para = $xml->create_element('p');
+		$frag->appendChild($para);
+		$para->appendChild($reading->render_value('reading_text'));
+	}
+	if ($reading->is_set('reading_texts'))
+	{
+		$frag->appendChild($reading->render_value('reading_texts'));
+	}	
+#reading_text
+#reading_texts
+#stave_image_rel_path
+
+	$frag->appendChild($repo->html_phrase('reading_box_heading_reading_metadata'));
+	my $table = $xml->create_element('table');
+	$frag->appendChild($table);
+
+	foreach my $f ( qw/
+manuscript_collocation
+circumstance function discourse location
+audience singer
+preceding_cue succeeding_cue meter
+other_data
+	/ )
+	{
+		next unless $reading->is_set($f);
+		$table->appendChild($repo->render_row($repo->html_phrase('eprint_fieldname_' . $f), $reading->render_value($f)));
+	}
+
+	$frag->appendChild($repo->html_phrase('reading_box_heading_parent_metadata'));
+	$table = $xml->create_element('table');
+	$frag->appendChild($table);
+
+	foreach my $f ( qw/
+parent_l_index
+parent_lu_index
+parent_mw_index
+parent_rs_index
+parent_rs_index_stanza
+parent_t_index_songs
+parent_t_indices
+parent_vdb_index
+	/ )
+	{
+		next unless $reading->is_set($f);
+		$table->appendChild($repo->render_row($repo->html_phrase('eprint_fieldname_' . $f), $reading->render_value($f)));
+	}
+
+	return $frag;
+};
+
 $c->{medmus_render_refrain} = sub
 {
 	my ($refrain, $readingid_to_highlight) = @_;
@@ -77,6 +139,10 @@ $c->{medmus_render_refrain} = sub
 	$div->appendChild($xml->create_text_node(': '));
 	$div->appendChild($refrain->render_value('reference_number'));
 
+	my $h3 = $xml->create_element('h3');
+	$frag->appendChild($h3);
+	$h3->appendChild($repo->html_phrase('refrain_abstract_readings_heading'));
+
 	my $reading_ids = $refrain->value('readings');
 
 	foreach my $id (@{$reading_ids})
@@ -85,11 +151,17 @@ $c->{medmus_render_refrain} = sub
 
 		my %box_args = (
 			'title' => $reading->render_citation('brief'),
-			'content' => $reading->render_citation('reading_box_content'),
+			'content' => $repo->call('medmus_render_reading_box', $reading),
 			'id' => 'medmus_reading_box_' . $id,
 			'session' => $repo,
 			'collapsed' => 1,
 		);
+
+		if ($readingid_to_highlight == $id)
+		{
+			$box_args{collapsed} = 0;
+		}
+
 
 		$frag->appendChild(EPrints::Box::render(%box_args));
 	}
@@ -126,11 +198,12 @@ $c->{medmus_get_reading_abstract_refrain} = sub
 	my $search = $ds->prepare_search;
 	$search->add_field($ds->get_field('readings'), $reading->id);
 
-	my $list = $search->execute;
+	my $list = $search->perform_search;
 	if ($list->count)
 	{
 		return $list->item(0); #should only be one.
 	}
+	print STDERR "Couldn't find Reading\n";
 	return undef;
 };
 

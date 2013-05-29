@@ -4,6 +4,10 @@
 
   <!-- This file is used to add phrases from the phrase editor screen -->
 
+    <epp:phrase id="reading_box_heading_text"><h3>Reading Text</h3></epp:phrase>
+    <epp:phrase id="reading_box_heading_reading_metadata"><h3>Other Reading Information</h3></epp:phrase>
+    <epp:phrase id="reading_box_heading_parent_metadata"><h3>Parent Work</h3></epp:phrase>
+    <epp:phrase id="refrain_abstract_readings_heading">Readings:</epp:phrase>
     <epp:phrase id="eprint_fieldname_audience">Audience</epp:phrase>
     <epp:phrase id="eprint_fieldname_circumstance">Circumstance</epp:phrase>
     <epp:phrase id="eprint_fieldname_discourse">Discourse</epp:phrase>
