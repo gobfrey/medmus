@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+
+
+    <h3><epc:print expr="title"/></h3>
+
+    <table>
+    <epc:foreach expr="$config{work_summary_page_metadata}" iterator="fieldname">
+      <epc:if test="is_set($item.property($fieldname))">
+        <tr>
+          <th align="right"><epc:phrase ref="eprint_fieldname_{$fieldname}" />:</th>
+          <td valign="top"><epc:print expr="$item.property($fieldname)" /></td>
+        </tr>
+      </epc:if>
+    </epc:foreach>
+    </table>
+
+</cite:citation>
