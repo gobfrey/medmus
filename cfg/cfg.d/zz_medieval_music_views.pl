@@ -9,10 +9,31 @@ $c->{browse_views} = [
                 menus => [
 			{
 				fields => ["medmus_type"],
+				new_column_at => [0,0],
 			}
 		],
                 order => "eprintid",
         },
+	{
+		id => "author",
+		menus => [
+			{
+				fields => ["authors_name"],
+				new_column_at => [0,0],
+			}
+		],
+		order => "eprintid",
+	},
+	{
+		id => "work_id",
+		menus => [
+			{
+				fields => ["work_id"],
+				new_column_at => [0,0,0,0],
+			}
+		],
+		order => "eprintid",
+	},
 ];
 
 # examples of some other useful views you might want to add

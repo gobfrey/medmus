@@ -28,9 +28,29 @@
           </a>
         </li>
         <li>
-          <a href="{$config{http_url}}/view/type/" menu="ep_tm_menu_browse">
+          <a href="{$config{http_url}}/view/" menu="ep_tm_menu_browse">
             <epc:phrase ref="template/navigation:browse"/>
           </a>
+          <ul id="ep_tm_menu_browse" style="display:none;">
+            <li>
+              <a href="{$config{http_url}}/view/type/">
+                <epc:phrase ref="bin/generate_views:indextitleprefix"/>
+                <epc:phrase ref="viewname_eprint_type"/>
+              </a>
+            </li>
+            <li>
+              <a href="{$config{http_url}}/view/author">
+                <epc:phrase ref="bin/generate_views:indextitleprefix"/>
+                <epc:phrase ref="viewname_eprint_author"/>
+              </a>
+            </li>
+            <li>
+              <a href="{$config{http_url}}/view/work_id/">
+                <epc:phrase ref="bin/generate_views:indextitleprefix"/>
+                <epc:phrase ref="viewname_eprint_work_id"/>
+              </a>
+            </li>
+          </ul>
         </li>
       </ul>
       <table class="ep_tm_searchbar">

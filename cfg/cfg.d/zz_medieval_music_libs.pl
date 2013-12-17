@@ -4,15 +4,56 @@ push @{$c->{fields}->{eprint}},
 		name => "medmus_type", type => "set", 
         	options => [qw(
 			work
-			reading
+			work_instance
 			refrain
+			reading
         	)],
         	input_style => 'medium',
 	},
 
 #work fields
-#work to do
-	#title -- exists in default cfg.
+{ name => 'work_id', type => 'text' },
+#title -- exists in default config
+{ name => 'generic_descriptor', 'type' => 'text', multiple => 1 },
+{ name => 'number_of_parts', type => 'int', multiple => 1},
+{ name => 'voice_in_polyphony', type => 'set', options => [qw/ duplum triplum quadruplum motet teneur /], input_style => 'medium', multiple => 1 },
+{ name => 'primary_language', type => 'set', options => [qw/ langue_d_oil latin /], input_style => 'medium'  },
+{ name => 'secondary_language', type => 'set', options => [qw/ langue_d_oil latin /], input_style => 'medium'  },
+{ name => 'style_of_discourse', type => 'set', options => [qw/ vers prose prose_asonancee /], input_style => 'medium', multiple => 1 },
+{ name => 'number_of_stanzas', type => 'int' },
+{ name => 'number_of_envois', type => 'int' },
+{ name => 'date_description', type => 'text', multiple => 1 },
+{
+	'name' => 'authors',
+	'type' => 'compound',
+	'multiple' => 1,
+	'fields' => [
+		{ sub_name => "name", type => "text"},
+		{ sub_name => "assumed", type => "boolean"},
+		{ sub_name => "locations", type => "longtext"},
+	]
+},
+{ name => 'l_index', type => 'text' },
+{ name => 'mw_index', type => 'text', multiple => 1 },
+{ name => 'rs_index', type => 'text' },
+{ name => 't_index_motets', type => 'text' },
+{ name => 't_index_songs', type => 'text' },
+{ name => 'lu_index', type => 'text' },
+{ name => 'vdb_index', type => 'text' },
+{
+	name => 'host_works',
+	type => 'compound',
+	multiple => 1,
+	fields => [
+		{ sub_name => "id", type => "text"},
+		{ sub_name => "location", type => "text"},
+	]
+},
+{ name => 'other_data', type => 'longtext', multiple => 1 },
+{ name => 'edition', type => 'longtext', multiple => 1 },
+
+ 
+
 
 #reading fields
 	{ name => "audience", type => "text" },
@@ -22,7 +63,6 @@ push @{$c->{fields}->{eprint}},
 	{ name => "location", type => "text" },
 	{ name => "manuscript_collocation", type => "id" },
 	{ name => "meter", type => "text" },
-	{ name => "other_data", type => "text" },
 	{ name => "preceding_cue", type => "text" },
 	{ name => "singer", type => "text" },
 	{ name => "succeeding_cue", type => "text" },
@@ -121,6 +161,47 @@ parent_vdb_index
 		next unless $reading->is_set($f);
 		$table->appendChild($repo->render_row($repo->html_phrase('eprint_fieldname_' . $f), $reading->render_value($f)));
 	}
+
+	return $frag;
+};
+
+$c->{work_summary_page_metadata} = [qw(
+work_id
+title
+generic_descriptor
+number_of_parts
+voice_in_polyphony
+primary_language
+secondary_language
+style_of_discourse
+number_of_stanzas
+number_of_envois
+date_description
+authors
+l_index
+mw_index
+rs_index
+t_index_motets
+t_index_songs
+lu_index
+vdb_index
+host_works
+other_data
+edition
+)];
+
+$c->{medmus_render_work} = sub
+{
+	my ($work) = @_;
+
+	my $repo = $work->repository;
+	my $xml = $repo->xml;
+	my $frag = $xml->create_document_fragment;
+
+	my $div = $xml->create_element('div');
+	$frag->appendChild($div);
+
+	$div->appendChild($work->render_citation('work_summary'));
 
 	return $frag;
 };
@@ -232,6 +313,11 @@ $c->{eprint_render} = sub
 			$page->appendChild($repository->call('medmus_render_refrain', $refrain, $eprint->id));
 		}	
 	}
+	if ($type eq 'work')
+	{
+		$page->appendChild($repository->call('medmus_render_work', $eprint));
+	}
+
 
 
 	my $links = $repository->xml()->create_document_fragment();

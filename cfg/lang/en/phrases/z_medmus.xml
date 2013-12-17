@@ -5,7 +5,7 @@
   <!-- This file is used to add phrases from the phrase editor screen -->
 
     <epp:phrase id="viewname_eprint_type">Type</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_type_list">Items of type <epc:pin name="value1" /></epp:phrase>
+    <epp:phrase id="viewtitle_eprint_type_list">Items of type <epc:pin name="value1"/></epp:phrase>
 
     <epp:phrase id="reading_box_heading_text"><h3>Reading Text</h3></epp:phrase>
     <epp:phrase id="reading_box_heading_reading_metadata"><h3>Other Reading Information</h3></epp:phrase>
@@ -45,4 +45,78 @@
     <epp:phrase id="eprint_fieldopt_medmus_type_refrain">Refrain</epp:phrase>
     <epp:phrase id="eprint_fieldopt_medmus_type_work">Work</epp:phrase>
 
+    <epp:phrase id="eprint_fieldname_authors">Authors</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_authors_assumed">Assumed</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_authors_locations">Location</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_authors_name">Name</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_date_description">Date</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_edition">Edition</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_generic_descriptor">Generic Descriptor</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_host_works">Host Works</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_l_index">L Index</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_lu_index">Lu Index</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_mw_index">MW Index</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_number_of_envois">Number of Envois</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_number_of_parts">Number of Parts</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_number_of_stanzas">Number of Stanzas</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_primary_language">Primary Language</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_rs_index">RS Index</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_secondary_language">Secondary Language</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_style_of_discourse">Style of Discourse</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_t_index_motets">T Index (Motets)</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_t_index_songs">T Index (Songs)</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_vdb_index">vdB Index</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_voice_in_polyphony">Voice in Polyphony</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_work_id">Work ID</epp:phrase>
+
+    <epp:phrase id="eprint_fieldopt_style_of_discourse_vers">Vers</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_style_of_discourse_prose">Prose</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_style_of_discourse_prose_asonancee">Prose asonancée</epp:phrase>
+
+    <epp:phrase id="eprint_fieldopt_voice_in_polyphony_duplum">Duplum</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_voice_in_polyphony_triplum">Triplum</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_voice_in_polyphony_quadruplum">Quadruplum</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_voice_in_polyphony_motet">Motet</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_voice_in_polyphony_teneur">Teneur</epp:phrase>
+
+    <epp:phrase id="eprint_fieldopt_primary_language_langue_d_oil">Langue d'oïl</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_primary_language_latin">Latin</epp:phrase>
+
+    <epp:phrase id="eprint_fieldopt_secondary_language_langue_d_oil">Langue d'oïl</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_secondary_language_latin">Latin</epp:phrase>
+    <epp:phrase id="metapage_title_work_core">Work Details</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_host_works_id">Work ID</epp:phrase>
+
+    <epp:phrase id="eprint_fieldname_host_works_location">Location in Work</epp:phrase>
+
+    <epp:phrase id="eprint_fieldhelp_title"/>
+
+    <epp:phrase id="viewname_eprint_author">Author</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_author_list">Items authored by <epc:pin name="value1"/></epp:phrase>
+
+    <epp:phrase id="viewname_eprint_work_id">Work ID</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_work_id_list"><epc:pin name="value1"/></epp:phrase>
 </epp:phrases>

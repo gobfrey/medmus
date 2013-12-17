@@ -8,7 +8,7 @@
 
 <cite:linkhere><epc:choose>
   <epc:when test="medmus_type='work'">
-	<epc:print expr="title"/>
+	<epc:print expr="work_id"/>: <epc:print expr="title"/>
   </epc:when>
   <epc:when test="medmus_type='reading'">
 	<epc:print expr="master_text"/>
