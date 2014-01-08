@@ -152,6 +152,7 @@ $c->{medmus_render_refrain} = sub
 $c->{set_eprint_automatic_fields} = sub
 {
 	my ($eprint) = @_;
+	my $repo = $eprint->repository;
 
 	if ($eprint->is_set('medmus_type') and $eprint->value('medmus_type') eq 'reading')
 	{
@@ -163,9 +164,118 @@ $c->{set_eprint_automatic_fields} = sub
 		}
 		$eprint->set_value('master_text', $master_text);
 	}
+	if ($eprint->is_set('medmus_type') and $eprint->value('medmus_type') eq 'work')
+	{
+		#set manuscript
+		my $manuscript_ids = {};
+
+		my $refrains = $repo->call('refrains_in_work', $eprint);
+		foreach my $r (@{$refrains})
+		{
+			$manuscript_ids->{$r->value('manuscript_id')}++;
+		}
+		$eprint->set_value('manuscript_id', join(' / ', keys %{$manuscript_ids}));
+	}
 
 
 };
+
+#takes a work instance and returns an arrayref to the refrain instance(s) that appear in it
+$c->{refrains_in_work} = sub
+{
+	my ($work, $depth) = @_;
+
+	$depth = 1 unless $depth;
+	return [] if $depth > 5; #safety -- remove loops (we shouldn't be going very deep anyway)
+
+	my $repo = $work->repository;
+	my $db = $repo->database;
+
+	#quick and dirty mysql query (there are issues searching for compound multiple fields with the EPrints API)
+	my $sql =
+		'SELECT
+			eprint_parent_work_id.eprintid
+		FROM
+			eprint_parent_work_id
+			JOIN eprint_parent_work_instance
+			ON
+				eprint_parent_work_id.eprintid = eprint_parent_work_instance.eprintid
+				AND eprint_parent_work_id.pos = eprint_parent_work_instance.pos
+			JOIN eprint
+			ON eprint.eprintid = eprint_parent_work_instance.eprintid
+		WHERE
+			eprint.medmus_type = "refrain" AND
+			eprint_parent_work_instance.parent_work_instance = ' . $work->value('instance_number') . ' ' .
+			'AND eprint_parent_work_id.parent_work_id = "' . $work->value('work_id') . '"';
+
+	my $ds = $work->dataset;
+
+	my $refrains = {};
+
+	my $sth = $db->prepare_select($sql);
+	$db->execute($sth, $sql);
+	while (my $row = $sth->fetchrow_arrayref)
+	{
+		my $eprintid = $row->[0];
+		my $refrain = $ds->dataobj($eprintid);
+
+		$refrains->{$refrain->id} = $refrain; #into a hash for deduplication
+	}
+
+	#Does this work have a host work?  If so, recurse refrains will be grandchildren
+	if ($work->is_set('host_work_id'))
+	{
+		my $search = $ds->prepare_search();
+		$search->add_field(fields => [ $ds->field('work_id') ], value => $work->value('host_work_id'));
+		$search->add_field(fields => [ $ds->field('instance_number') ], value => $work->value('host_work_instance'));
+		my $hosts = $search->perform_search;
+		foreach my $host ($hosts->slice(0,100)) #get a maziumum of 100 - that's ludicrously high
+		{
+			my $host_refrains = $repo->call('refrains_in_work', $host, $depth+1);
+			foreach my $r (@{$host_refrains})
+			{
+				$refrains->{$r->id} = $r;
+			}
+		}
+	}
+
+	return [values %{$refrains}];
+};
+
+#get an work or refrain instance
+$c->{instance_by_id} = sub
+{
+	my ($repo, $type, $id, $instance) = @_;
+
+	my $ds = $repo->dataset('eprint');
+
+	my $search = $ds->prepare_search;
+	$search->add_field(
+		fields => [ $ds->field('medmus_type') ],
+		value => $type,
+		match => 'EQ'
+	);
+	$search->add_field(
+		fields => [ $ds->field('instance_number') ],
+		value => $instance,
+		match => 'EQ'
+	);
+
+	$search->add_field(
+		fields => [ $ds->field('work_id'), $ds->field('refrain_id') ],
+		value => $id,
+		match => 'EQ'
+	);
+
+	my $list = $search->perform_search;
+
+	return undef unless $list->count; #check that there's at least one result
+
+	my ($record) = $list->slice(0,1); #get the first record (there should only be one)
+
+	return $record;
+};
+
 
 $c->{medmus_get_reading_abstract_refrain} = sub
 {

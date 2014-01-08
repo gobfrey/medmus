@@ -25,7 +25,23 @@ foreach my $field(
 		{ sub_name => "id", type => "text"},
 		{ sub_name => "instance", type => "int"},
 		{ sub_name => "location", type => "text"},
-	]
+	],
+	render_value => sub {
+		my ($session, $self, $value, $alllangs, $nolink, $object ) = @_;
+
+		my @singles;
+		foreach my $p (@{$value})
+		{
+			my $v = $p->{id} . '/' . $p->{instance};
+			if ($p->{location})
+			{
+				$v .= ', ' . $p->{location};
+			}
+			push @singles, $v;
+		}
+		my $string =  join(' and ', @singles);
+		return $session->xml->create_text_node($string);
+	},
 },
 {
 	name => 'reading_texts',
@@ -59,7 +75,7 @@ foreach my $field(
 
 
 { name => 'manuscript_location', type => 'text' },
-{ name => 'manuscript_id', type => 'text' },
+{ name => 'manuscript_id', type => 'text' }, #will also be copied into works
 
 #work fields
 { name => 'work_id', type => 'id' },

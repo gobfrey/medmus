@@ -13,6 +13,7 @@ $c->{browse_views} = [
 			}
 		],
                 order => "eprintid",
+		max_items => 10000,
         },
 	{
 		id => "author",
