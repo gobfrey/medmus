@@ -60,7 +60,43 @@ foreach my $field(
 		},
 		{ sub_name => 'stanza', type => 'int' },
 		{ sub_name => 'envoi', type => 'set', options => ['I','II','III'] },
-	]
+	],
+	render_value => sub
+	{
+		my ($session, $field, $value, $alllangs, $nolink, $object ) = @_;
+
+		my $xml = $session->xml;
+		my $ul = $xml->create_element('ul');
+		foreach my $reading (@{$value})
+		{
+			my $text = $reading->{text};
+			$text =~ s/<([^<>]*)>/<span style="font-size: 150%">$1<\/span>/g;
+			$text =~ s/{([^{}]*)}/<em>$1<\/em>/g;
+			my $text_dom = EPrints::Extras::render_xhtml_field($session, $field, $text);
+
+			#a bit of a hack to determine if it worked...
+			if (EPrints::Utils::tree_to_utf8($text_dom) =~ m/Error parsing/)
+			{
+				$text_dom = $xml->create_text_node($text);
+			}
+
+			my $extras = '';
+			if ($reading->{refrain} || $reading->{stanza} || $reading->{envoi})
+			{
+				my @bits;
+				push @bits, 'ref. ' . $reading->{refrain} if $reading->{refrain};
+				push @bits, 'st. ' . $reading->{stanza} if $reading->{stanza};
+				push @bits, 'env. ' . $reading->{envoi} if $reading->{envoi};
+
+				$extras = ' [' . join(', ', @bits) . ']';
+			}
+			my $li = $xml->create_element('li');
+			$ul->appendChild($li);
+			$li->appendChild($text_dom);
+			$li->appendChild($xml->create_text_node($extras)) if $extras;
+		}
+		return $ul;
+	}
 },
 
 { name => 'singer', type => 'text', multiple => 1 },
@@ -76,6 +112,20 @@ foreach my $field(
 
 { name => 'manuscript_location', type => 'text' },
 { name => 'manuscript_id', type => 'text' }, #will also be copied into works
+{
+	name => 'manuscript_collocation',
+	type => 'text',
+	virtual => 1,
+	render_value => sub
+	{
+		my ($session, $self, $value, $alllangs, $nolink, $object ) = @_;
+		my $xml = $session->xml;
+		my $val = $object->value('manuscript_id');
+		$val .= ', ' . $object->value('manuscript_location') if $object->is_set('manuscript_location');
+		return $xml->create_text_node($val);
+	}
+
+},
 
 #work fields
 { name => 'work_id', type => 'id' },
@@ -103,11 +153,36 @@ foreach my $field(
 { name => 'style_of_discourse', type => 'set', 'multiple' => 1, options => [qw( vers prose_asonancee prose )]},
 { name => 'voice_in_polyphony', type => 'set', 'multiple' => 1, options => [qw( duplum triplum quadruplum motet teneur )]},
 
-{ name => 'authors', type => 'compound', multiple => 1, fields => [
-	{ sub_name => 'name', type => 'text' },
-	{ sub_name => 'location', type => 'text' },
-	{ sub_name => 'assumed', type => 'boolean' },
-]},
+{
+	name => 'authors',
+	type => 'compound',
+	multiple => 1,
+	fields => [
+		{ sub_name => 'name', type => 'text' },
+		{ sub_name => 'location', type => 'text' },
+		{ sub_name => 'assumed', type => 'boolean' },
+	],
+	render_value => sub {
+		my ($session, $self, $value, $alllangs, $nolink, $object ) = @_;
+
+		my @singles;
+		foreach my $p (@{$value})
+		{
+			my $v = $p->{name};
+			if ($p->{location})
+			{
+				$v .= ' (' . $p->{location} . ')';
+			}
+			if ($p->{assumed} eq 'TRUE' )
+			{
+				$v .= '[' . $v . ']';
+			}
+			push @singles, $v;
+		}
+		my $string =  join(', ', @singles);
+		return $session->xml->create_text_node($string);
+	},
+},
 
 )
 {

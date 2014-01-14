@@ -1,152 +1,9 @@
+$c->{allow_web_signup} = 0;
+$c->{allow_reset_password} = 0;
+
+#disable export plugins
 
 
-$c->{medmus_render_reading_box} = sub
-{
-	my ($reading) = @_;
-
-	my $repo = $reading->repository;
-	my $xml = $repo->xml;
-	my $frag = $xml->create_document_fragment;
-
-
-	$frag->appendChild($repo->html_phrase('reading_box_heading_text'));
-	if ($reading->is_set('reading_text'))
-	{
-		my $para = $xml->create_element('p');
-		$frag->appendChild($para);
-		$para->appendChild($reading->render_value('reading_text'));
-	}
-	if ($reading->is_set('reading_texts'))
-	{
-		$frag->appendChild($reading->render_value('reading_texts'));
-	}	
-#reading_text
-#reading_texts
-#stave_image_rel_path
-
-	$frag->appendChild($repo->html_phrase('reading_box_heading_reading_metadata'));
-	my $table = $xml->create_element('table');
-	$frag->appendChild($table);
-
-	foreach my $f ( qw/
-manuscript_collocation
-circumstance function discourse location
-audience singer
-preceding_cue succeeding_cue meter
-other_data
-	/ )
-	{
-		next unless $reading->is_set($f);
-		$table->appendChild($repo->render_row($repo->html_phrase('eprint_fieldname_' . $f), $reading->render_value($f)));
-	}
-
-	$frag->appendChild($repo->html_phrase('reading_box_heading_parent_metadata'));
-	$table = $xml->create_element('table');
-	$frag->appendChild($table);
-
-	foreach my $f ( qw/
-parent_l_index
-parent_lu_index
-parent_mw_index
-parent_rs_index
-parent_rs_index_stanza
-parent_t_index_songs
-parent_t_indices
-parent_vdb_index
-	/ )
-	{
-		next unless $reading->is_set($f);
-		$table->appendChild($repo->render_row($repo->html_phrase('eprint_fieldname_' . $f), $reading->render_value($f)));
-	}
-
-	return $frag;
-};
-
-$c->{work_summary_page_metadata} = [qw(
-work_id
-title
-generic_descriptor
-number_of_parts
-voice_in_polyphony
-primary_language
-secondary_language
-style_of_discourse
-number_of_stanzas
-number_of_envois
-date_description
-authors
-l_index
-mw_index
-rs_index
-t_index_motets
-t_index_songs
-lu_index
-vdb_index
-host_works
-other_data
-edition
-)];
-
-$c->{medmus_render_work} = sub
-{
-	my ($work) = @_;
-
-	my $repo = $work->repository;
-	my $xml = $repo->xml;
-	my $frag = $xml->create_document_fragment;
-
-	my $div = $xml->create_element('div');
-	$frag->appendChild($div);
-
-	$div->appendChild($work->render_citation('work_summary'));
-
-	return $frag;
-};
-
-$c->{medmus_render_refrain} = sub
-{
-	my ($refrain, $readingid_to_highlight) = @_;
-
-	my $repo = $refrain->repository;
-	my $xml = $repo->xml;
-	my $frag = $xml->create_document_fragment;
-
-	my $div = $xml->create_element('div');
-	$frag->appendChild($div);
-	$div->appendChild($repo->html_phrase('eprint_fieldname_reference_number'));
-	$div->appendChild($xml->create_text_node(': '));
-	$div->appendChild($refrain->render_value('reference_number'));
-
-	my $h3 = $xml->create_element('h3');
-	$frag->appendChild($h3);
-	$h3->appendChild($repo->html_phrase('refrain_abstract_readings_heading'));
-
-	my $reading_ids = $refrain->value('readings');
-
-	foreach my $id (@{$reading_ids})
-	{
-		my $reading = $repo->eprint($id);
-
-		my %box_args = (
-			'title' => $reading->render_citation('brief'),
-			'content' => $repo->call('medmus_render_reading_box', $reading),
-			'id' => 'medmus_reading_box_' . $id,
-			'session' => $repo,
-			'collapsed' => 1,
-		);
-
-		if ($readingid_to_highlight == $id)
-		{
-			$box_args{collapsed} = 0;
-		}
-
-
-		$frag->appendChild(EPrints::Box::render(%box_args));
-	}
-
-
-	return $frag;
-};
 
 #disable default functionality
 $c->{set_eprint_automatic_fields} = sub
@@ -222,25 +79,110 @@ $c->{refrains_in_work} = sub
 		$refrains->{$refrain->id} = $refrain; #into a hash for deduplication
 	}
 
-	#Does this work have a host work?  If so, recurse refrains will be grandchildren
-	if ($work->is_set('host_work_id'))
+	#Is this a host work?  If so, recurse -- refrains will be grandchildren
+	my $hosts = $repo->call('hosted_works', $work);
+
+	if ($hosts) #empty arrayref will be fals
 	{
-		my $search = $ds->prepare_search();
-		$search->add_field(fields => [ $ds->field('work_id') ], value => $work->value('host_work_id'));
-		$search->add_field(fields => [ $ds->field('instance_number') ], value => $work->value('host_work_instance'));
-		my $hosts = $search->perform_search;
-		foreach my $host ($hosts->slice(0,100)) #get a maziumum of 100 - that's ludicrously high
+		foreach my $host (@{$hosts})
 		{
 			my $host_refrains = $repo->call('refrains_in_work', $host, $depth+1);
 			foreach my $r (@{$host_refrains})
 			{
-				$refrains->{$r->id} = $r;
+				$refrains->{$r->id} = $r; #in a has for deduplication reasons
 			}
 		}
 	}
-
-	return [values %{$refrains}];
+	my @vals = values %{$refrains};
+	return [sort {$repo->call('refrain_sortval', $a) cmp $repo->call('refrain_sortval', $b)} @vals];
 };
+
+
+#create a sortable string from the refrain ID and the instance number with lots of zero padding
+$c->{refrain_sortval} = sub
+{
+	my ($refrain) = @_;
+
+	return sprintf("%8s%5s",$refrain->value('refrain_id'), $refrain->value('instance_number'));
+};
+
+
+
+#get all works that specify this as a host work
+$c->{hosted_works} = sub
+{
+	my ($work) = @_;
+
+	my $repo = $work->repository;
+	my $ds = $repo->dataset('eprint');
+
+	my $search = $ds->prepare_search;
+	$search->add_field(fields => [ $ds->field('host_work_id') ], value => $work->value('work_id'));
+	$search->add_field(fields => [ $ds->field('host_work_instance') ], value => $work->value('instance_number'));
+	my $hosted_works = $search->perform_search;
+
+	return [] unless $hosted_works->count;
+
+	my @objs = $hosted_works->slice; #get all the records;
+	return [ @objs ];
+};
+
+#get all objects sharing an ID (all instances within an ID)
+$c->{all_instances} = sub
+{
+	my ($repo, $type, $id) = @_;
+
+	my $ds = $repo->dataset('eprint');
+
+	my $search = $ds->prepare_search();
+#	$search->add_field(
+#		fields => [ $ds->field('medmus_type') ],
+#		value => $type,
+#		match => 'EQ'
+#	);
+	$search->add_field(
+		fields => [ $ds->field($type . '_id') ],
+		value => $id,
+		match => 'EQ'
+	);
+
+	my $list = $search->perform_search;
+
+	return [] unless $list->count; #check that there's at least one result
+
+	my @records = $list->slice(0,100); #100 should be enough...
+
+	return [@records];
+};
+
+
+
+$c->{work_host} = sub
+{
+	my ($work) = @_;
+
+	return undef unless $work->is_set('host_work_id');
+
+	my $repo = $work->repository;
+
+	return $repo->call('instance_by_id', $repo, 'work', $work->value('host_work_id'), $work->value('host_work_instance'));
+};
+
+$c->{refrain_parents} = sub
+{
+	my ($refrain) = @_;
+	my $repo = $refrain->repository;
+
+	my $parents_objs = [];
+	my $parents = $refrain->value('parent_work');
+	foreach my $parent (@{$parents})
+	{
+		my $parent_obj = $repo->call('instance_by_id', $repo, 'work', $parent->{id}, $parent->{instance});
+		push @{$parents_objs}, $parent_obj if $parent_obj;
+	}
+	return $parents_objs;
+};
+
 
 #get an work or refrain instance
 $c->{instance_by_id} = sub
@@ -271,64 +213,8 @@ $c->{instance_by_id} = sub
 
 	return undef unless $list->count; #check that there's at least one result
 
-	my ($record) = $list->slice(0,1); #get the first record (there should only be one)
+	my ($record) = $list->item(0); #get the first record (there should only be one)
 
 	return $record;
-};
-
-
-$c->{medmus_get_reading_abstract_refrain} = sub
-{
-	my ($reading) = @_;
-
-	my $ds = $reading->dataset;
-
-	my $search = $ds->prepare_search;
-	$search->add_field($ds->get_field('readings'), $reading->id);
-
-	my $list = $search->perform_search;
-	if ($list->count)
-	{
-		return $list->item(0); #should only be one.
-	}
-	print STDERR "Couldn't find Reading\n";
-	return undef;
-};
-
-#override eprint render
-$c->{eprint_render} = sub
-{
-	my( $eprint, $repository, $preview ) = @_;
-
-	my %fragments;
-	my $flags;
-
-	my $page = $repository->xml()->create_document_fragment();
-	my $title = $eprint->render_citation("brief");
-
-	my $type = $eprint->value('medmus_type');
-
-	if ($type eq 'refrain')
-	{
-		$page->appendChild($repository->call('medmus_render_refrain', $eprint));
-	}
-	if ($type eq 'reading')
-	{
-		my $refrain = $repository->call('medmus_get_reading_abstract_refrain', $eprint);
-		if ($refrain)
-		{
-			$page->appendChild($repository->call('medmus_render_refrain', $refrain, $eprint->id));
-		}	
-	}
-	if ($type eq 'work')
-	{
-		$page->appendChild($repository->call('medmus_render_work', $eprint));
-	}
-
-
-
-	my $links = $repository->xml()->create_document_fragment();
-
-	return( $page, $title, $links );
 };
 

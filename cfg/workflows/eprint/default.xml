@@ -40,20 +40,64 @@ Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
   </stage>
 
   <stage name="refrain_core">
-    <component><field ref="title" required="yes" /></component>
+    <component type="Field::Multi">
+      <title>Abstract Refrain</title>
+      <field ref="refrain_id" required="yes" />
+      <field ref="abstract_text" required="yes" />
+    </component>
+
+    <component>
+      <field ref="parent_work" required="yes" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Refrain Instance Core</title>
+      <field ref="instance_number" required="yes" />
+      <field ref="linker_number" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Manuscript</title>
+      <field ref="manuscript_id" required="yes" />
+      <field ref="manuscript_location" />
+      <field ref="other_manuscript_data" />
+    </component>
+  
+    <component type="Field::Multi">
+      <title>Refrain Meta</title>
+      <field ref="musical_structure" />
+      <field ref='meter'/>
+      <field ref='circumstance'/>
+      <field ref='function'/>
+      <field ref='singer'/>
+      <field ref='audience'/>
+      <field ref='preceeding_lyric'/>
+      <field ref='succeeding_lyric'/>
+      <field ref='mark_of_discourse'/>
+      <field ref='other_refrain_data'/>
+    </component>
+
+
   </stage>
 
   <stage name="work_core">
-    <component><field ref="title" required="yes" /></component>
-    <component><field ref="generic_descriptor" required="yes" /></component>
-    <component><field ref="work_id" required="yes" /></component>
-    <component><field ref="date_description" /></component>
-    <component><field ref="authors" required="yes"/></component>
-    <component><field ref="host_works" /></component>
-    <component><field ref="edition" /></component>
+    <component type="Field::Multi">
+      <title>Abstract Work</title>
+      <field ref="work_id" required="yes" />
+      <field ref="title" required="yes" />
+      <field ref="generic_descriptor" required="yes" />
+    </component>
 
     <component type="Field::Multi">
-      <title>Indices</title>
+      <title>Work Instance Core</title>
+        <field ref="instance_number" required="yes" />
+        <field ref="date_description" />
+	<field ref="authors" required="yes" />
+        <field ref="edition" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Work Instance Indices</title>
       <field ref="l_index"/>
       <field ref="mw_index"/>
       <field ref="rs_index"/>
@@ -64,7 +108,14 @@ Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
     </component>
 
     <component type="Field::Multi">
-      <title>Other Data</title>
+      <title>Host Work</title>
+      <field ref="host_work_id"/>
+      <field ref="host_work_instance"/>
+      <field ref="location_in_host"/>
+    </component>
+
+    <component type="Field::Multi">
+      <title>Other Instance Data</title>
       <field ref="number_of_parts" />
       <field ref="voice_in_polyphony" />
       <field ref="primary_language" />
@@ -72,9 +123,9 @@ Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
       <field ref="style_of_discourse" />
       <field ref="number_of_stanzas" />
       <field ref="number_of_envois" />
+      <field ref="other_data" />
     </component>
 
-    <component><field ref="other_data" /></component>
   </stage>
 
 </workflow>
