@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works4.csv';
-my $refrains_file = 'new_refrains2.csv';
+my $works_file = 'new_works5.csv';
+my $refrains_file = 'new_refrains4.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
@@ -53,44 +53,6 @@ foreach my $row ( 1 .. $#{$tables->{refrains}} )
 	{
 		my $val = val('refrains',$c, $row);
 		next unless $val;
-
-		if ($c eq 'Parent Work (ID)')
-		{
-			my $val = { id => [], instance => [], location => [] };
-			@{$val->{id}} = split(/\s*;\s*/,val('refrains', 'Parent Work (ID)', $row));
-			@{$val->{instance}} = split(/\s*;\s*/,val('refrains', 'Parent Work (Instance)', $row));
-			@{$val->{location}} = split(/\s*;\s*/,val('refrains', 'Parent Work (Location)', $row));
-
-			my $i = 0;
-			my $parents = [];
-			$refrain->{parent_work} = $parents;
-			while (1)
-			{
-				last if (
-					!$val->{id}->[$i]
-					&& !$val->{instance}->[$i]
-					&& !$val->{location}->[$i]
-				);
-
-				my $parent = {};
-				push @{$parents}, $parent;
-				foreach my $k (qw/ id instance location /)
-				{
-					if ($val->{$k}->[$i])
-					{
-						$parent->{$k} = $val->{$k}->[$i];
-					}
-					else
-					{
-						$parent->{$k} = $val->{$k}->[0];
-					}
-				}
-
-				$i++;
-			}
-
-		}
-
 
 		if ($c eq 'Derived Reading Text')
 		{
@@ -166,6 +128,19 @@ foreach my $row ( 1 .. $#{$tables->{works}} )
 	
 	process_generic_fields($work, 'works', $row);
 
+	#manuscript collocation
+	my $val = val('works', 'Manuscript Collocation', $row);
+	my ($manuscript, $location) = split(/,\s*/,$val,2);
+
+	$work->{manuscript_id} = $manuscript;
+	$work->{manuscript_location} = $location;
+
+
+	#remove whitespace from work_id
+	$work->{'work_id'} =~ s/\s//g;
+	$work->{'host_work_id'} =~ s/\s//g if $work->{'host_work_id'};
+
+
 	#authors
 	my $val = val('works','Authors', $row);
 	my @author_strings = split(/\s*;\s*/, $val);
@@ -216,11 +191,16 @@ sub process_generic_fields
 	{
 		my $val = val($table,$heading, $row);
 
+		my $single_with_semicolon = {
+			'Abstract Master Text' => 1,
+			'Title' => 1,
+		};
+
 		if ($val)
 		{
 			if (
 				$val =~ m/;/
-				&& $heading ne 'Abstract Master Text'
+				&& !$single_with_semicolon->{$heading}
 			)
 			{
 				die "$table: Semicolon in singular field $heading, row $row\n";
@@ -295,6 +275,7 @@ sub output_epxml
 	{
 		my $eprint = $doc->createElement('eprint');
 		$eprints->appendChild($eprint);
+
 		foreach my $tagname (keys %{$work})
 		{
 			if ($work->{$tagname})
@@ -412,10 +393,14 @@ sub initialise_columns
 		'Métrique' => 'meter',
 		'Other Refrain data' => 'other_refrain_data',
 		'Other Manuscript Data' => 'other_manuscript_data',
+		'Image File' => 'image_file',
 	};
 
 	$c->{refrains}->{simple} = 
 	{
+		'Parent Work (ID)' => 'parent_work_id',
+		'Parent Work (Instance)' => 'parent_work_instance',
+		'Parent Work (Location)' => 'location_in_parent',
 		'Ref Number' => 'refrain_id',
 		'Instance Number' => 'instance_number',
 		'Linker Number' => 'linker_number',
@@ -449,7 +434,6 @@ sub initialise_columns
 
 	$c->{refrains}->{complex_cols} = 
 	[
-		'Parent Work (ID)', 'Parent Work (Instance)', 'Parent Work (Location)',
 		'Image File',
 		'Manuscript Collocation',
 		'Derived Reading Text',
