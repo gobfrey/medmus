@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works5.csv';
-my $refrains_file = 'new_refrains4.csv';
+my $works_file = 'new_works7.csv';
+my $refrains_file = 'new_refrains6.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
@@ -135,14 +135,12 @@ foreach my $row ( 1 .. $#{$tables->{works}} )
 	$work->{manuscript_id} = $manuscript;
 	$work->{manuscript_location} = $location;
 
-
 	#remove whitespace from work_id
 	$work->{'work_id'} =~ s/\s//g;
 	$work->{'host_work_id'} =~ s/\s//g if $work->{'host_work_id'};
 
-
 	#authors
-	my $val = val('works','Authors', $row);
+	$val = val('works','Authors', $row);
 	my @author_strings = split(/\s*;\s*/, $val);
 	my $authors = [];
 	foreach my $author_string (@author_strings)
@@ -393,7 +391,6 @@ sub initialise_columns
 		'Métrique' => 'meter',
 		'Other Refrain data' => 'other_refrain_data',
 		'Other Manuscript Data' => 'other_manuscript_data',
-		'Image File' => 'image_file',
 	};
 
 	$c->{refrains}->{simple} = 
@@ -410,6 +407,7 @@ sub initialise_columns
 		'Circonstances' => 'circumstance',
 #		'Manuscript Number' => '',
 		'Musical structure' => 'musical_structure',
+		'Image File' => 'image_file',
 	};
 
 	$c->{refrains}->{set} = 
