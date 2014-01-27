@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+
+<!-- 
+	used to display the Abstract work box on the summary page
+-->
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+<div class="row">
+<div class="six columns">
+
+<table>
+<tr>
+<th align="right">ID:</th>
+<td valign="top"><epc:print expr="work_id" />/<epc:print expr="instance_number"/></td>
+</tr>
+
+<epc:foreach expr="$config{refrain_view_work_fields}" iterator="fieldname">
+  <epc:if test="is_set($item.property($fieldname))">
+    <tr>
+      <th align="right"><epc:phrase ref="eprint_fieldname_{$fieldname}" />:</th>
+      <td valign="top"><epc:print expr="$item.property($fieldname)" /></td>
+    </tr>
+  </epc:if>
+</epc:foreach>
+<tr>
+<th align="right"> </th>
+<td valign="top"><a href="{$item.url()}">...view full details</a></td>
+</tr>
+</table>
+</div>
+</div>
+
+<epc:if test="$flags{host}">
+<epc:print expr="$host_box" />
+</epc:if>
+
+
+
+</cite:citation>

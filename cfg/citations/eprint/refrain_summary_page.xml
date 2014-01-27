@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+
+<!-- 
+	used to display the Abstract work box on the summary page
+-->
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+
+<div class="six columns">
+
+<table class="abstractbox">
+<caption>Refrain</caption>
+
+<epc:foreach expr="$config{abstract_refrain_summary_page_metadata}" iterator="fieldname">
+  <epc:if test="is_set($item.property($fieldname))">
+    <tr>
+      <th align="right"><epc:phrase ref="eprint_fieldname_{$fieldname}" />:</th>
+      <td valign="top"><epc:print expr="$item.property($fieldname)" /></td>
+    </tr>
+  </epc:if>
+</epc:foreach>
+
+      <th align="right">Instances:</th>
+      <td valign="top"><epc:print expr="$refrain_instances" /></td>
+
+
+
+</table>
+</div>
+
+<div class="six columns">
+<table class="abstractbox">
+<caption>Instance</caption>
+<tr>
+<th align="right">ID:</th>
+<td valign="top"><epc:print expr="refrain_id" />/<epc:print expr="instance_number"/></td>
+</tr>
+
+<epc:foreach expr="$config{refrain_summary_page_metadata}" iterator="fieldname">
+  <epc:if test="is_set($item.property($fieldname))">
+    <tr>
+      <th align="right"><epc:phrase ref="eprint_fieldname_{$fieldname}" />:</th>
+      <td valign="top"><epc:print expr="$item.property($fieldname)" /></td>
+    </tr>
+  </epc:if>
+</epc:foreach>
+
+<tr>
+<th align="right">Manuscript:</th>
+<td valign="top"><epc:print expr="manuscript_collocation" /></td>
+</tr>
+<epc:if test="is_set($item.property('other_manuscript_data'))">
+<tr>
+<th align="right"><epc:phrase ref="eprint_fieldname_other_manuscript_data" />:</th>
+<td valign="top"><epc:print expr="other_manuscript_data" /></td>
+</tr>
+</epc:if>
+
+<tr>
+<th align="right">Parent Work(s):</th>
+<td valign="top"><epc:print expr="$parent_works" /></td>
+</tr>
+
+</table>
+
+
+</div>
+
+</cite:citation>

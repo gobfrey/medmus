@@ -6,14 +6,14 @@
 
 <cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
 
-<cite:linkhere><epc:choose>
+<epc:choose>
   <epc:when test="medmus_type='work'">
-	<epc:print expr="title"/>
+	<dt><cite:linkhere><epc:print expr="work_id"/>/<epc:print expr="instance_number"/></cite:linkhere></dt>
+	<dd><epc:print expr="title"/></dd>
   </epc:when>
   <epc:when test="medmus_type='refrain'">
-	<epc:print expr="abstract_text"/>
+	<dt><cite:linkhere><epc:print expr="refrain_id"/>/<epc:print expr="instance_number"/></cite:linkhere></dt>
+	<dd><epc:print expr="abstract_text"/></dd>
   </epc:when>
-  <epc:otherwise>#<epc:print expr="eprintid"/></epc:otherwise>
-
-</epc:choose></cite:linkhere>
+</epc:choose>
 </cite:citation>
