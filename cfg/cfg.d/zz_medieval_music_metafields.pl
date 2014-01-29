@@ -7,6 +7,10 @@ foreach my $field(
 	input_style => 'medium',
 },
 { name => 'instance_number', type => 'int' },
+{ name => 'manuscript_location', type => 'text' },
+{ name => 'manuscript_id', type => 'text' }, #will also be copied into works
+{ name => 'manuscript_collocation', type => 'text', volatile => 1 }, #for rendering
+
 
 #refrain data
 { name => 'refrain_id', type => 'id' },
@@ -14,35 +18,52 @@ foreach my $field(
 { name => 'abstract_text', type => 'text' },
 { name => 'circumstance', type => 'text' },
 { name => 'musical_structure', type => 'id' },
+{ name => 'image_file', type => 'text' },
 
 { name => 'refrain_location', type => 'set', 'multiple' => 1, options => [qw( enté enté_interne fin_de_strophe final initial interne )]},
 
+{ name => 'parent_work_id', type => 'id' },
+{ name => 'parent_work_instance', type => 'int' },
+{ name => 'location_in_parent', type => 'text' },
 {
 	name => 'parent_work',
-	type => 'compound',
-	multiple => 1,
-	'fields' => [
-		{ sub_name => "id", type => "text"},
-		{ sub_name => "instance", type => "int"},
-		{ sub_name => "location", type => "text"},
-	],
-	render_value => sub {
-		my ($session, $self, $value, $alllangs, $nolink, $object ) = @_;
+	type => 'text',
+	volatile => 1,
+	render_value => sub
+	{
+		my ($session, $field, $value, $alllangs, $nolink, $object ) = @_;
 
-		my @singles;
-		foreach my $p (@{$value})
+		#naming consistency fix...
+		my $refrain = $object;
+		my $repo = $session;
+
+		my $xml = $repo->xml;
+		my $frag = $xml->create_document_fragment;
+
+		return $frag unless $refrain->is_set('parent_work_id');
+
+	        my $parent = $repo->call('refrain_parent', $refrain);
+		if ($parent)
 		{
-			my $v = $p->{id} . '/' . $p->{instance};
-			if ($p->{location})
+			$frag->appendChild($parent->render_citation_link('id_instance_text'));
+			if ($refrain->is_set('location_in_host'))
 			{
-				$v .= ', ' . $p->{location};
+				$frag->appendChild($xml->create_text_node(' ['));
+				$frag->appendChild($refrain->render_value('location_in_host'));
+				$frag->appendChild($xml->create_text_node(' ]'));
 			}
-			push @singles, $v;
 		}
-		my $string =  join(' and ', @singles);
-		return $session->xml->create_text_node($string);
-	},
-},
+		else
+		{
+			my $text = $refrain->value('parent_work_id') . '/' . $refrain->value('parent_work_instance');
+			$text .= ' [' . $refrain->value('location_in_parent') . ']' if $refrain->is_set('location_in_parent');
+			$text .= ' (ERR)';
+			$frag->appendChild($xml->create_text_node($text));
+		}	
+		return $frag;
+	}
+},#for rendering
+
 {
 	name => 'reading_texts',
 	type => 'compound',
@@ -110,23 +131,6 @@ foreach my $field(
 { name => 'other_manuscript_data', type => 'longtext', multiple => 1 },
 
 
-{ name => 'manuscript_location', type => 'text' },
-{ name => 'manuscript_id', type => 'text' }, #will also be copied into works
-{
-	name => 'manuscript_collocation',
-	type => 'text',
-	virtual => 1,
-	render_value => sub
-	{
-		my ($session, $self, $value, $alllangs, $nolink, $object ) = @_;
-		my $xml = $session->xml;
-		my $val = $object->value('manuscript_id');
-		$val .= ', ' . $object->value('manuscript_location') if $object->is_set('manuscript_location');
-		return $xml->create_text_node($val);
-	}
-
-},
-
 #work fields
 { name => 'work_id', type => 'id' },
 #{ name => 'title', type => 'text' }, existing field
@@ -141,6 +145,44 @@ foreach my $field(
 { name => 'host_work_id', type => 'id' },
 { name => 'host_work_instance', type => 'int' },
 { name => 'location_in_host', type => 'text' },
+{
+	name => 'host_work',
+	type => 'text',
+	volatile => 1,
+	render_value => sub
+	{
+		my ($session, $field, $value, $alllangs, $nolink, $object ) = @_;
+
+		#naming consistency fix...
+		my $work = $object;
+		my $repo = $session;
+
+		my $xml = $repo->xml;
+		my $frag = $xml->create_document_fragment;
+
+		return $frag unless $work->is_set('host_work_id');
+
+	        my $host = $repo->call('work_host', $work);
+		if ($host)
+		{
+			$frag->appendChild($host->render_citation_link('id_instance_text'));
+			if ($work->is_set('location_in_host'))
+			{
+				$frag->appendChild($xml->create_text_node(' ['));
+				$frag->appendChild($work->render_value('location_in_host'));
+				$frag->appendChild($xml->create_text_node(']'));
+			}
+		}
+		else
+		{
+			my $text = $work->value('host_work_id') . '/' . $work->value('host_work_instance');
+			$text .= ' [' . $work->value('location_in_host') . ']' if $work->is_set('location_in_host');
+			$text .= ' (ERR)';
+			$frag->appendChild($xml->create_text_node($text));
+		}	
+		return $frag;
+	}
+},# for rendering
 { name => 'other_data', type => 'longtext', multiple => 1 },
 { name => 'mw_index', type => 'id', multiple => 1 },
 { name => 'l_index', type => 'id', multiple => 1 },

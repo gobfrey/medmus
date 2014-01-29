@@ -27,6 +27,17 @@ $c->{browse_views} = [
                 order => "eprintid",
 		max_items => 10000,
         },
+        {
+                id => "manuscript",
+                menus => [
+			{
+				fields => ["manuscript_id"],
+				new_column_at => [0,0],
+			}
+		],
+                order => "eprintid",
+		max_items => 10000,
+        },
 	{
 		id => "author",
 		menus => [
@@ -99,7 +110,6 @@ $c->{render_refrain_browse} = sub
 
 	my $frag = $xml->create_document_fragment;
 
-
 	#Abstract Refrain information
 	my $abstract_text = $item_list->[0]->render_value('abstract_text');
 	my $id = $item_list->[0]->render_value('refrain_id');
@@ -115,79 +125,17 @@ $c->{render_refrain_browse} = sub
 
 	foreach my $instance (@instances)
 	{
-		my $flags = {};
-		my %fragments = ();
+		my $parent = $repo->call('refrain_parent', $instance);
 
-		my $parents = $repo->call('refrain_parents', $instance);
+		#the function call will generate a box of parent information or an error box
+		my $parent_box = $repo->call('render_refrain_browse_render_parent_box', $instance, $parent );
 
-		my $box_title = $instance->render_citation('refrain_view_refrain_boxtitle');
+		my $flags = { parent => 1};
+		my %fragments = ( parent_box => $parent_box);
 
-
-		my $parent_frag = $xml->create_document_fragment;
-
-		foreach my $parent (@{$parents})
-		{
-			my %fragments;
-			my $flags = { host => 0};
-
-			my $host = $repo->call('work_host', $parent);
-
-			if ($host)
-			{
-				my $hostbox_title = $host->render_citation('refrain_view_host_boxtitle');
-				my $hostbox_content = $host->render_citation('refrain_view_work_boxcontent',flags => {});
-				my @id_parts = (
-					$instance->value('refrain_id'),
-					$instance->value('instance_number'),
-					$parent->value('work_id'),
-					$parent->value('instance_number'),
-					$host->value('work_id'),
-					$host->value('instance_number')
-				);
-
-				my %options = (
-					id => 'hostbox_' .  join('/',@id_parts),
-					content => $hostbox_content,
-					title => $hostbox_title,
-					session => $repo,
-					collapsed => 1
-				);
-
-				$fragments{host_box} = EPrints::Box::render(%options);
-				$flags->{host} = 1;
-			}
-
-			my $parentbox_title = $parent->render_citation('refrain_view_parent_boxtitle');
-			#insert types into fragments (they're all DOM)
-			foreach my $key ( keys %fragments ) { $fragments{$key} = [ $fragments{$key}, "XHTML" ]; }
-			my $parentbox_content = $parent->render_citation('refrain_view_work_boxcontent', %fragments, flags => $flags);
-
-			my @id_parts = (
-				$instance->value('refrain_id'),
-				$instance->value('instance_number'),
-				$parent->value('work_id'),
-				$parent->value('instance_number'),
-			);
-
-			my %options = (
-				id => 'parentbox_' .  join('/',@id_parts),
-				content => $parentbox_content,
-				title => $parentbox_title,
-				session => $repo,
-				collapsed => 1
-			);
-
-			$parent_frag->appendChild(EPrints::Box::render(%options));
-		}
-
-		my $p_flags = {parents => 1};
-		my %p_fragments = (parent_boxes => $parent_frag);
-
-
-		my $refrainbox_title = $instance->render_citation('refrain_view_refrain_boxtitle');
 		#insert types into fragments (they're all DOM)
-		foreach my $key ( keys %p_fragments ) { $p_fragments{$key} = [ $p_fragments{$key}, "XHTML" ]; }
-		my $refrainbox_content = $instance->render_citation('refrain_view_refrain_boxcontent', %p_fragments, flags => $p_flags);
+		foreach my $key ( keys %fragments ) { $fragments{$key} = [ $fragments{$key}, "XHTML" ]; }
+		my $content = $instance->render_citation('refrain_view_refrain_boxcontent', %fragments, flags => $flags);
 
 		my @id_parts = (
 			$instance->value('refrain_id'),
@@ -195,9 +143,9 @@ $c->{render_refrain_browse} = sub
 		);
 
 		my %options = (
-			id => 'refrainbox_' .  join('/',@id_parts),
-			content => $refrainbox_content,
-			title => $refrainbox_title,
+			id => 'refrainbox_' .  join('-',@id_parts),
+			content => $content,
+			title => $instance->render_citation('refrain_view_refrain_boxtitle'),
 			session => $repo,
 			collapsed => 0 
 		);
@@ -205,9 +153,76 @@ $c->{render_refrain_browse} = sub
 		$frag->appendChild(EPrints::Box::render(%options));
 	}
 
-
-
-
 	return $frag;
 };
 
+$c->{render_refrain_browse_render_parent_box} = sub
+{
+	my ($refrain, $parent) = @_;
+	my $repo = $refrain->repository;
+
+	#construct an ID for javascript to use
+	my $box_id_parts = [];
+	foreach my $fieldname (qw/ refrain_id instance_number parent_work_id parent_work_instance /)
+	{
+		push @{$box_id_parts}, $refrain->value($fieldname) if $refrain->is_set($fieldname);
+	}
+	my $box_id = 'parentbox_' . join('-',@{$box_id_parts});
+
+	my %options = (
+		id => $box_id,
+		session => $repo,
+		collapsed => 1
+	);
+
+	if (!$parent)
+	{
+		#return a box with an error message
+		my $parent_work_dom = $refrain->render_value('parent_work');
+		$options{title} = $repo->html_phrase('render_refrain_browse_parent_missing', parent => $parent_work_dom);
+		$options{content} = $repo->html_phrase('render_refrain_browse_parent_missing', parent => $parent_work_dom);
+	}
+	else
+	{
+		my $flags = { host => 0 };
+		my %fragments;
+
+		my $host = $repo->call('work_host', $parent);
+		if ($host)
+		{
+			$flags->{host} = 1;
+			$fragments{host_box} = $repo->call('render_refrain_browse_render_host_box', $refrain, $parent, $host);
+		}
+
+		#insert types into fragments (they're all DOM)
+		foreach my $key ( keys %fragments ) { $fragments{$key} = [ $fragments{$key}, "XHTML" ]; }
+
+		$options{title} = $parent->render_citation('refrain_view_parent_boxtitle'),
+		$options{content} = $parent->render_citation('refrain_view_work_boxcontent', %fragments, flags => $flags);
+	}
+
+	return EPrints::Box::render(%options);
+};
+
+$c->{render_refrain_browse_render_host_box} = sub
+{
+	my ($refrain, $parent, $host) = @_;
+	my $repo = $refrain->repository;
+
+	#this box needs a unique id for javascript to control it; construct it from these parts
+	my @id_parts = (
+		$refrain->value('refrain_id'), $refrain->value('instance_number'),
+		$parent->value('work_id'), $parent->value('instance_number'),
+		$host->value('work_id'),$host->value('instance_number')
+	);
+
+	my %options = (
+			id => 'hostbox_' .  join('-',@id_parts),
+			content => $host->render_citation('refrain_view_work_boxcontent',flags => {}),
+			title => $host->render_citation('refrain_view_host_boxtitle'),
+			session => $repo,
+			collapsed => 1
+		      );
+
+	return EPrints::Box::render(%options);
+}

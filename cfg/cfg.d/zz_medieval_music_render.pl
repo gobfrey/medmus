@@ -6,7 +6,7 @@ generic_descriptor
 )];
 
 $c->{work_summary_page_metadata} = [qw(
-manuscript_id
+manuscript_collocation
 date_description
 authors
 edition
@@ -93,9 +93,6 @@ $c->{medmus_render_work} = sub
 		$refrains_dl->appendChild($r->render_citation_link('id_instance_text_dl'));
 	}
 	$fragments{refrains} = $refrains_dl; 
-	
-
-
 
 	#insert types into fragments (they're all DOM)
 	foreach my $key ( keys %fragments ) { $fragments{$key} = [ $fragments{$key}, "XHTML" ]; }
@@ -129,8 +126,11 @@ mark_of_discourse
 musical_structure
 meter
 
-other_refrain_data
+manuscript_collocation
+other_manuscript_data
 
+other_refrain_data
+parent_work
 
 )];
 $c->{medmus_render_refrain} = sub
@@ -155,30 +155,6 @@ $c->{medmus_render_refrain} = sub
 		$li->appendChild($w->render_citation_link('id_instance_manuscript'));
 	}
 	$fragments{refrain_instances} = $sibling_list;
-
-	#parent work link
-	my $p_works = $refrain->value('parent_work');
-	my $parent_ul = $xml->create_element('ul');
-	foreach my $parent (@{$p_works})
-	{
-		my $li = $xml->create_element('li');
-		$parent_ul->appendChild($li);
-
-		my $parent_obj = $repo->call('instance_by_id', $repo, 'work', $parent->{id}, $parent->{instance});
-		if ($parent_obj)
-		{
-			$li->appendChild($parent_obj->render_citation_link('id_instance_text'));
-			$li->appendChild($xml->create_text_node(' [' . $parent->{location} . ']')) if $parent->{location};
-		}
-		else
-		{
-			my $text = $parent->{id} . '/' . $parent->{instance};
-			$text .= ' [' . $parent->{location} if $parent->{location} . ']';
-			$text .= ' (ERR)';
-			$li->appendChild($xml->create_text_node($text));
-		}
-	}
-	$fragments{parent_works} = $parent_ul;
 
 	#insert types into fragments (they're all DOM)
 	foreach my $key ( keys %fragments ) { $fragments{$key} = [ $fragments{$key}, "XHTML" ]; }

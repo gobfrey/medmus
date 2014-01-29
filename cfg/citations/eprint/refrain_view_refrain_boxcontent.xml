@@ -54,7 +54,7 @@
 
 <div class="row">
 <div class="twelve columns">
-<epc:print expr="$parent_boxes"/>
+<epc:print expr="$parent_box"/>
 </div>
 </div>
 

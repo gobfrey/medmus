@@ -11,27 +11,31 @@ $c->{set_eprint_automatic_fields} = sub
 	my ($eprint) = @_;
 	my $repo = $eprint->repository;
 
-	if ($eprint->is_set('medmus_type') and $eprint->value('medmus_type') eq 'reading')
+	if ($eprint->is_set('parent_work_id'))
 	{
-		my $master_text = $eprint->value('reading_text');
-		if (!$master_text)
-		{
-			my $texts = $eprint->value('reading_texts');
-			$master_text = $texts->[0]->{text};
-		}
-		$eprint->set_value('master_text', $master_text);
+		my $parent_work = $eprint->value('parent_work_id');
+		$parent_work .= '/' . $eprint->value('parent_work_instance')
+			if $eprint->is_set('parent_work_instance');
+		$parent_work .= ', ' . $eprint->value('location_in_parent')
+			if $eprint->is_set('location_in_parent');
+		$eprint->set_value('parent_work', $parent_work);
 	}
-	if ($eprint->is_set('medmus_type') and $eprint->value('medmus_type') eq 'work')
-	{
-		#set manuscript
-		my $manuscript_ids = {};
 
-		my $refrains = $repo->call('refrains_in_work', $eprint);
-		foreach my $r (@{$refrains})
-		{
-			$manuscript_ids->{$r->value('manuscript_id')}++;
-		}
-		$eprint->set_value('manuscript_id', join(' / ', keys %{$manuscript_ids}));
+	if ($eprint->is_set('host_work_id'))
+	{
+		my $host_work = $eprint->value('host_work_id');
+		$host_work .= '/' . $eprint->value('host_work_instance')
+			if $eprint->is_set('host_work_instance');
+		$host_work .= ', ' . $eprint->value('location_in_host')
+			if $eprint->is_set('location_in_host');
+		$eprint->set_value('host_work', $host_work);
+	}
+
+	if ($eprint->is_set('manuscript_id'))
+	{
+		my $manuscript_collocation = $eprint->value('manuscript_id');
+		$manuscript_collocation .= ', ' . $eprint->value('manuscript_location')
+			if ($eprint->is_set('manuscript_location'));
 	}
 
 
@@ -47,34 +51,17 @@ $c->{refrains_in_work} = sub
 
 	my $repo = $work->repository;
 	my $db = $repo->database;
-
-	#quick and dirty mysql query (there are issues searching for compound multiple fields with the EPrints API)
-	my $sql =
-		'SELECT
-			eprint_parent_work_id.eprintid
-		FROM
-			eprint_parent_work_id
-			JOIN eprint_parent_work_instance
-			ON
-				eprint_parent_work_id.eprintid = eprint_parent_work_instance.eprintid
-				AND eprint_parent_work_id.pos = eprint_parent_work_instance.pos
-			JOIN eprint
-			ON eprint.eprintid = eprint_parent_work_instance.eprintid
-		WHERE
-			eprint.medmus_type = "refrain" AND
-			eprint_parent_work_instance.parent_work_instance = ' . $work->value('instance_number') . ' ' .
-			'AND eprint_parent_work_id.parent_work_id = "' . $work->value('work_id') . '"';
-
 	my $ds = $work->dataset;
 
-	my $refrains = {};
+	my $search = $ds->prepare_search;
+	$search->add_field(fields => [ $ds->field('parent_work_id') ], value => $work->value('work_id'));
+	$search->add_field(fields => [ $ds->field('parent_work_instance') ], value => $work->value('instance_number'));
+	my $list = $search->perform_search;
+	my @refrain_arr = $search->perform_search->slice;
 
-	my $sth = $db->prepare_select($sql);
-	$db->execute($sth, $sql);
-	while (my $row = $sth->fetchrow_arrayref)
+	my $refrains = {};
+	foreach my $refrain (@refrain_arr)
 	{
-		my $eprintid = $row->[0];
-		my $refrain = $ds->dataobj($eprintid);
 
 		$refrains->{$refrain->id} = $refrain; #into a hash for deduplication
 	}
@@ -165,22 +152,31 @@ $c->{work_host} = sub
 
 	my $repo = $work->repository;
 
-	return $repo->call('instance_by_id', $repo, 'work', $work->value('host_work_id'), $work->value('host_work_instance'));
+	my $host = $repo->call('instance_by_id', $repo, 'work', $work->value('host_work_id'), $work->value('host_work_instance'));
+	if (!$host)
+	{
+		my $str = "Cannot load host for ";
+		$str .= $work->value('work_id') . '/' . $work->value('instance_number');
+		$repo->log($str);
+	}
+
+	return $host;
 };
 
-$c->{refrain_parents} = sub
+$c->{refrain_parent} = sub
 {
 	my ($refrain) = @_;
 	my $repo = $refrain->repository;
+	my $parent = $repo->call('instance_by_id', $repo, 'work', $refrain->value('parent_work_id'), $refrain->value('parent_work_instance'));
 
-	my $parents_objs = [];
-	my $parents = $refrain->value('parent_work');
-	foreach my $parent (@{$parents})
+	if (!$parent)
 	{
-		my $parent_obj = $repo->call('instance_by_id', $repo, 'work', $parent->{id}, $parent->{instance});
-		push @{$parents_objs}, $parent_obj if $parent_obj;
+		my $str = "Cannot load parent for ";
+		$str .= $refrain->value('refrain_id') . '/' . $refrain->value('instance_number');
+		$repo->log($str);
 	}
-	return $parents_objs;
+
+	return $parent;
 };
 
 
@@ -188,6 +184,16 @@ $c->{refrain_parents} = sub
 $c->{instance_by_id} = sub
 {
 	my ($repo, $type, $id, $instance) = @_;
+
+	if (!$type || !$id || !$instance)
+	{
+		$type = 'UNDEF' unless $type;
+		$id = 'UNDEF' unless $id;
+		$instance = 'UNDEF' unless $instance;
+
+		$repo->log("Part of instance details missing $type/$id/$instance");
+		return undef; 
+	}
 
 	my $ds = $repo->dataset('eprint');
 
@@ -211,10 +217,19 @@ $c->{instance_by_id} = sub
 
 	my $list = $search->perform_search;
 
-	return undef unless $list->count; #check that there's at least one result
+	my $count = $list->count;
+	if ($count != 1) #too many or not enough
+	{
+		$repo->log("ERR: Cannot locate instance: $type/$id/$instance") if !$count;
+		if ($count)
+		{
+			my $ids = $list->ids;
+			$repo->log("ERR: Found $count instances of: $type/$id/$instance: " . join(',',@{$ids})) if $count;
+		}
+		return undef;
+	}
 
 	my ($record) = $list->item(0); #get the first record (there should only be one)
-
 	return $record;
 };
 

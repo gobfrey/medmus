@@ -8,10 +8,10 @@
 
 <epc:choose>
   <epc:when test="medmus_type='work'">
-	<cite:linkhere><epc:print expr="work_id"/>/<epc:print expr="instance_number"/>: <epc:print expr="title"/></cite:linkhere>
+	<cite:linkhere><epc:print expr="work_id"/>/<epc:print expr="instance_number"/></cite:linkhere>: <epc:print expr="title"/>
   </epc:when>
   <epc:when test="medmus_type='refrain'">
-	<cite:linkhere><epc:print expr="refrain_id"/>/<epc:print expr="instance_number"/>: <epc:print expr="abstract_text"/></cite:linkhere>
+	<cite:linkhere><epc:print expr="refrain_id"/>/<epc:print expr="instance_number"/></cite:linkhere>: <epc:print expr="abstract_text"/>
   </epc:when>
 </epc:choose>
 </cite:citation>

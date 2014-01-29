@@ -56,10 +56,6 @@
 </tr>
 </epc:if>
 
-<tr>
-<th align="right">Parent Work(s):</th>
-<td valign="top"><epc:print expr="$parent_works" /></td>
-</tr>
 
 </table>
 
