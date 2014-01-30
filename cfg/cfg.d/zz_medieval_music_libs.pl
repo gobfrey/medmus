@@ -36,6 +36,7 @@ $c->{set_eprint_automatic_fields} = sub
 		my $manuscript_collocation = $eprint->value('manuscript_id');
 		$manuscript_collocation .= ', ' . $eprint->value('manuscript_location')
 			if ($eprint->is_set('manuscript_location'));
+		$eprint->set_value('manuscript_collocation', $manuscript_collocation);
 	}
 
 

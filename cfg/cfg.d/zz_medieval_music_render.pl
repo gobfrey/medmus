@@ -7,6 +7,7 @@ generic_descriptor
 
 $c->{work_summary_page_metadata} = [qw(
 manuscript_collocation
+other_manuscript_data
 date_description
 authors
 edition

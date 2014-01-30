@@ -9,6 +9,7 @@ foreach my $field(
 { name => 'instance_number', type => 'int' },
 { name => 'manuscript_location', type => 'text' },
 { name => 'manuscript_id', type => 'text' }, #will also be copied into works
+{ name => 'other_manuscript_data', type => 'longtext', multiple => 1 },
 { name => 'manuscript_collocation', type => 'text', volatile => 1 }, #for rendering
 
 
@@ -128,7 +129,6 @@ foreach my $field(
 { name => 'mark_of_discourse', type => 'text', multiple => 1 },
 { name => 'meter', type => 'text', multiple => 1 },
 { name => 'other_refrain_data', type => 'longtext', multiple => 1 },
-{ name => 'other_manuscript_data', type => 'longtext', multiple => 1 },
 
 
 #work fields

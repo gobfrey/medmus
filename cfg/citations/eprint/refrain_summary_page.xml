@@ -45,18 +45,6 @@
   </epc:if>
 </epc:foreach>
 
-<tr>
-<th align="right">Manuscript:</th>
-<td valign="top"><epc:print expr="manuscript_collocation" /></td>
-</tr>
-<epc:if test="is_set($item.property('other_manuscript_data'))">
-<tr>
-<th align="right"><epc:phrase ref="eprint_fieldname_other_manuscript_data" />:</th>
-<td valign="top"><epc:print expr="other_manuscript_data" /></td>
-</tr>
-</epc:if>
-
-
 </table>
 
 
