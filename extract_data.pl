@@ -48,6 +48,9 @@ foreach my $row ( 1 .. $#{$tables->{refrains}} )
 	$refrain->{manuscript_id} = $manuscript;
 	$refrain->{manuscript_location} = $location;
 
+	#remove witespace
+	$refrain->{'parent_work_id'} =~ s/\s//g;
+
 	#reading texts
 	foreach my $c (@{$columns->{refrains}->{complex_cols}})
 	{
