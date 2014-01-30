@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works7.csv';
-my $refrains_file = 'new_refrains6.csv';
+my $works_file = 'new_works10.csv';
+my $refrains_file = 'new_refrains8.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
@@ -520,6 +520,7 @@ sub initialise_columns
 		"Edition" => 'edition',
 		"Date" => 'date_description',
 		"Generic Descriptor" => 'generic_descriptor',
+		"Author commentary" => 'author_commentary',
 	};
 
 	$c->{works}->{set} = 
