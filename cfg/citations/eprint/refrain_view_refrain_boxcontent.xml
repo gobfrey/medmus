@@ -32,10 +32,6 @@
     </tr>
   </epc:if>
 </epc:foreach>
-    <tr>
-      <th align="right"> </th>
-      <td valign="top"><a href="{$item.url()}">...view full details</a></td>
-    </tr>
 </table>
 
 
@@ -48,6 +44,13 @@
 
 </div>
 
+<div class="twelve columns">
+<epc:if test="$flags{music_img}">
+<h3>Music</h3>
+<epc:print expr="$music"/>
+</epc:if>
+<span class='record-link'><a href="{$item.url()}">[Detailed View]</a></span>
+</div>
 
 
 </div>

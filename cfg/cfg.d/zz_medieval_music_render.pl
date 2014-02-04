@@ -10,6 +10,7 @@ manuscript_collocation
 other_manuscript_data
 date_description
 authors
+author_commentary
 edition
 l_index
 mw_index
@@ -156,6 +157,19 @@ $c->{medmus_render_refrain} = sub
 		$li->appendChild($w->render_citation_link('id_instance_manuscript'));
 	}
 	$fragments{refrain_instances} = $sibling_list;
+
+	$flags->{music_img} = 0;
+	my @docs = $refrain->get_all_documents;
+
+	foreach my $doc (@docs)
+	{
+		if ($doc->value('format') eq 'image')
+		{
+			$flags->{music_img} = 1;
+			$fragments{music} = $xml->create_element('img', src => $doc->url, class => "music");
+			last; #only one image per item
+		}	
+	}
 
 	#insert types into fragments (they're all DOM)
 	foreach my $key ( keys %fragments ) { $fragments{$key} = [ $fragments{$key}, "XHTML" ]; }

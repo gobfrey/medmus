@@ -81,6 +81,7 @@ other_refrain_data
 $c->{refrain_view_work_fields} = [qw/
 title
 authors
+author_commentary
 edition
 generic_descriptor
 date_description
@@ -132,6 +133,19 @@ $c->{render_refrain_browse} = sub
 
 		my $flags = { parent => 1};
 		my %fragments = ( parent_box => $parent_box);
+
+		$flags->{music_img} = 0;
+		my @docs = $instance->get_all_documents;
+
+		foreach my $doc (@docs)
+		{
+			if ($doc->value('format') eq 'image')
+			{
+				$flags->{music_img} = 1;
+				$fragments{music} = $xml->create_element('img', src => $doc->url, class => "music");
+				last; #only one image per item
+			}	
+		}
 
 		#insert types into fragments (they're all DOM)
 		foreach my $key ( keys %fragments ) { $fragments{$key} = [ $fragments{$key}, "XHTML" ]; }

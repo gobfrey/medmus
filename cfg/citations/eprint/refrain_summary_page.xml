@@ -50,4 +50,18 @@
 
 </div>
 
+<epc:if test="$flags{music_img}">
+<div class="twelve columns">
+
+<table class="abstractbox">
+<caption>Music</caption>
+<tr>
+<td valign="top"><epc:print expr="$music"/></td>
+</tr>
+</table>
+
+</div>
+</epc:if>
+
+
 </cite:citation>

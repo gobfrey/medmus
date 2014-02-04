@@ -12,6 +12,12 @@
  * 
 */
 
+
+.music
+{
+	width: 100%;
+}
+
 .ep_summary_box_title img,
 .ep_summary_box_body h3
 {

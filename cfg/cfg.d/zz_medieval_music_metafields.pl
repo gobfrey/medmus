@@ -189,6 +189,7 @@ foreach my $field(
 { name => 'edition', type => 'text', multiple => 1 },
 { name => 'date_description', type => 'text', multiple => 1 },
 { name => 'generic_descriptor', type => 'text', multiple => 1 },
+{ name => 'author_commentary', type => 'text', multiple => 1 },
 
 { name => 'primary_language', type => 'set', options => [qw( latin langue_d_oil )]},
 { name => 'secondary_language', type => 'set', options => [qw( latin langue_d_oil )]},

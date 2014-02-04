@@ -93,6 +93,7 @@ Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
         <field ref="instance_number" required="yes" />
         <field ref="date_description" />
 	<field ref="authors" required="yes" />
+	<field ref="author_commentary" />
         <field ref="edition" />
     </component>
 
@@ -105,6 +106,13 @@ Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
       <field ref="t_index_songs"/>
       <field ref="lu_index"/>
       <field ref="vdb_index"/>
+    </component>
+
+    <component type="Field::Multi">
+      <title>Manuscript</title>
+      <field ref="manuscript_id" required="yes" />
+      <field ref="manuscript_location" />
+      <field ref="other_manuscript_data" />
     </component>
 
     <component type="Field::Multi">

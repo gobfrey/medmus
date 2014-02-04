@@ -6,7 +6,7 @@
 
 <cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
 <div class="row">
-<div class="six columns">
+<div class="twelve columns">
 
 <table>
 <tr>
@@ -22,11 +22,8 @@
     </tr>
   </epc:if>
 </epc:foreach>
-<tr>
-<th align="right"> </th>
-<td valign="top"><a href="{$item.url()}">...view full details</a></td>
-</tr>
 </table>
+<span class='record-link'><a href="{$item.url()}">[Detailed View]</a></span>
 </div>
 </div>
 
