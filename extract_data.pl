@@ -12,7 +12,7 @@ binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8"; 
 
 my $works_file = 'new_works10.csv';
-my $refrains_file = 'new_refrains8.csv';
+my $refrains_file = 'new_refrains10.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
