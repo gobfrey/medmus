@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works12.csv';
-my $refrains_file = 'new_refrains11.csv';
+my $works_file = 'new_works13.csv';
+my $refrains_file = 'new_refrains12.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
@@ -145,7 +145,6 @@ foreach my $row ( 1 .. $#{$tables->{works}} )
 	#copy across the lu index
 	if ($work->{'work_id'} =~ m/^M([0-9].*)/)
 	{
-print STDERR "YAAY $1\n";
 		$work->{lu_index} = $1 unless $work->{lu_index}
 	}
 
