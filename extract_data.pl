@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works10.csv';
-my $refrains_file = 'new_refrains10.csv';
+my $works_file = 'new_works12.csv';
+my $refrains_file = 'new_refrains11.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
@@ -141,6 +141,15 @@ foreach my $row ( 1 .. $#{$tables->{works}} )
 	#remove whitespace from work_id
 	$work->{'work_id'} =~ s/\s//g;
 	$work->{'host_work_id'} =~ s/\s//g if $work->{'host_work_id'};
+
+	#copy across the lu index
+	if (
+		$work->{'work_id'} =~ m/^M/
+		&& !$work->{lu_index}
+	)
+	{
+		$work->{lu_index} = $work->{work_id};
+	}
 
 	#authors
 	$val = val('works','Authors', $row);
