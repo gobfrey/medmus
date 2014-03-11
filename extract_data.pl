@@ -143,7 +143,7 @@ foreach my $row ( 1 .. $#{$tables->{works}} )
 	$work->{'host_work_id'} =~ s/\s//g if $work->{'host_work_id'};
 
 	#copy across the lu index
-	if ($work->{'work_id'} =~ m/^M([0-9]+)/)
+	if ($work->{'work_id'} =~ m/^M([0-9].*)/)
 	{
 		$work->{lu_index} = $1 unless $work->{lu_index}
 	}
