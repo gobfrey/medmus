@@ -145,6 +145,7 @@ foreach my $row ( 1 .. $#{$tables->{works}} )
 	#copy across the lu index
 	if ($work->{'work_id'} =~ m/^M([0-9].*)/)
 	{
+print STDERR "YAAY $1\n";
 		$work->{lu_index} = $1 unless $work->{lu_index}
 	}
 
