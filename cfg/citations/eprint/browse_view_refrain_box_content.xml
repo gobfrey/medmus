@@ -47,18 +47,23 @@
 <div class="twelve columns">
 <epc:if test="$flags{music_img}">
 <h3>Music</h3>
-<epc:print expr="$music"/>
+<epc:print expr="$music_img"/>
 </epc:if>
+</div>
+
+<div class="twelve columns">
 <span class='record-link'><a href="{$item.url()}">[Detailed View]</a></span>
 </div>
 
 
 </div>
 
+<epc:if test="$flags{parent_box}">
 <div class="row">
 <div class="twelve columns">
 <epc:print expr="$parent_box"/>
 </div>
 </div>
+</epc:if>
 
 </cite:citation>

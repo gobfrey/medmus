@@ -4,6 +4,12 @@
 
   <!-- This file is used to add phrases from the phrase editor screen -->
 
+    <epp:phrase id="viewname_eprint_abstract_item">Works and Refrains</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_abstract_item_list"></epp:phrase>
+
+    <epp:phrase id="viewname_eprint_words">Words in Reading Text</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_words"></epp:phrase>
+    <epp:phrase id="viewtitle_eprint_words_list">Refrains with Readings Containing "<epc:pin name="value1"/>"</epp:phrase>
     <epp:phrase id="render_refrain_browse_parent_missing">Couldn't find Parent: <epc:pin name="parent"/></epp:phrase>
     <epp:phrase id="bin/generate_views:blurb"></epp:phrase>
     <epp:phrase id="eprint_fieldname_manuscript_collocation">Manuscript Collocation</epp:phrase>
@@ -47,7 +53,7 @@
     <epp:phrase id="eprint_fieldopt_reading_texts_refrain_9">9</epp:phrase>
     <epp:phrase id="eprint_fieldopt_reading_texts_refrain_10">10</epp:phrase>
     <epp:phrase id="eprint_fieldopt_reading_texts_refrain_triplum">Triplum</epp:phrase>
-    <epp:phrase id="eprint_fieldopt_reading_texts_refrain_duplum">Dumplum</epp:phrase>
+    <epp:phrase id="eprint_fieldopt_reading_texts_refrain_duplum">Duplum</epp:phrase>
     <epp:phrase id="eprint_fieldopt_reading_texts_refrain_teneur">Teneur</epp:phrase>
     <epp:phrase id="eprint_fieldopt_reading_texts_refrain_enté">Enté</epp:phrase>
     <epp:phrase id="eprint_fieldopt_reading_texts_refrain_initial">Initial</epp:phrase>
