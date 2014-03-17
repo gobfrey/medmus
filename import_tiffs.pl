@@ -94,6 +94,8 @@ sub compval_db
 	my $v = $str;
 	chomp $v; #belt and braces
 
+	$v =~ s/vdB/vdb/;
+
 	return unidecode($v);
 }
 sub compval_fs
@@ -104,6 +106,8 @@ sub compval_fs
 	chomp $v;
 
 	$v =~ s/[^0-9a-zA-Z\. \/]//g;
+
+	$v =~ s/vdB/vdb/;
 
 	return $v;
 }

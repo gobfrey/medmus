@@ -11,7 +11,7 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works13.csv';
+my $works_file = 'new_works14.csv';
 my $refrains_file = 'new_refrains12.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
@@ -382,6 +382,7 @@ sub initialise_columns
 		"T Index (Motets)" => 't_index_motets',
 		"T Index (Songs)" => 't_index_songs',
 		"Lu Index" => 'lu_index',
+		"M Index" => 'm_index',
 		"vdB Index (Rondeaux)" => 'vdb_index',
 		"Number of parts" => 'number_of_parts',
 		"Host work ID" => 'host_work_id',

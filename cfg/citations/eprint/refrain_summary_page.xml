@@ -31,10 +31,6 @@
 <div class="six columns">
 <table class="abstractbox">
 <caption>Instance</caption>
-<tr>
-<th align="right">ID:</th>
-<td valign="top"><epc:print expr="refrain_id" />/<epc:print expr="instance_number"/></td>
-</tr>
 
 <epc:foreach expr="$config{refrain_summary_page_metadata}" iterator="fieldname">
   <epc:if test="is_set($item.property($fieldname))">

@@ -1,6 +1,5 @@
 
 $c->{abstract_work_summary_page_metadata} = [qw(
-work_id
 title
 generic_descriptor
 )];
@@ -47,7 +46,7 @@ $c->{medmus_render_work} = sub
 	{
 		my $li = $xml->create_element('li');
 		$sibling_list->appendChild($li);
-		$li->appendChild($w->render_citation_link('id_instance_manuscript'));
+		$li->appendChild($w->render_citation_link('manuscript'));
 	}
 	$fragments{work_instances} = $sibling_list;
 
@@ -58,14 +57,19 @@ $c->{medmus_render_work} = sub
 		if ($host)
 		{
 			my $frag = $xml->create_document_fragment;
-			$frag->appendChild($host->render_citation_link('id_and_instance'));
+
+			$frag->appendChild($host->render_citation_link('brief'));
+
 			if ($work->is_set('location_in_host'))
 			{
 				$frag->appendChild($xml->create_text_node(' ['));
 				$frag->appendChild($work->render_value('location_in_host'));
 				$frag->appendChild($xml->create_text_node(']'));
 			}
-
+#			$frag->appendChild($xml->create_text_node(' ('));
+#			$frag->appendChild($host->render_citation_link('id_and_instance'));
+#			$frag->appendChild($xml->create_text_node(')'));
+			
 			$flags->{host} = 1;
 			$fragments{host_work} = $frag; 
 		}
@@ -92,7 +96,7 @@ $c->{medmus_render_work} = sub
 	my $refrains_dl = $xml->create_element('dl');
 	foreach my $r (@{$refrains})
 	{
-		$refrains_dl->appendChild($r->render_citation_link('id_instance_text_dl'));
+		$refrains_dl->appendChild($r->render_citation_link('id_text_dl'));
 	}
 	$fragments{refrains} = $refrains_dl; 
 
@@ -154,7 +158,7 @@ $c->{medmus_render_refrain} = sub
 	{
 		my $li = $xml->create_element('li');
 		$sibling_list->appendChild($li);
-		$li->appendChild($w->render_citation_link('id_instance_manuscript'));
+		$li->appendChild($w->render_citation_link('manuscript'));
 	}
 	$fragments{refrain_instances} = $sibling_list;
 

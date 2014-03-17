@@ -11,10 +11,14 @@ foreach my $field(
 { name => 'manuscript_id', type => 'text' }, #will also be copied into works
 { name => 'other_manuscript_data', type => 'longtext', multiple => 1 },
 { name => 'manuscript_collocation', type => 'text', volatile => 1 }, #for rendering
+{ name => 'abstract_item_browse', type => 'text', volatile => 1 }, #for browse view
 
 
 #refrain data
-{ name => 'refrain_id', type => 'id' },
+{ name => 'refrain_id', type => 'id', make_value_orderkey => 'medmus_id_orderval' },
+{ name => 'refrain_id_browse', type => 'text', volatile => 1, make_value_orderkey => 'medmus_id_orderval'}, #for rendering the links in the browse view
+
+
 { name => 'linker_number', type => 'id' },
 { name => 'abstract_text', type => 'text' },
 { name => 'circumstance', type => 'text' },
@@ -46,7 +50,7 @@ foreach my $field(
 	        my $parent = $repo->call('refrain_parent', $refrain);
 		if ($parent)
 		{
-			$frag->appendChild($parent->render_citation_link('id_instance_text'));
+			$frag->appendChild($parent->render_citation_link('brief'));
 			if ($refrain->is_set('location_in_host'))
 			{
 				$frag->appendChild($xml->create_text_node(' ['));
@@ -120,8 +124,10 @@ foreach my $field(
 		return $ul;
 	}
 },
+{ name => 'reading_texts_text_browse_index', type => 'text', multiple => 1, volatile => 1, make_value_orderkey => 'medmus_utf8_string_orderval'  },
 
 { name => 'singer', type => 'text', multiple => 1 },
+{ name => 'singer_browse', type => 'text', multiple => 1, volatile => 1 }, #for browsing
 { name => 'audience', type => 'text', multiple => 1 },
 { name => 'function', type => 'text', multiple => 1 },
 { name => 'preceeding_lyric', type => 'text', multiple => 1 },
@@ -132,7 +138,9 @@ foreach my $field(
 
 
 #work fields
-{ name => 'work_id', type => 'id' },
+{ name => 'work_id', type => 'id', make_value_orderkey => 'medmus_id_orderval' },
+{ name => 'work_id_browse', type => 'text', volatile => 1, make_value_orderkey => 'medmus_id_orderval'}, #for rendering the links in the browse view
+
 #{ name => 'title', type => 'text' }, existing field
 { name => 'number_of_stanzas', type => 'int' },
 { name => 'number_of_envois', type => 'int' },
@@ -140,6 +148,7 @@ foreach my $field(
 { name => 't_index_motets', type => 'id' },
 { name => 't_index_songs', type => 'id' },
 { name => 'lu_index', type => 'id' },
+{ name => 'm_index', type => 'id' },
 { name => 'vdb_index', type => 'id' },
 { name => 'number_of_parts', type => 'int' },
 { name => 'host_work_id', type => 'id' },
@@ -230,4 +239,22 @@ foreach my $field(
 )
 {
 	$c->add_dataset_field( 'eprint', $field);
+}
+
+
+$c->{medmus_utf8_string_orderval} = sub
+{
+	my ($field, $value, $session, $langid, $dataset) = @_;
+
+	my $orderval = lc($value);
+
+	return $orderval;
+};
+
+#pad all numeric parts of the ID with zeros
+$c->{medmus_id_orderval} = sub
+{
+	my ($field, $value, $session, $langid, $dataset) = @_;
+
+	return $session->call('pad_numeric_parts', $value);
 }

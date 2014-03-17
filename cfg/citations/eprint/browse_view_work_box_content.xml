@@ -27,10 +27,17 @@
 </div>
 </div>
 
-<epc:if test="$flags{host}">
+<epc:if test="$flags{host_box}">
 <epc:print expr="$host_box" />
 </epc:if>
 
+<epc:if test="$flags{hosted_works_boxes}">
+<epc:print expr="$hosted_works_boxes" />
+</epc:if>
+
+<epc:if test="$flags{child_refrains_boxes}">
+<epc:print expr="$child_refrains_boxes" />
+</epc:if>
 
 
 </cite:citation>

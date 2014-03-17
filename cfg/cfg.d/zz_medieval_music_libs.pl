@@ -1,8 +1,47 @@
+use Unicode::Normalize 'normalize';
+use utf8;
+
 $c->{allow_web_signup} = 0;
 $c->{allow_reset_password} = 0;
 
-#disable export plugins
+#new search configurations
+$c->{search}->{advanced} = 
+{
+	search_fields => [
+		{ meta_fields => [ "medmus_type" ] },
+		{ meta_fields => [ "refrain_id" ] },
+		{ meta_fields => [ "work_id" ] },
+		{ meta_fields => [ "instance_number" ] },
+		{ meta_fields => [ "title" ] },
+		{ meta_fields => [ "abstract_text" ] },
+	],
+	preamble_phrase => "cgi/advsearch:preamble",
+	title_phrase => "cgi/advsearch:adv_search",
+	citation => "result",
+	page_size => 20,
+	order_methods => {
+		"byid" 	 => "refrain_id/work_id/instance_number"
+	},
+	default_order => "byid",
+	show_zero_results => 1,
+};
 
+$c->{datasets}->{eprint}->{search}->{staff} =
+{
+        search_fields => [
+                @{$c->{search}{advanced}{search_fields}},
+        ],
+        preamble_phrase => "Plugin/Screen/Staff/EPrintSearch:description",
+        title_phrase => "Plugin/Screen/Staff/EPrintSearch:title",
+        citation => "result",
+        page_size => 20,
+        order_methods => {
+		"byid" 	 => "refrain_id/work_id/instance_number"
+        },
+        default_order => "byid",
+        show_zero_results => 1,
+        staff => 1,
+};
 
 
 #disable default functionality
@@ -10,6 +49,22 @@ $c->{set_eprint_automatic_fields} = sub
 {
 	my ($eprint) = @_;
 	my $repo = $eprint->repository;
+
+	#generate browse value for main browse view
+	my $abstract_item_browse_parts = [];
+	if ($eprint->is_set('refrain_id'))
+	{
+		push @{$abstract_item_browse_parts}, $eprint->value('refrain_id');
+		push @{$abstract_item_browse_parts}, $eprint->value('abstract_text');
+	}
+	if ($eprint->is_set('work_id'))
+	{
+		push @{$abstract_item_browse_parts}, $eprint->value('work_id');
+		push @{$abstract_item_browse_parts}, $eprint->value('title');
+	}
+	$eprint->set_value('abstract_item_browse', join('JOIN', @{$abstract_item_browse_parts}));
+
+
 
 	if ($eprint->is_set('parent_work_id'))
 	{
@@ -39,10 +94,75 @@ $c->{set_eprint_automatic_fields} = sub
 		$eprint->set_value('manuscript_collocation', $manuscript_collocation);
 	}
 
+	#words in reading for browsing
+	if ($eprint->is_set('reading_texts'))
+	{
+		my $texts = $eprint->value('reading_texts');
+		my $words = {};
 
+		foreach my $t (@{$texts})
+		{
+			foreach my $word (split(/\s+/,$t->{text}))
+			{
+				$word =~ s/[<>{}\[\]()\.,:\/]//g;
+				$word =~ s/’/'/g; #get rid of smart quotes
+				$words->{normalize('C',lc($word))}++;
+			}
+		}
+
+		my @words_uniq = sort keys %{$words};
+		my $words_final = [];
+
+		my $stop_words = $repo->config('reading_text_stop_words_hash');
+		my $word_map = $repo->config('reading_text_words_map');
+
+		foreach my $word (@words_uniq)
+		{
+			next if $stop_words->{$word};
+
+
+			if ($word_map->{$word})
+			{
+				#note that some variants map to multiple words (e.g. 'marie')
+				foreach my $w (@{$word_map->{$word}})
+				{
+					push @{$words_final}, $w;
+				}
+			}
+			else
+			{
+				push @{$words_final}, $word;
+			}
+		}
+
+		$eprint->set_value('reading_texts_text_browse_index', $words_final);
+	}
+
+	#singers for browsing
+	if ($eprint->is_set('singer'))
+	{
+		my $singers = $eprint->value('singer');
+		my $filtered_singers = [];
+		foreach my $singer (@{$singers})
+		{
+			next if $repo->config('singer_blacklist_hash')->{normalize('C', $singer)};
+			#remove bracketed bits;
+			if ($singer =~ m/\(/)
+			{
+				#capture the bit before the bracket
+				$singer = $`;
+				#remove trailing whitespace
+				$singer =~ s/\s*$//;
+			}
+
+			push @{$filtered_singers}, $singer;
+		}
+		$eprint->set_value('singer_browse', $filtered_singers);
+	}
 };
 
 #takes a work instance and returns an arrayref to the refrain instance(s) that appear in it
+#pass in a depth of 5 if you don't want refrains of hosted works
 $c->{refrains_in_work} = sub
 {
 	my ($work, $depth) = @_;
