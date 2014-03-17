@@ -93,6 +93,7 @@
     <epp:phrase id="eprint_fieldname_other_data">Other Data</epp:phrase>
     <epp:phrase id="eprint_fieldname_mw_index">MW Index</epp:phrase>
     <epp:phrase id="eprint_fieldname_l_index">L Index</epp:phrase>
+    <epp:phrase id="eprint_fieldname_m_index">M Index</epp:phrase>
     <epp:phrase id="eprint_fieldname_edition">Edition</epp:phrase>
     <epp:phrase id="eprint_fieldname_date_description">Date (description)</epp:phrase>
     <epp:phrase id="eprint_fieldname_generic_descriptor">Generic Descriptor</epp:phrase>

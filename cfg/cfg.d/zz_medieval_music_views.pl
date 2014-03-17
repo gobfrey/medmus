@@ -232,8 +232,20 @@ $c->{render_abstract_item_menu} = sub
 			}
 			elsif ( ($work_id =~ m/^M/) )
 			{
-				$sections->{'motet_parts'}->{$work_id}->{orderval} = $repo->call('pad_numeric_parts',$work_id);
-				$sections->{'motet_parts'}->{$work_id}->{rendered} = $eprint->render_citation('id_text');
+				if ($eprint->is_set('m_index'))
+				{
+					$sections->{'motet_parts'}->{$work_id}->{orderval} = $repo->call('pad_numeric_parts',$work_id);
+					my $frag = $xml->create_document_fragment;
+					$frag->appendChild($eprint->render_value('lu_index'));
+					$frag->appendChild($xml->create_text_node(': '));
+					$frag->appendChild($eprint->render_value('title'));
+					$sections->{'motet_parts'}->{$work_id}->{rendered} = $frag;
+				}
+				else
+				{
+					$sections->{'motet_parts'}->{$work_id}->{orderval} = 'Z' . $eprint->value('title'); #sort after the ones with IDs
+					$sections->{'motet_parts'}->{$work_id}->{rendered} = $eprint->render_citation('brief');
+				}
 			}
 			elsif ( ($work_id =~ m/^C/) || ($work_id =~ m/^R/) || ($work_id =~ m/^L/) )
 			{
