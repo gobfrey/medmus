@@ -4,6 +4,15 @@
 
   <!-- This file is used to add phrases from the phrase editor screen -->
 
+    <epp:phrase id="view_abstract_item_tabtitle_refrain">Refrain<br/>by&#160;vdB&#160;index</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_song">Unindexed<br/>Song</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_song_no_rs">Song<br/>unindexed</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_motet">Motet<br/>by&#160;title</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_motet_parts">Motet&#160;Part<br/>by&#160;M&#160;index</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_narrative">Narrative<br/>by&#160;title</epp:phrase>
+
+
+
     <epp:phrase id="viewname_eprint_abstract_item">Works and Refrains</epp:phrase>
     <epp:phrase id="viewtitle_eprint_abstract_item_list"></epp:phrase>
 

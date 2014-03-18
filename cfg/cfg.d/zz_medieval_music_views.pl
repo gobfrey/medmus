@@ -195,12 +195,12 @@ other_data
 
 $c->{render_abstract_item_menu} = sub
 {
-	my( $repository, $view, $sizes, $values, $fields, $has_submenu ) = @_;
+	my( $repo, $view, $sizes, $values, $fields, $has_submenu ) = @_;
 
-	my $xml = $repository->xml();
-	my $xhtml = $repository->xhtml();
+	my $xml = $repo->xml();
+	my $xhtml = $repo->xhtml();
 
-	my $items = $repository->dataset('archive');
+	my $items = $repo->dataset('archive');
 
 	my $sections = {};
 
@@ -280,7 +280,7 @@ $c->{render_abstract_item_menu} = sub
 	
 	foreach my $tabtitle (qw/ refrain song song_no_rs motet motet_parts narrative /)
 	{
-		push @{$tab_headings}, $xml->create_text_node($tabtitle); #replace with phrase
+		push @{$tab_headings}, $repo->html_phrase("view_abstract_item_tabtitle_$tabtitle"); 
 
 		my $tabcontent = $xml->create_document_fragment;
 		push @{$tab_contents}, $tabcontent;
@@ -298,11 +298,11 @@ $c->{render_abstract_item_menu} = sub
 			$ul->appendChild($li);
 			
 			# work out what filename to link to 
-			my $fileid = $fields->[0]->get_id_from_value( $repository, $value );
+			my $fileid = $fields->[0]->get_id_from_value( $repo, $value );
 			my $link = EPrints::Utils::escape_filename( $fileid );
 			if( $has_submenu ) { $link .= '/'; } else { $link .= '.html'; }
 
-			my $a = $repository->render_link( $link );
+			my $a = $repo->render_link( $link );
 			$li->appendChild($a);
 			$a->appendChild($sections->{$tabtitle}->{$value}->{rendered});
 
@@ -336,21 +336,21 @@ $c->{render_abstract_item_menu} = sub
 		}
 
 		# work out what filename to link to 
-		my $fileid = $fields->[0]->get_id_from_value( $repository, $value );
+		my $fileid = $fields->[0]->get_id_from_value( $repo, $value );
 		my $link = EPrints::Utils::escape_filename( $fileid );
 		if( $has_submenu ) { $link .= '/'; } else { $link .= '.html'; }
 
 		my $td = $xml->create_element( "td", style=>"padding: 1em; text-align: center;vertical-align:top" );
 		$tr->appendChild( $td );
 
-		my $a1 = $repository->render_link( $link );
+		my $a1 = $repo->render_link( $link );
 		my $piccy = $xml->create_element( "span", style=>"display: block; width: 200px; height: 150px; border: solid 1px #888; background-color: #ccf; padding: 0.25em" );
 		$piccy->appendChild( $xml->create_text_node( "Imagine I'm a picture!" ));
 		$a1->appendChild( $piccy );
 		$td->appendChild( $a1 );
 
-		my $a2 = $repository->render_link( $link );
-		$a2->appendChild( $fields->[0]->get_value_label( $repository, $value ) );
+		my $a2 = $repo->render_link( $link );
+		$a2->appendChild( $fields->[0]->get_value_label( $repo, $value ) );
 		$td->appendChild( $a2 );
 
 		$cells += 1;
