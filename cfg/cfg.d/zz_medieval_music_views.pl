@@ -17,7 +17,7 @@ $c->{browse_views} = [
 			}
 		],
 		citation => 'refrain_view',
-		order => "eprintid",
+                order => "browse_list_order",#refrain id for refrains, title for works
 		max_items => 10000,
 	},
 	{
@@ -26,22 +26,26 @@ $c->{browse_views} = [
 			fields => ["work_id","refrain_id"],
 			new_column_at => [0],
 			allow_null => 0,
+			render_menu => 'render_abstract_item_menu',
 		}],
 		variations => [
 			"DEFAULT;render_fn=render_abstract_item_browse_list"
 		],
 		hideup => 1,
-		render_menu => 'render_abstract_item_menu',
 	},
         {
                 id => "manuscript",
                 menus => [
 			{
+				fields => ["medmus_type"],
+			},
+			{
 				fields => ["manuscript_id"],
 				new_column_at => [0,0],
+				render_menu => 'render_manuscript_menu',
 			}
 		],
-                order => "eprintid",
+                order => "browse_list_order",#refrain id for refrains, title for works
 		max_items => 10000,
         },
 
@@ -53,27 +57,19 @@ $c->{browse_views} = [
 				new_column_at => [0,0],
 			}
 		],
-		order => "eprintid",
+                order => "browse_list_order",#refrain id for refrains, title for works
 	},
+
+
+
 	{
-		id => "work_id",
+		id => "generic_descriptor",
 		menus => [
 			{
-				fields => ["work_id"],
-				new_column_at => [0,0,0,0],
+				fields => ["generic_descriptor_browse"],
 			}
 		],
-		order => "eprintid",
-	},
-	{
-		id => "work_generic_descriptor",
-		menus => [
-			{
-				fields => ["generic_descriptor"],
-				new_column_at => [0,0,0,0],
-			}
-		],
-		order => "eprintid",
+		order => "browse_list_order",
 	},
 	{
 		id => "work_voice_in_polyphony",
@@ -192,6 +188,20 @@ number_of_stanzas
 number_of_envois
 other_data
 /];
+
+#needed to order the numeric subparts of manuscripts
+$c->{render_manuscript_menu} = sub
+{
+	my ( $repo, $menu, $sizes, $values, $fields, $has_submenu, $view ) = @_;
+
+	my $collator = Unicode::Collate->new( preprocess => sub { my $str = shift; $str =~ s/[<>{}\[\]()\.,:\/]//g; return $str;} );
+	my @sorted_values = sort { $collator->cmp(
+		$repo->call('pad_numeric_parts',$a),
+		$repo->call('pad_numeric_parts',$b)
+	) } @{$values};
+
+	return EPrints::Update::Views::render_menu( $repo, $menu, $sizes, \@sorted_values, $fields, $has_submenu, $view );
+};
 
 $c->{render_abstract_item_menu} = sub
 {
@@ -452,7 +462,7 @@ $c->{render_refrain_browse} = sub
 		if ($host)
 		{
 			my $host_box_id = $parent_box_id . '--' . $host->value('work_id') . '-' . $parent->value('instance_number');
-			my $host_box_title = $xml->create_text_node('Hosted in: ' . $parent->value('title'));
+			my $host_box_title = $xml->create_text_node('Hosted in: ' . $host->value('title'));
 			$parent_frags->{host_box} = $repo->call('render_work_for_browse_box', $host, $host_box_title, $host_box_id, {}, 1);
 		}
 

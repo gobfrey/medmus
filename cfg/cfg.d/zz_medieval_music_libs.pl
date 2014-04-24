@@ -94,6 +94,35 @@ $c->{set_eprint_automatic_fields} = sub
 		$eprint->set_value('manuscript_collocation', $manuscript_collocation);
 	}
 
+	#generic descriptor for browsing
+	if ($eprint->is_set('generic_descriptor'))
+	{
+		my $generic_descriptors = $eprint->value('generic_descriptor');
+		my $descriptors_browse = [];
+		my $blacklist = $repo->config('generic_descriptor_blacklist_hash');
+		my $word_map = $repo->config('generic_descriptor_words_map');
+
+		foreach my $g (@{$generic_descriptors})
+		{
+			my $gd = normalize('C',lc($g));
+			next if ($blacklist->{$gd});
+			if ($word_map->{$gd})
+			{
+				#note that some variants map to multiple words (e.g. 'marie')
+				foreach my $w (@{$word_map->{$gd}})
+				{
+					push @{$descriptors_browse}, $w;
+				}
+			}
+			else
+			{
+				push @{$descriptors_browse}, $g;
+			}
+		}
+
+		$eprint->set_value('generic_descriptor_browse', $descriptors_browse);
+	}
+
 	#words in reading for browsing
 	if ($eprint->is_set('reading_texts'))
 	{
@@ -159,6 +188,20 @@ $c->{set_eprint_automatic_fields} = sub
 		}
 		$eprint->set_value('singer_browse', $filtered_singers);
 	}
+
+	#browse_list_order for ordering in browse lists
+	#title for work, refrain_id for refrains
+	if ($eprint->value('medmus_type') eq 'refrain')
+	{
+		$eprint->set_value('browse_list_order', sprintf("%8s",$eprint->value('refrain_id')));
+	}
+	else
+	{
+		my $orderval = lc($eprint->value('title'));
+		$orderval =~ s/[\[\]]//g;
+		$eprint->set_value('browse_list_order', $orderval);
+	}
+
 };
 
 #takes a work instance and returns an arrayref to the refrain instance(s) that appear in it

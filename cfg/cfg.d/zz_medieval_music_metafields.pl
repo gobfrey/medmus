@@ -12,6 +12,7 @@ foreach my $field(
 { name => 'other_manuscript_data', type => 'longtext', multiple => 1 },
 { name => 'manuscript_collocation', type => 'text', volatile => 1 }, #for rendering
 { name => 'abstract_item_browse', type => 'text', volatile => 1 }, #for browse view
+{ name => 'browse_list_order', type => 'id'}, #for ordering in browse views
 
 
 #refrain data
@@ -198,6 +199,7 @@ foreach my $field(
 { name => 'edition', type => 'text', multiple => 1 },
 { name => 'date_description', type => 'text', multiple => 1 },
 { name => 'generic_descriptor', type => 'text', multiple => 1 },
+{ name => 'generic_descriptor_browse', type => 'text', multiple => 1 },
 { name => 'author_commentary', type => 'text', multiple => 1 },
 
 { name => 'primary_language', type => 'set', options => [qw( latin langue_d_oil )]},
