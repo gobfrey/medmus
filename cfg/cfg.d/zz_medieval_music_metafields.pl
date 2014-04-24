@@ -229,7 +229,7 @@ foreach my $field(
 			}
 			if ($p->{assumed} eq 'TRUE' )
 			{
-				$v .= '[' . $v . ']';
+				$v = '[' . $v . ']';
 			}
 			push @singles, $v;
 		}
