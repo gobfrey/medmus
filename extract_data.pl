@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works14.csv';
-my $refrains_file = 'new_refrains12.csv';
+my $works_file = 'new_works17.csv';
+my $refrains_file = 'new_refrains16.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
@@ -200,7 +200,7 @@ sub process_generic_fields
 
 		my $single_with_semicolon = {
 			'Abstract Master Text' => 1,
-			'Title' => 1,
+			'Abstract Title' => 1,
 		};
 
 		if ($val)
@@ -375,7 +375,8 @@ sub initialise_columns
 	{
 		"ID" => 'work_id',
 		"Instances of works" => 'instance_number',
-		"Title" => 'title',
+		"Abstract Title" => 'work_title',
+		"Instance Title" => 'title',
 		"Number of stanzas" => 'number_of_stanzas',
 		"Number of envois" => 'number_of_envois',
 		"RS Index" => 'rs_index',
