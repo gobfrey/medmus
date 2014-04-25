@@ -47,7 +47,16 @@ $c->{medmus_render_work} = sub
 	{
 		my $li = $xml->create_element('li');
 		$sibling_list->appendChild($li);
-		$li->appendChild($w->render_citation_link('manuscript'));
+		if ($w->id != $work->id)
+		{
+			$li->appendChild($w->render_citation_link('manuscript'));
+		}
+		else
+		{
+			my $strong = $xml->create_element('strong');
+			$strong->appendChild($w->render_citation('manuscript'));
+			$li->appendChild($strong);
+		}
 	}
 	$fragments{work_instances} = $sibling_list;
 
@@ -155,11 +164,20 @@ $c->{medmus_render_refrain} = sub
 	my $siblings = $repo->call('all_instances', $repo, 'refrain', $refrain->value('refrain_id'));
 	my $sibling_list = $xml->create_element('ul');
 
-	foreach my $w (@{$siblings})
+	foreach my $r (@{$siblings})
 	{
 		my $li = $xml->create_element('li');
 		$sibling_list->appendChild($li);
-		$li->appendChild($w->render_citation_link('manuscript'));
+		if ($r->id != $refrain->id)
+		{
+			$li->appendChild($r->render_citation_link('manuscript'));
+		}
+		else
+		{
+			my $strong = $xml->create_element('strong');
+			$strong->appendChild($r->render_citation('manuscript'));
+			$li->appendChild($strong);
+		}
 	}
 	$fragments{refrain_instances} = $sibling_list;
 
