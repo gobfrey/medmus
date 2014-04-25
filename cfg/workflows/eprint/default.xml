@@ -105,6 +105,7 @@ Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
       <field ref="t_index_motets"/>
       <field ref="t_index_songs"/>
       <field ref="lu_index"/>
+      <field ref="m_index"/>
       <field ref="vdb_index"/>
     </component>
 

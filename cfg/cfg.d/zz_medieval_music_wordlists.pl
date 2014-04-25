@@ -4,7 +4,7 @@ use utf8;
 $c->{reading_text_stop_words_list} = [
 "defferrés","deuotemet","puisqu'il",
 "mescheance","mescheans","mescheanz","meschief","mescreance",
-
+"qu'an",
 
 "0","a","ab","ac","aclergis","ad","adiuua","adons","adorant","adrez",
 "aduocatrix","agamus","age","agnus","ai","aie","aient","aies","aiez","aiiés",
@@ -274,7 +274,7 @@ $c->{reading_text_words} = {
 	"amor" => ["aamors","amoir","amor","amors","amour","amours","amourz","amous","amur","amurs","bon'amor","c'amors","c'amours","d'amor","d'amors","d'amour","d'amours","d'amur","d'amurs","d'amourz","k'amors","k'amours","l'amor","l'amour","m'amor","m'amors","m'amour","m'amur","malamour","q'amors","q'amours","qu'amors","qu'amours","s'amor","s'amors","s'amour","s'amours"],
 	"amorete" => ["amorates","amorestes","amorete","amoretes","amorette","amorettes","amourectes","amoureite","amoureites","amourete","amouretes","amouretez","amourette","amourettes","amourettez","d'amoreites","d'amoretes","d'amorettes","d'amoureites","d'amourete","d'amouretes","d'amourettes","k'amorettes","qu'amouretes"],
 	"amoreus" => ["amerous","amerouse","amerouzés","amoraz","amoros","amorose","amorous","amourat","amorous","amourat","amourez","amouros","amourous","amouré","amourés","enamoree","enamourat","enamouré"],
-	"amoreusement" => ["amerousemant","amerousement","amerouzement","amoreusement","amoureusemant","amourousement"],
+	"amoreusement" => ["amerousemant","amerousement","amerouzement","amoreusement","amoureusemant","amourousement","amoureusement"],
 	"anel" => ["l'anelet","l'anelez"],
 	"anui" => ["annuj","annuy","anoie","anui","anuye","d'ennui","ennuie","ennuit","ennuy","ennuye","m'enoye", "l'anoi", "l'anoy"],
 	"anuit" => ["aneut","annuit","anuit"],
@@ -522,7 +522,7 @@ $c->{reading_text_words} = {
 	"haro" => ["hairo","hareu","hareus","haro","harou","herou"],
 	"haut" => ["hault","haut","haute"],
 	"hautement" => ["hautement"],
-	"hé" => ["aé","e","é","hai","hé", "éé"],
+	"hé" => ["aé","e","é","hai","hé", "éé", "ééé" ],
 	"helas" => ["elais","elas","helas","halas"],
 	"hom" => ["hom","home","homme","hons"],
 	"honir" => ["honi","honie","honir","honis","honit","honiz","honni","honnie","honnis","honnist","honniz","honny","houni","hounis","hounist","oniz"],
@@ -909,4 +909,44 @@ $c->{singer_blacklist_hash} = {};
 foreach my $word (@{$c->{singer_blacklist}})
 {
 	$c->{singer_blacklist_hash}->{normalize('C', $word)} = 1; 
+}
+
+
+
+$c->{generic_descriptor_blacklist} = [
+"Refrain",
+"Bestiaire","Chronique","Conte pieux","Correspondance","Débat strophique","Dit","Dit allégorique","Dit allégorique strophique","Dit strophique",
+"Fabliau","Fatras","Miracle de la Vierge","Miracles illustrant les propriétés des choses","Motet farci?","Œuvre didactique","Poème allégorique",
+"Poème en forme de débat","Poème épique","Poème narratif","Poème narratif strophique","Poème strophique","Probatio pennæ","Recueil de citations",
+"Recueil de miracles de la Vierge","Recueil de proverbes","Rêverie","Sermon","Salut d'amour","Théâtre","Traduction-adaptation de l'Ars amatoria d'Ovide",
+"Traduction-adaptation du cantique des Cantiques","Traité spirituel","Traité sur l'amour"
+];
+
+$c->{generic_descriptor_blacklist_hash} = {};
+foreach my $word (@{$c->{generic_descriptor_blacklist}})
+{
+	$c->{generic_descriptor_blacklist_hash}->{lc(normalize('C', $word))} = 1; 
+}
+
+$c->{generic_descriptor_words} = 
+{
+	"Chanson" => ["Ballade avec des refrains","Ballade à refrain","Ballette avec des refrains","Ballette à refrain","Ballette à refrain et refrain interne","Chanson","Chanson avec des refrains","Chanson avec des refrains et refrain interne","Chanson balladée","Chanson balladée à refrain","Chanson d'aube à refrain","Chanson de mal mariée avec des refrains","Chanson de toile à refrain","Chanson à refrain","Chanson à refrain bilingue","Chanson à refrain et refrain interne","Chanson à refrain et refrains internes","Chanson à refrain interne","Descort","Estampie à refrain","Pastourelle","Pastourelle avec des refrains","Pastourelle avec des refrains et refrain interne","Pastourelle à refrain","Pastourelle à refrain et refrain interne","Pastourelle à refrain interne","Pastourelle à refrains internes","Reverdie à refrain","Rotruenge à refrain","Rotruenge à refrain interne","Serventois à refrain","Virelai"],
+	"Clausula" => [],
+	"Motet" => ["Motet","Motet enté","Motet-centon","Motet-refrain","Rondeau-motet", "Motet?"],
+	"Organum" => [],
+	"Rondeau" => ["Rondeau","Rondeau strophique","Rondet","Rondet strophique"],
+	"Roman" => ["Roman","Roman allégorique","Roman d'aventures"],
+};
+
+
+$c->{generic_descriptor_words_map} = {};
+foreach my $word (keys %{$c->{generic_descriptor_words}})
+{
+	#add each key word to the hash
+	push @{$c->{generic_descriptor_words_map}->{lc(normalize('C', $word))}}, normalize('C',$word);
+	foreach my $variation (@{$c->{generic_descriptor_words}->{$word}})
+	{
+		#add each varient to the hash
+		push @{$c->{generic_descriptor_words_map}->{lc(normalize('C', $variation))}}, normalize('C', $word);
+	}
 }

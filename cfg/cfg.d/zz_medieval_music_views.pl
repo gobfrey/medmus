@@ -17,7 +17,7 @@ $c->{browse_views} = [
 			}
 		],
 		citation => 'refrain_view',
-		order => "eprintid",
+                order => "browse_list_order",#refrain id for refrains, title for works
 		max_items => 10000,
 	},
 	{
@@ -26,22 +26,26 @@ $c->{browse_views} = [
 			fields => ["work_id","refrain_id"],
 			new_column_at => [0],
 			allow_null => 0,
+			render_menu => 'render_abstract_item_menu',
 		}],
 		variations => [
 			"DEFAULT;render_fn=render_abstract_item_browse_list"
 		],
 		hideup => 1,
-		render_menu => 'render_abstract_item_menu',
 	},
         {
                 id => "manuscript",
                 menus => [
 			{
+				fields => ["medmus_type"],
+			},
+			{
 				fields => ["manuscript_id"],
 				new_column_at => [0,0],
+				render_menu => 'render_manuscript_menu',
 			}
 		],
-                order => "eprintid",
+                order => "browse_list_order",#refrain id for refrains, title for works
 		max_items => 10000,
         },
 
@@ -53,27 +57,19 @@ $c->{browse_views} = [
 				new_column_at => [0,0],
 			}
 		],
-		order => "eprintid",
+                order => "browse_list_order",#refrain id for refrains, title for works
 	},
+
+
+
 	{
-		id => "work_id",
+		id => "generic_descriptor",
 		menus => [
 			{
-				fields => ["work_id"],
-				new_column_at => [0,0,0,0],
+				fields => ["generic_descriptor_browse"],
 			}
 		],
-		order => "eprintid",
-	},
-	{
-		id => "work_generic_descriptor",
-		menus => [
-			{
-				fields => ["generic_descriptor"],
-				new_column_at => [0,0,0,0],
-			}
-		],
-		order => "eprintid",
+		order => "browse_list_order",
 	},
 	{
 		id => "work_voice_in_polyphony",
@@ -193,14 +189,28 @@ number_of_envois
 other_data
 /];
 
+#needed to order the numeric subparts of manuscripts
+$c->{render_manuscript_menu} = sub
+{
+	my ( $repo, $menu, $sizes, $values, $fields, $has_submenu, $view ) = @_;
+
+	my $collator = Unicode::Collate->new( preprocess => sub { my $str = shift; $str =~ s/[<>{}\[\]()\.,:\/]//g; return $str;} );
+	my @sorted_values = sort { $collator->cmp(
+		$repo->call('pad_numeric_parts',$a),
+		$repo->call('pad_numeric_parts',$b)
+	) } @{$values};
+
+	return EPrints::Update::Views::render_menu( $repo, $menu, $sizes, \@sorted_values, $fields, $has_submenu, $view );
+};
+
 $c->{render_abstract_item_menu} = sub
 {
-	my( $repository, $view, $sizes, $values, $fields, $has_submenu ) = @_;
+	my( $repo, $view, $sizes, $values, $fields, $has_submenu ) = @_;
 
-	my $xml = $repository->xml();
-	my $xhtml = $repository->xhtml();
+	my $xml = $repo->xml();
+	my $xhtml = $repo->xhtml();
 
-	my $items = $repository->dataset('archive');
+	my $items = $repo->dataset('archive');
 
 	my $sections = {};
 
@@ -232,8 +242,20 @@ $c->{render_abstract_item_menu} = sub
 			}
 			elsif ( ($work_id =~ m/^M/) )
 			{
-				$sections->{'motet_parts'}->{$work_id}->{orderval} = $repo->call('pad_numeric_parts',$work_id);
-				$sections->{'motet_parts'}->{$work_id}->{rendered} = $eprint->render_citation('id_text');
+				if ($eprint->is_set('m_index'))
+				{
+					$sections->{'motet_parts'}->{$work_id}->{orderval} = $repo->call('pad_numeric_parts',$work_id);
+					my $frag = $xml->create_document_fragment;
+					$frag->appendChild($eprint->render_value('lu_index'));
+					$frag->appendChild($xml->create_text_node(': '));
+					$frag->appendChild($eprint->render_value('title'));
+					$sections->{'motet_parts'}->{$work_id}->{rendered} = $frag;
+				}
+				else
+				{
+					$sections->{'motet_parts'}->{$work_id}->{orderval} = 'Z' . $eprint->value('title'); #sort after the ones with IDs
+					$sections->{'motet_parts'}->{$work_id}->{rendered} = $eprint->render_citation('brief');
+				}
 			}
 			elsif ( ($work_id =~ m/^C/) || ($work_id =~ m/^R/) || ($work_id =~ m/^L/) )
 			{
@@ -268,7 +290,7 @@ $c->{render_abstract_item_menu} = sub
 	
 	foreach my $tabtitle (qw/ refrain song song_no_rs motet motet_parts narrative /)
 	{
-		push @{$tab_headings}, $xml->create_text_node($tabtitle); #replace with phrase
+		push @{$tab_headings}, $repo->html_phrase("view_abstract_item_tabtitle_$tabtitle"); 
 
 		my $tabcontent = $xml->create_document_fragment;
 		push @{$tab_contents}, $tabcontent;
@@ -286,11 +308,11 @@ $c->{render_abstract_item_menu} = sub
 			$ul->appendChild($li);
 			
 			# work out what filename to link to 
-			my $fileid = $fields->[0]->get_id_from_value( $repository, $value );
+			my $fileid = $fields->[0]->get_id_from_value( $repo, $value );
 			my $link = EPrints::Utils::escape_filename( $fileid );
 			if( $has_submenu ) { $link .= '/'; } else { $link .= '.html'; }
 
-			my $a = $repository->render_link( $link );
+			my $a = $repo->render_link( $link );
 			$li->appendChild($a);
 			$a->appendChild($sections->{$tabtitle}->{$value}->{rendered});
 
@@ -324,21 +346,21 @@ $c->{render_abstract_item_menu} = sub
 		}
 
 		# work out what filename to link to 
-		my $fileid = $fields->[0]->get_id_from_value( $repository, $value );
+		my $fileid = $fields->[0]->get_id_from_value( $repo, $value );
 		my $link = EPrints::Utils::escape_filename( $fileid );
 		if( $has_submenu ) { $link .= '/'; } else { $link .= '.html'; }
 
 		my $td = $xml->create_element( "td", style=>"padding: 1em; text-align: center;vertical-align:top" );
 		$tr->appendChild( $td );
 
-		my $a1 = $repository->render_link( $link );
+		my $a1 = $repo->render_link( $link );
 		my $piccy = $xml->create_element( "span", style=>"display: block; width: 200px; height: 150px; border: solid 1px #888; background-color: #ccf; padding: 0.25em" );
 		$piccy->appendChild( $xml->create_text_node( "Imagine I'm a picture!" ));
 		$a1->appendChild( $piccy );
 		$td->appendChild( $a1 );
 
-		my $a2 = $repository->render_link( $link );
-		$a2->appendChild( $fields->[0]->get_value_label( $repository, $value ) );
+		my $a2 = $repo->render_link( $link );
+		$a2->appendChild( $fields->[0]->get_value_label( $repo, $value ) );
 		$td->appendChild( $a2 );
 
 		$cells += 1;
@@ -440,7 +462,7 @@ $c->{render_refrain_browse} = sub
 		if ($host)
 		{
 			my $host_box_id = $parent_box_id . '--' . $host->value('work_id') . '-' . $parent->value('instance_number');
-			my $host_box_title = $xml->create_text_node('Hosted in: ' . $parent->value('title'));
+			my $host_box_title = $xml->create_text_node('Hosted in: ' . $host->value('title'));
 			$parent_frags->{host_box} = $repo->call('render_work_for_browse_box', $host, $host_box_title, $host_box_id, {}, 1);
 		}
 

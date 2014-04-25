@@ -17,6 +17,7 @@ rs_index
 t_index_motets
 t_index_songs
 lu_index
+m_index
 vdb_index
 number_of_parts
 voice_in_polyphony
