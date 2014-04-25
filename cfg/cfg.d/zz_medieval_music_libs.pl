@@ -194,6 +194,16 @@ $c->{set_eprint_automatic_fields} = sub
 		$eprint->set_value('singer_browse', $filtered_singers);
 	}
 
+	#circumstances for browsing
+	if ($eprint->is_set('circumstance'))
+	{
+		my $circumstance = $eprint->value('circumstance');
+		my $circ_browse_val = $repo->config('circumstance_map')->{lc(normalize('C',$circumstance))};
+		$circ_browse_val = '' unless $circ_browse_val; #make sure we update if we've (e.g.) removed a circumstance
+
+		$eprint->set_value('circumstance_browse', $circ_browse_val);
+	}
+
 	#browse_list_order for ordering in browse lists
 	#title for work, refrain_id for refrains
 	if ($eprint->value('medmus_type') eq 'refrain')

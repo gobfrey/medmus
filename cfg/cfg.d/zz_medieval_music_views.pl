@@ -72,68 +72,6 @@ $c->{browse_views} = [
 		order => "browse_list_order",
 	},
 	{
-		id => "work_voice_in_polyphony",
-		menus => [
-			{
-				fields => ["voice_in_polyphony"],
-			}
-		],
-		order => "eprintid",
-	},
-	{
-		id => "work_style_of_discourse",
-		menus => [
-			{
-				fields => ["style_of_discourse"],
-			}
-		],
-		order => "eprintid",
-		max_items => 10000,
-	},
-	{
-		id => "work_language",
-		menus => [
-			{
-				fields => ["primary_language", "secondary_language"],
-				hide_empty => 1,
-			}
-		],
-		order => "eprintid",
-		max_items => 10000,
-	},
-	{
-		id => "circumstance",
-		menus => [
-			{
-				fields => ["circumstance"],
-			}
-		],
-		order => "eprintid",
-		max_items => 10000,
-	},
-	{
-		id => "refrain_location",
-		menus => [
-			{
-				fields => ["refrain_location"],
-			}
-		],
-		order => "eprintid",
-		max_items => 10000,
-	},
-	{
-		id => "function",
-		menus => [
-			{
-				fields => ["function"],
-				new_column_at => [0,0,],
-
-			}
-		],
-		order => "eprintid",
-		max_items => 10000,
-	},
-	{
 		id => "singer",
 		menus => [
 			{
@@ -144,7 +82,78 @@ $c->{browse_views} = [
 		],
 		order => "eprintid",
 		max_items => 10000,
+                order => "browse_list_order",#refrain id for refrains, title for works
 	},
+	{
+		id => "circumstance",
+		menus => [
+			{
+				fields => ["circumstance_browse"],
+			}
+		],
+		order => "eprintid",
+		max_items => 10000,
+                order => "browse_list_order",#refrain id for refrains, title for works
+	},
+	{
+		id => "voice_in_polyphony",
+		menus => [
+			{
+				fields => ["voice_in_polyphony"],
+			}
+		],
+		max_items => 10000,
+                order => "browse_list_order",#refrain id for refrains, title for works
+	},
+	{
+		id => "refrain_location",
+		menus => [
+			{
+				fields => ["refrain_location"],
+			}
+		],
+                order => "browse_list_order",#refrain id for refrains, title for works
+		max_items => 10000,
+	},
+
+
+
+
+
+
+#	{
+#		id => "work_style_of_discourse",
+#		menus => [
+#			{
+#				fields => ["style_of_discourse"],
+#			}
+#		],
+#		order => "eprintid",
+#		max_items => 10000,
+#	},
+#	{
+#		id => "work_language",
+#		menus => [
+#			{
+#				fields => ["primary_language", "secondary_language"],
+#				hide_empty => 1,
+#			}
+#		],
+#		order => "eprintid",
+#		max_items => 10000,
+#	},
+#	{
+#		id => "function",
+#		menus => [
+#			{
+#				fields => ["function"],
+#				new_column_at => [0,0,],
+#
+#			}
+#		],
+#		order => "eprintid",
+#		max_items => 10000,
+#	},
 ];
 
 $c->{refrain_view_refrain_details_fields} = [qw/

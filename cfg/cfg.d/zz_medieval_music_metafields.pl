@@ -23,6 +23,7 @@ foreach my $field(
 { name => 'linker_number', type => 'id' },
 { name => 'abstract_text', type => 'text' },
 { name => 'circumstance', type => 'text' },
+{ name => 'circumstance_browse', type => 'text', multiple => 1, volatile => 1 },
 { name => 'musical_structure', type => 'id' },
 { name => 'image_file', type => 'text' },
 

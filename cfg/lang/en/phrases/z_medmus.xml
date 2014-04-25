@@ -156,6 +156,18 @@
     <epp:phrase id="viewtitle_eprint_generic_descriptor_menu_1">Works by Generic Descriptor</epp:phrase>
     <epp:phrase id="viewtitle_eprint_generic_descriptor_list">Works Described as "<epc:pin name="value1"/>"</epp:phrase>
 
+    <epp:phrase id="viewname_eprint_circumstance">Circumstance</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_circumstance_menu_1">Refrains by Circumstance</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_circumstance_list">Refrains with Circumstance: "<epc:pin name="value1"/>"</epp:phrase>
+
+    <epp:phrase id="viewname_eprint_voice_in_polyphony">Voice in Polyphony</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_voice_in_polyphony_menu_1">Works by Voice in Polyphony</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_voice_in_polyphony_list">Works in Voice: "<epc:pin name="value1"/>"</epp:phrase>
+
+    <epp:phrase id="viewname_eprint_refrain_location">Location</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_refrain_location_menu_1">Refrains by Location</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_refrain_location_list">Refrains at Location: "<epc:pin name="value1"/>"</epp:phrase>
+
     <epp:phrase id="lib/lang/en/phrases:ep_tm_menu_browse">
     <div class="twelve columns menu horizontal">
        <!--  <h1 class="hide-on-desktop hide-on-tablet">Main Menu</h1>  -->
