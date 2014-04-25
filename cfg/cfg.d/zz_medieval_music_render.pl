@@ -1,10 +1,11 @@
 
 $c->{abstract_work_summary_page_metadata} = [qw(
-title
+abstract_work_title
 generic_descriptor
 )];
 
 $c->{work_summary_page_metadata} = [qw(
+title
 manuscript_collocation
 other_manuscript_data
 date_description

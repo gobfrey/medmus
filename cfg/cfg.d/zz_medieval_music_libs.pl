@@ -60,9 +60,14 @@ $c->{set_eprint_automatic_fields} = sub
 	if ($eprint->is_set('work_id'))
 	{
 		push @{$abstract_item_browse_parts}, $eprint->value('work_id');
-		push @{$abstract_item_browse_parts}, $eprint->value('title');
+		push @{$abstract_item_browse_parts}, $eprint->value('abstract_work_title');
 	}
 	$eprint->set_value('abstract_item_browse', join('JOIN', @{$abstract_item_browse_parts}));
+
+	if ($eprint->is_set('abstract_work_title') and !$eprint->is_set('title'))
+	{
+		$eprint->set_value('title', $eprint->value('abstract_work_title'));
+	}
 
 
 

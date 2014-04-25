@@ -143,6 +143,7 @@ foreach my $field(
 { name => 'work_id_browse', type => 'text', volatile => 1, make_value_orderkey => 'medmus_id_orderval'}, #for rendering the links in the browse view
 
 #{ name => 'title', type => 'text' }, existing field
+{ name => 'abstract_work_title', type => 'text' },
 { name => 'number_of_stanzas', type => 'int' },
 { name => 'number_of_envois', type => 'int' },
 { name => 'rs_index', type => 'id' },
