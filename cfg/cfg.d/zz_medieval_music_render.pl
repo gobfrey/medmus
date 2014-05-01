@@ -77,10 +77,7 @@ $c->{medmus_render_work} = sub
 				$frag->appendChild($work->render_value('location_in_host'));
 				$frag->appendChild($xml->create_text_node(']'));
 			}
-#			$frag->appendChild($xml->create_text_node(' ('));
-#			$frag->appendChild($host->render_citation_link('id_and_instance'));
-#			$frag->appendChild($xml->create_text_node(')'));
-			
+
 			$flags->{host} = 1;
 			$fragments{host_work} = $frag; 
 		}
@@ -96,7 +93,7 @@ $c->{medmus_render_work} = sub
 		{
 			my $li = $xml->create_element('li');
 			$ul->appendChild($li);
-			$li->appendChild($w->render_citation_link('id_instance_text'));
+			$li->appendChild($w->render_citation_link('brief'));
 		}
 		$flags->{hosted} = 1;
 		$fragments{hosted_works} = $ul; 
@@ -104,12 +101,14 @@ $c->{medmus_render_work} = sub
 
 	#generate list of refrains in this work and hosted works
 	my $refrains = $repo->call('refrains_in_work', $work);
-	my $refrains_dl = $xml->create_element('dl');
+	my $refrains_ul = $xml->create_element('ul');
 	foreach my $r (@{$refrains})
 	{
-		$refrains_dl->appendChild($r->render_citation_link('id_text_dl'));
+		my $li = $xml->create_element('li');
+		$li->appendChild($r->render_citation_link('brief'));
+		$refrains_ul->appendChild($li);
 	}
-	$fragments{refrains} = $refrains_dl; 
+	$fragments{refrains} = $refrains_ul; 
 
 	#insert types into fragments (they're all DOM)
 	foreach my $key ( keys %fragments ) { $fragments{$key} = [ $fragments{$key}, "XHTML" ]; }

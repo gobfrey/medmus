@@ -53,10 +53,10 @@ foreach my $field(
 		if ($parent)
 		{
 			$frag->appendChild($parent->render_citation_link('brief'));
-			if ($refrain->is_set('location_in_host'))
+			if ($refrain->is_set('location_in_parent'))
 			{
 				$frag->appendChild($xml->create_text_node(' ['));
-				$frag->appendChild($refrain->render_value('location_in_host'));
+				$frag->appendChild($refrain->render_value('location_in_parent'));
 				$frag->appendChild($xml->create_text_node(' ]'));
 			}
 		}
@@ -144,6 +144,7 @@ foreach my $field(
 { name => 'work_id_browse', type => 'text', volatile => 1, make_value_orderkey => 'medmus_id_orderval'}, #for rendering the links in the browse view
 
 #{ name => 'title', type => 'text' }, existing field
+{ name => 'title_input', type => 'text' },
 { name => 'abstract_work_title', type => 'text' },
 { name => 'number_of_stanzas', type => 'int' },
 { name => 'number_of_envois', type => 'int' },
@@ -177,7 +178,7 @@ foreach my $field(
 	        my $host = $repo->call('work_host', $work);
 		if ($host)
 		{
-			$frag->appendChild($host->render_citation_link('id_instance_text'));
+			$frag->appendChild($host->render_citation_link('brief'));
 			if ($work->is_set('location_in_host'))
 			{
 				$frag->appendChild($xml->create_text_node(' ['));
@@ -188,7 +189,6 @@ foreach my $field(
 		else
 		{
 			my $text = $work->value('host_work_id') . '/' . $work->value('host_work_instance');
-			$text .= ' [' . $work->value('location_in_host') . ']' if $work->is_set('location_in_host');
 			$text .= ' (ERR)';
 			$frag->appendChild($xml->create_text_node($text));
 		}	

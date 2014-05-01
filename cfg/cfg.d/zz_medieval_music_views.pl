@@ -16,7 +16,7 @@ $c->{browse_views} = [
 				'open_first_section' => 1
 			}
 		],
-		citation => 'refrain_view',
+		citation => 'simple_view',
                 order => "browse_list_order",#refrain id for refrains, title for works
 		max_items => 10000,
 	},
@@ -231,7 +231,7 @@ $c->{render_abstract_item_menu} = sub
 		if ($type eq 'refrain')
 		{
 			$sections->{refrain}->{$eprint->value('refrain_id')}->{rendered} =
-				$eprint->render_citation('id_text');
+				$eprint->render_citation('brief');
 			$sections->{refrain}->{$eprint->value('refrain_id')}->{orderval} =
 				$repo->call('pad_numeric_parts',$eprint->value('refrain_id'));
 		}

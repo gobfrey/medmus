@@ -11,7 +11,7 @@
 	<epc:print expr="title"/>
   </epc:when>
   <epc:when test="medmus_type='refrain'">
-	<epc:print expr="abstract_text"/>
+	vdB <epc:print expr="refrain_id"/>: <epc:print expr="abstract_text"/>
   </epc:when>
   <epc:otherwise>#<epc:print expr="eprintid"/></epc:otherwise>
 

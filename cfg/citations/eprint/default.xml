@@ -11,8 +11,7 @@
 	<cite:linkhere><epc:print expr="title"/></cite:linkhere> [<epc:print expr="manuscript_collocation"/>]
   </epc:when>
   <epc:when test="medmus_type='refrain'">
-	<cite:linkhere>vdB <epc:print expr="refrain_id"/>: <epc:print expr="abstract_text"/></cite:linkhere>
-	in <epc:print expr="parent_work"/> [<epc:print expr="manuscript_collocation"/>]
+	<cite:linkhere>vdB <epc:print expr="refrain_id"/>: <epc:print expr="abstract_text"/></cite:linkhere> [<epc:print expr="manuscript_collocation"/>]
   </epc:when>
   <epc:otherwise>#<epc:print expr="eprintid"/></epc:otherwise>
 

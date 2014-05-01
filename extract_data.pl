@@ -376,7 +376,7 @@ sub initialise_columns
 		"ID" => 'work_id',
 		"Instances of works" => 'instance_number',
 		"Abstract Title" => 'abstract_work_title',
-		"Instance Title" => 'title',
+		"Instance Title" => 'title_input',
 		"Number of stanzas" => 'number_of_stanzas',
 		"Number of envois" => 'number_of_envois',
 		"RS Index" => 'rs_index',

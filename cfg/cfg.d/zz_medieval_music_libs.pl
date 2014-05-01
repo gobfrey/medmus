@@ -64,31 +64,27 @@ $c->{set_eprint_automatic_fields} = sub
 	}
 	$eprint->set_value('abstract_item_browse', join('JOIN', @{$abstract_item_browse_parts}));
 
-	if ($eprint->is_set('abstract_work_title') and !$eprint->is_set('title'))
+	if ($eprint->is_set('title_input'))
 	{
-		$eprint->set_value('title', $eprint->value('abstract_work_title'));
+		$eprint->set_value('title', $eprint->value('title_input'));
+	}
+	else
+	{
+		$eprint->set_value('title', 'Work without title (melody whithout text)');
 	}
 
 
 
 	if ($eprint->is_set('parent_work_id'))
 	{
-		my $parent_work = $eprint->value('parent_work_id');
-		$parent_work .= '/' . $eprint->value('parent_work_instance')
-			if $eprint->is_set('parent_work_instance');
-		$parent_work .= ', ' . $eprint->value('location_in_parent')
-			if $eprint->is_set('location_in_parent');
-		$eprint->set_value('parent_work', $parent_work);
+		#set it to the automatically rendered value
+		$eprint->set_value('parent_work', EPrints::Utils::tree_to_utf8($eprint->render_value('parent_work')));
 	}
 
 	if ($eprint->is_set('host_work_id'))
 	{
-		my $host_work = $eprint->value('host_work_id');
-		$host_work .= '/' . $eprint->value('host_work_instance')
-			if $eprint->is_set('host_work_instance');
-		$host_work .= ', ' . $eprint->value('location_in_host')
-			if $eprint->is_set('location_in_host');
-		$eprint->set_value('host_work', $host_work);
+		#set it to the automatically rendered value
+		$eprint->set_value('parent_work', EPrints::Utils::tree_to_utf8($eprint->render_value('host_work')));
 	}
 
 	if ($eprint->is_set('manuscript_id'))

@@ -36,6 +36,7 @@
     <epp:phrase id="eprint_fieldname_linker_number">Linker Number</epp:phrase>
     <epp:phrase id="eprint_fieldname_abstract_text">Abstract Text</epp:phrase>
     <epp:phrase id="eprint_fieldname_circumstance">Circumstance</epp:phrase>
+    <epp:phrase id="eprint_fieldname_title_input">Title</epp:phrase>
     <epp:phrase id="eprint_fieldname_musical_structure">Musical Structure</epp:phrase>
     <epp:phrase id="eprint_fieldname_refrain_location">Refrain Location</epp:phrase>
     <epp:phrase id="eprint_fieldopt_refrain_location_enté">Enté</epp:phrase>

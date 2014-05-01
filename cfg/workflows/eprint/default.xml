@@ -46,8 +46,10 @@ Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
       <field ref="abstract_text" required="yes" />
     </component>
 
-    <component>
-      <field ref="parent_work" required="yes" />
+    <component type="Field::Multi">
+      <title>Parent Work</title>
+      <field ref="parent_work_id" required="yes" />
+      <field ref="parent_work_instance" required="yes" />
     </component>
 
     <component type="Field::Multi">
@@ -90,7 +92,7 @@ Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
 
     <component type="Field::Multi">
       <title>Work Instance Core</title>
-      <field ref="title" required="yes" />
+      <field ref="title_input" />
       <field ref="instance_number" required="yes" />
       <field ref="date_description" />
       <field ref="authors" required="yes" />
