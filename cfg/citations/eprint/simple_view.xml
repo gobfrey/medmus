@@ -8,7 +8,7 @@
 
 <epc:choose>
   <epc:when test="medmus_type='work'">
-	<cite:linkhere><epc:print expr="title"/></cite:linkhere>
+	<cite:linkhere><epc:print expr="abstract_work_title"/></cite:linkhere>
 	<epc:if test="host_work">in <em><epc:print expr="host_work"/></em></epc:if>
 	[<epc:print expr="manuscript_collocation"/>]
   </epc:when>

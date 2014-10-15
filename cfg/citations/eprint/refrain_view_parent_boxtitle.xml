@@ -6,6 +6,6 @@
 
 <cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
 
-Parent Work: <epc:print expr="title"/>
+Parent Work: <epc:print expr="abstract_work_title"/>
 
 </cite:citation>

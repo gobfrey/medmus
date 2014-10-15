@@ -78,6 +78,9 @@ $c->{browse_views} = [
 				fields => ["singer_browse"],
 				new_column_at => [0,0,],
 
+			},
+			{
+				fields => ["abstract_text"]
 			}
 		],
 		order => "eprintid",
@@ -443,15 +446,8 @@ $c->{render_refrain_browse} = sub
 
 	my $frag = $xml->create_document_fragment;
 
-	#Abstract Refrain information
-	my $abstract_text = $item_list->[0]->render_value('abstract_text');
-	my $id = $item_list->[0]->render_value('refrain_id');
-
 	my $h1 = $xml->create_element('h1');
-	$h1->appendChild($xml->create_text_node('vdB '));
-	$h1->appendChild($id);
-	$h1->appendChild($xml->create_text_node(': '));
-	$h1->appendChild($abstract_text);
+	$h1->appendChild($item_list->[0]->render_citation('brief'));
 	$frag->appendChild($h1);
 
 	my @instances = sort {$a->value('instance_number') <=> $b->value('instance_number')} @{$item_list};
@@ -491,14 +487,8 @@ $c->{render_work_browse} = sub
 
 	my $frag = $xml->create_document_fragment;
 
-	#Abstract Refrain information
-	my $title = $item_list->[0]->render_value('title');
-	my $id = $item_list->[0]->render_value('work_id');
-
 	my $h1 = $xml->create_element('h1');
-	$h1->appendChild($id);
-	$h1->appendChild($xml->create_text_node(': '));
-	$h1->appendChild($title);
+	$h1->appendChild($item_list->[0]->render_citation('brief'));
 	$frag->appendChild($h1);
 
 	my @instances = sort {$a->value('instance_number') <=> $b->value('instance_number')} @{$item_list};

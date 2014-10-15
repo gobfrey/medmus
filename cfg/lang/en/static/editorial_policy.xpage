@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"  standalone="no"  ?>
+<!DOCTYPE page SYSTEM "entities.dtd" >
+<xpage:page xmlns="http://www.w3.org/1999/xhtml" xmlns:xpage="http://eprints.org/ep3/xpage" xmlns:epc="http://eprints.org/ep3/control">
+<xpage:head>
+</xpage:head>
+<xpage:title>Editorial Policy</xpage:title>
+<xpage:body>
+
+<p>All readings are taken from the manuscript sources identified.  No emendations have been made tacitly either in the music or text.</p>
+
+<h3>Music</h3>
+<p>No barlines have been used in the transcriptions.</p>
+<p>Notes grouped in ligatures are bracketed.</p>
+<p><em>Plic&#230;</em> appear under dotted slurs, the main note being bigger than the unwritten plica note.</p>
+<p><em>Conjunctur&#230;</em> appear under dotted slurs, the main note being bigger than the following ones if so indicated in the manuscript reading.</p>
+<p>Notation has been treated as measured only when it is unquestionable : a ternary long is then transcribed with a dotted quarter note, and a brevis with an eighth note; groups of three semibreves are transcribed either by triplets of sixteenth notes or with a succession  of two sixteenth and one eighth note, depending on context ; groups of more than three semibreves are transcribed by equal groups of sixteenth notes, with the corresponding number above the group.</p>
+<p>When a measured transcription is not indicated in the manuscript source, the notation has been rendered with unstemmed noteheads, grouped under brackets or plica and dotted slurs, according to the manuscript source.</p>
+<p>A vertical stroke indicates the tractus, sometimes used - mainly in measured transcriptions - to indicate a rest whose duration depends on the length of the stroke ; in measured transcriptions, the stroke is placed above the rest ; in non-measured transcriptions, it is placed in the middle of the stave.</p>
+<p>Accidentals are placed before the note as indicated in the manuscripts ; if restored, they are placed above the concerned note.</p>
+
+<h3>Text</h3>
+<p>The text is presented as a diplomatic edition and follows manuscript orthography; the edition differentiates between u and v, i and j, c and t ; there is no accentuation except from &#233; when it is necessary. Abstract titles (songs, motets, rondeaux, narrative, etc.) and texts (refrains) are given according to the bibliographical repertories concerned.</p>
+<p>Evident lacun&#230; - missing letters or words - have been restored within brackets.</p>
+<p>Abbreviations, contractions and superscript letters or words have been expanded in italics.</p>
+<p>Punctuation follows manuscript sources.</p>
+<p>Initials and upper-case letters follow usage in the sources, and according the hierarchy represented in the sources ; no other capitalization has been employed.</p>
+
+<h3>Manuscripts</h3>
+<p>The sigla used for libraries are those used in the RISM, and are listed on separate pages.</p>
+<p>Double foliation in some manuscripts has been indicated with round brackets for the second.</p>
+
+
+
+
+</xpage:body>
+</xpage:page>
