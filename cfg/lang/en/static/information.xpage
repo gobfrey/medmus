@@ -5,13 +5,13 @@
 <xpage:body>
 
 <p>The long thirteenth century was characterised by a vernacular musico-poetic culture in which short fragments of text and/or music circulated within and between songs of various types (chanson &agrave; refrain, chanson avec des refrains, rondeau), the motet repertory, the romance and a host of other types that impinged on music, literature or both.  Controlling the repertory can be time-consuming and problematic: assembling the material to examine even a single family of refrains can involve the identification, location and manipulation of large amounts of material.</p>
-<p>Since the middle of the nineteenth century, scholars of French literature have been identifying refrains in the single text on which they were working, but it was not until 1964 that Friedrich Gennrich published the first attempt at a catalogue, an experiment that was amplified in 1969 by Nico H. J. van den Boogaard
+<p>Since the middle of the nineteenth century, scholars of French literature have been identifying refrains in the single text on which they were working, but it was not until 1964 that Friedrich Gennrich published the first attempt at a catalogue, an experiment that was amplified in 1969 by Nico H. J. van den Boogaard:
 <ul>
 <li>Friedrich Gennrich, Bibliographisches Verzeichnis der franz&ouml;sischen Refrains, Summa musicae medii aevi 14 (Langen bei Frankfurt: n.p., 1964)</li>
 <li>Nico H. J. van den Boogaard, Rondeaux et refrains du xiie si&egrave;cle au d&eacute;but du xive: collationnement, introduction, et notes, Biblioth&egrave;que fran&ccedil;aise et romane, D:3 (Paris: &Eacute;ditions Klincksieck, 1969)</li>
 </ul>
 </p>
-<p>Both these works were catalogues, and van den Boogaard&rsquo;s was also an edition of the texts of the refrains  Music was not mentioned in the catalogue and not edited.  Both these shortcomings were rectified in:</p>
+<p>Both these works were catalogues, and van den Boogaard&rsquo;s was also an edition of the texts of the refrains.  Music was not mentioned in the catalogue and not edited.  Both these shortcomings were rectified in:</p>
 <ul>
 <li>Ibos-Aug&eacute;, Anne, &lsquo;La fonction des insertions lyriques dans des &oelig;uvres narratives et didactiques aux xiii&egrave;me et xiv&egrave;me si&egrave;cles&rsquo;, 4 vols (PhD diss., Universit&eacute; Michel de Montaigne-Bordeaux III, 2000)</li>
 </ul>
@@ -24,14 +24,14 @@
 <p>The project began with the digital copy of Ibos-Aug&eacute;&rsquo;s 2000 dissertation which was transformed into a digital data table using a script written by Field.  The project team then structured the data according to the relationships known to exist between the relevant elements in the repertory.  At this point the user interface was created.</p>
 <p>The project was funded jointly by the University of Southampton, the Universit&eacute; de Tours and the Universit&eacute; de Poitiers.</p>
 <div class="row">
+<div class="four columns" style="margin-top: 8%">
+<img src="{$config{base_url}}/images/Southampton.jpg" style="width: 100%; max-height: 100%"/>
+</div>
 <div class="four columns" style="margin-top: 1%">
 <img src="{$config{base_url}}/images/Tours.jpg" style="width: 100%; max-height: 100%"/>
 </div>
 <div class="four columns" style="margin-top: 4%">
 <img src="{$config{base_url}}/images/Poitiers.jpg" style="width: 100%; max-height: 100%"/>
-</div>
-<div class="four columns" style="margin-top: 8%">
-<img src="{$config{base_url}}/images/Southampton.jpg" style="width: 100%; max-height: 100%"/>
 </div>
 </div>
 

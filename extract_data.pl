@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works17.csv';
-my $refrains_file = 'new_refrains16.csv';
+my $works_file = 'new_works20.csv';
+my $refrains_file = 'new_refrains18.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
@@ -396,9 +396,9 @@ sub initialise_columns
 		'Singer' => 'singer',
 		'Destinataire' => 'audience',
 		'Fonction' => 'function',
-		'Marque de chant précédant le refrain' => 'preceeding_lyric',
-		'Marque de chant suivant le refrain' => 'succeeding_lyric',
-		'Marque de discours' => 'mark_of_discourse',
+		'Succeeding' => 'preceeding_lyric',
+		'Preceding' => 'succeeding_lyric',
+#		'Marque de discours' => 'mark_of_discourse',
 		'Métrique' => 'meter',
 		'Other Refrain data' => 'other_refrain_data',
 		'Other Manuscript Data' => 'other_manuscript_data',
