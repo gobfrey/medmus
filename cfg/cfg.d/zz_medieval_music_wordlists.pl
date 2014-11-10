@@ -866,6 +866,7 @@ foreach my $word (keys %{$c->{reading_text_words}})
 {
 	#add each key word to the hash
 	push @{$c->{reading_text_words_map}->{normalize('C', $word)}}, normalize('C',$word);
+	push @{$c->{reading_text_words_map}->{normalize('C', $word)}}, lc(normalize('C',$word)) if ($word ne lc($word)); #solve case issues
 	foreach my $variation (@{$c->{reading_text_words}->{$word}})
 	{
 		#add each varient to the hash
