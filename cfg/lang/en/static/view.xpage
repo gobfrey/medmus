@@ -15,7 +15,7 @@
 <h2>Refrains</h2>
 <ul>
 <li><a href="{$config{base_url}}/view/singer">by Singer</a></li>
-<li><a href="{$config{base_url}}/view/manuscript/refrain/">by Manuscript</a></li>
+<li><a href="{$config{base_url}}/view/refrain_manuscript/refrain/">by Manuscript</a></li>
 <li><a href="{$config{base_url}}/view/words">by <epc:phrase ref="viewname_eprint_words"/></a></li>
 <li><a href="{$config{base_url}}/view/circumstance">by <epc:phrase ref="viewname_eprint_circumstance"/></a></li>
 <li><a href="{$config{base_url}}/view/refrain_location">by <epc:phrase ref="viewname_eprint_refrain_location"/></a></li>
@@ -24,7 +24,7 @@
 <h2>Works</h2>
 <ul>
 <li><a href="{$config{base_url}}/view/author/">by Author</a></li>
-<li><a href="{$config{base_url}}/view/manuscript/work/">by Manuscript</a></li>
+<li><a href="{$config{base_url}}/view/work_manuscript/work/">by Manuscript</a></li>
 <li><a href="{$config{base_url}}/view/generic_descriptor/">by Generic Descriptor</a></li>
 <li><a href="{$config{base_url}}/view/voice_in_polyphony">by <epc:phrase ref="viewname_eprint_voice_in_polyphony"/></a></li>
 </ul>

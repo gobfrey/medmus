@@ -50,6 +50,13 @@ $c->{set_eprint_automatic_fields} = sub
 	my ($eprint) = @_;
 	my $repo = $eprint->repository;
 
+	#bug in import script
+	if ($eprint->is_set('number_of_stanzas') and ($eprint->value('number_of_stanzas') == 0))
+	{
+		$eprint->set_value('number_of_stanzas'); #make undef
+	}
+
+
 	#generate browse value for main browse view
 	my $abstract_item_browse_parts = [];
 	if ($eprint->is_set('refrain_id'))
@@ -70,10 +77,43 @@ $c->{set_eprint_automatic_fields} = sub
 	}
 	else
 	{
-		$eprint->set_value('title', 'Work without title (melody whithout text)');
+		my $abstract_title = $eprint->value('abstract_work_title');
+		if ($abstract_title)
+		{
+			$eprint->set_value('title', '['.$abstract_title.']');
+		}
+		else
+		{
+			$eprint->set_value('title', 'Unknown');
+		}
 	}
 
 
+	#set the work_type based on the work_id
+	my $work_type = '';
+	if ($eprint->is_set('work_id'))
+	{
+		my $work_id = $eprint->value('work_id');
+
+		if ( ($work_id =~ m/^Li/) || ($work_id =~ m/^Machaut/) )
+		{
+			$work_type = 'Motet';
+		}
+		elsif ( ($work_id =~ m/^M/) )
+		{
+			$work_type = 'Motet Part';
+		}
+		elsif ( ($work_id =~ m/^C/) || ($work_id =~ m/^R/) || ($work_id =~ m/^L/) )
+		{
+			$work_type = 'Song';
+		}
+		elsif ( $work_id =~ m/^N/ )
+		{
+			$work_type = 'Narrative';
+		}
+	}
+	$eprint->set_value('work_type', $work_type);
+	
 
 	if ($eprint->is_set('parent_work_id'))
 	{

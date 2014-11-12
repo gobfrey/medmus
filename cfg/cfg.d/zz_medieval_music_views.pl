@@ -4,9 +4,12 @@ use Unicode::Collate;
 # a valid result. 
 # Multiple fields may be specified for one view, but avoid
 # subject or allowing null in this case.
+$c->{browse_view_timeout} = 30*24*60*60; #we're a fairly static dataset, so regenerate views monthly
 $c->{browse_views} = [
 	{
 		id => "words",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
 		menus => [
 			{
 				fields => ["reading_texts_text_browse_index"],
@@ -14,6 +17,9 @@ $c->{browse_views} = [
 				mode => 'sections',
 				'group_range_function' => 'EPrints::Update::Views::cluster_ranges_100',
 				'open_first_section' => 1
+			},
+			{
+				fields => ["abstract_text"]
 			}
 		],
 		citation => 'simple_view',
@@ -22,6 +28,8 @@ $c->{browse_views} = [
 	},
 	{
 		id => "abstract_item",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
 		menus => [{
 			fields => ["work_id","refrain_id"],
 			new_column_at => [0],
@@ -34,7 +42,9 @@ $c->{browse_views} = [
 		hideup => 1,
 	},
         {
-                id => "manuscript",
+                id => "refrain_manuscript",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
                 menus => [
 			{
 				fields => ["medmus_type"],
@@ -48,13 +58,39 @@ $c->{browse_views} = [
                 order => "browse_list_order",#refrain id for refrains, title for works
 		max_items => 10000,
         },
+        {
+                id => "work_manuscript",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
+                menus => [
+			{
+				fields => ["medmus_type"],
+			},
+			{
+				fields => ["manuscript_id"],
+				new_column_at => [0,0],
+				render_menu => 'render_manuscript_menu',
+			}
+		],
+                order => "browse_list_order",#refrain id for refrains, title for works
+		variations => ['work_type'],
+		max_items => 10000,
+        },
 
 	{
 		id => "author",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
 		menus => [
 			{
 				fields => ["authors_name"],
 				new_column_at => [0,0],
+			},
+			{
+				fields => ['work_type'],
+			},
+			{
+				fields => ["abstract_work_title"]
 			}
 		],
                 order => "browse_list_order",#refrain id for refrains, title for works
@@ -64,15 +100,22 @@ $c->{browse_views} = [
 
 	{
 		id => "generic_descriptor",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
 		menus => [
 			{
 				fields => ["generic_descriptor_browse"],
+			},
+			{
+				fields => ["abstract_work_title"]
 			}
 		],
 		order => "browse_list_order",
 	},
 	{
 		id => "singer",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
 		menus => [
 			{
 				fields => ["singer_browse"],
@@ -89,9 +132,14 @@ $c->{browse_views} = [
 	},
 	{
 		id => "circumstance",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
 		menus => [
 			{
 				fields => ["circumstance_browse"],
+			},
+			{
+				fields => ["abstract_text"]
 			}
 		],
 		order => "eprintid",
@@ -100,9 +148,14 @@ $c->{browse_views} = [
 	},
 	{
 		id => "voice_in_polyphony",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
 		menus => [
 			{
 				fields => ["voice_in_polyphony"],
+			},
+			{
+				fields => ["abstract_work_title"]
 			}
 		],
 		max_items => 10000,
@@ -110,9 +163,14 @@ $c->{browse_views} = [
 	},
 	{
 		id => "refrain_location",
+		max_menu_age => $c->{browse_view_timeout},
+		max_list_age => $c->{browse_view_timeout},
 		menus => [
 			{
 				fields => ["refrain_location"],
+			},
+			{
+				fields => ["abstract_text"]
 			}
 		],
                 order => "browse_list_order",#refrain id for refrains, title for works
@@ -206,7 +264,8 @@ $c->{render_manuscript_menu} = sub
 {
 	my ( $repo, $menu, $sizes, $values, $fields, $has_submenu, $view ) = @_;
 
-	my $collator = Unicode::Collate->new( preprocess => sub { my $str = shift; $str =~ s/[<>{}\[\]()\.,:\/]//g; return $str;} );
+	#the collator needs to ignore formatting characters, *and* it appears to be ignoring spaces, so replace them with zeros
+	my $collator = Unicode::Collate->new( preprocess => sub { my $str = shift; $str =~ s/\s/0/g; $str =~ s/[<>{}\[\]()\.,:\/]//g; return $str;} );
 	my @sorted_values = sort { $collator->cmp(
 		$repo->call('pad_numeric_parts',$a),
 		$repo->call('pad_numeric_parts',$b)
@@ -244,30 +303,43 @@ $c->{render_abstract_item_menu} = sub
 
 			if ( ($work_id =~ m/^Li/) || ($work_id =~ m/^Machaut/) )
 			{
-				my $title = $eprint->value('title');
+				my $title = $eprint->value('abstract_work_title');
 				#filter out clusula and organums
 				if ($title !~ m/parts (clausula|organum)/)
 				{
-					$sections->{'motet'}->{$work_id}->{orderval} = $eprint->value('title');
-					$sections->{'motet'}->{$work_id}->{rendered} = $eprint->render_citation('brief');
+					my $number_of_parts = $eprint->value('number_of_parts');
+					if (
+						$number_of_parts &&
+						(
+							$number_of_parts == 2 ||
+							$number_of_parts == 3 ||
+							$number_of_parts == 4
+						)
+					)
+					{
+						$sections->{$number_of_parts . '_part_motets'}->{$work_id}->{orderval} =  $title;
+						$sections->{$number_of_parts . '_part_motets'}->{$work_id}->{rendered} = $eprint->render_value('abstract_work_title');
+					}
 				}
 			}
 			elsif ( ($work_id =~ m/^M/) )
 			{
+				my $m_index;
 				if ($eprint->is_set('m_index'))
 				{
 					$sections->{'motet_parts'}->{$work_id}->{orderval} = $repo->call('pad_numeric_parts',$work_id);
-					my $frag = $xml->create_document_fragment;
-					$frag->appendChild($eprint->render_value('lu_index'));
-					$frag->appendChild($xml->create_text_node(': '));
-					$frag->appendChild($eprint->render_value('title'));
-					$sections->{'motet_parts'}->{$work_id}->{rendered} = $frag;
+					$m_index = $eprint->render_value('lu_index'); #m index and lu_index are the same?  Not sure why I'm checking for one being set and using the other.  Seems to work though...
 				}
 				else
 				{
-					$sections->{'motet_parts'}->{$work_id}->{orderval} = 'Z' . $eprint->value('title'); #sort after the ones with IDs
-					$sections->{'motet_parts'}->{$work_id}->{rendered} = $eprint->render_citation('brief');
+					$sections->{'motet_parts'}->{$work_id}->{orderval} = '000' . $eprint->value('abstract_work_title'); #sort after the ones with IDs
+					$m_index = $xml->create_text_node('Unindexed');
 				}
+				my $frag = $xml->create_document_fragment;
+				$frag->appendChild($m_index);
+				$frag->appendChild($xml->create_text_node(': '));
+				$frag->appendChild($eprint->render_value('abstract_work_title'));
+				$sections->{'motet_parts'}->{$work_id}->{rendered} = $frag;
 			}
 			elsif ( ($work_id =~ m/^C/) || ($work_id =~ m/^R/) || ($work_id =~ m/^L/) )
 			{
@@ -283,16 +355,16 @@ $c->{render_abstract_item_menu} = sub
 				}
 				else
 				{
-					$sections->{'song_no_rs'}->{$work_id}->{orderval} = $eprint->value('title');
-					$sections->{'song_no_rs'}->{$work_id}->{rendered} = $eprint->render_value('title');
+					$sections->{'song_no_rs'}->{$work_id}->{orderval} = $eprint->value('abstract_work_title');
+					$sections->{'song_no_rs'}->{$work_id}->{rendered} = $eprint->render_value('abstract_work_title');
 
 				}
-				$frag->appendChild($eprint->render_value('title'));
+				$frag->appendChild($eprint->render_value('abstract_work_title'));
 			}
 			elsif ( $work_id =~ m/^N/ )
 			{
-				$sections->{'narrative'}->{$work_id}->{rendered} = $eprint->render_value('title');
-				$sections->{'narrative'}->{$work_id}->{orderval} = $eprint->value('title');
+				$sections->{'narrative'}->{$work_id}->{rendered} = $eprint->render_value('abstract_work_title');
+				$sections->{'narrative'}->{$work_id}->{orderval} = $eprint->value('abstract_work_title');
 			}
 		}
 	}, $sections);
@@ -300,7 +372,7 @@ $c->{render_abstract_item_menu} = sub
 	my $tab_headings = [];
 	my $tab_contents = [];
 	
-	foreach my $tabtitle (qw/ refrain song song_no_rs motet motet_parts narrative /)
+	foreach my $tabtitle (qw/ refrain song song_no_rs 2_part_motets 3_part_motets 4_part_motets motet_parts narrative /)
 	{
 		push @{$tab_headings}, $repo->html_phrase("view_abstract_item_tabtitle_$tabtitle"); 
 
@@ -310,7 +382,9 @@ $c->{render_abstract_item_menu} = sub
 		my $ul = $xml->create_element('ul');
 		$tabcontent->appendChild($ul);
 
-		my $collator = Unicode::Collate->new( preprocess => sub { my $str = shift; $str =~ s/[<>{}\[\]()\.,:\/]//g; return $str;} );
+		#the collator needs to ignore formatting characters, *and* it appears to be ignoring spaces, so replace them with zeros
+		my $collator = Unicode::Collate->new( preprocess => sub { my $str = shift; $str =~ s/\s/0/g; $str =~ s/[<>{}\[\]()\.,:\/]//g; return $str;} );
+
 		foreach my $value (sort { $collator->cmp(
 			$sections->{$tabtitle}->{$a}->{orderval},
 			$sections->{$tabtitle}->{$b}->{orderval}
@@ -336,49 +410,6 @@ $c->{render_abstract_item_menu} = sub
 	}
 
 	return $xhtml->tabs( $tab_headings, $tab_contents);
-
-
-
-	my $table = $xml->create_element( "table" );
-	my $columns = 3;
-	my $tr = $xml->create_element( "tr" );
-	$table->appendChild( $tr );
-	my $cells = 0;
-	foreach my $value ( @{$values} )
-	{
-		my $size = 0;
-		$size = $sizes->{$value} if( defined $sizes && defined $sizes->{$value} );
-
-		next if( $view->{hideempty} && $size == 0 );
-
-		if( $cells > 0 && $cells % $columns == 0 )
-		{
-			$tr = $xml->create_element( "tr" );
-			$table->appendChild( $tr );
-		}
-
-		# work out what filename to link to 
-		my $fileid = $fields->[0]->get_id_from_value( $repo, $value );
-		my $link = EPrints::Utils::escape_filename( $fileid );
-		if( $has_submenu ) { $link .= '/'; } else { $link .= '.html'; }
-
-		my $td = $xml->create_element( "td", style=>"padding: 1em; text-align: center;vertical-align:top" );
-		$tr->appendChild( $td );
-
-		my $a1 = $repo->render_link( $link );
-		my $piccy = $xml->create_element( "span", style=>"display: block; width: 200px; height: 150px; border: solid 1px #888; background-color: #ccf; padding: 0.25em" );
-		$piccy->appendChild( $xml->create_text_node( "Imagine I'm a picture!" ));
-		$a1->appendChild( $piccy );
-		$td->appendChild( $a1 );
-
-		my $a2 = $repo->render_link( $link );
-		$a2->appendChild( $fields->[0]->get_value_label( $repo, $value ) );
-		$td->appendChild( $a2 );
-
-		$cells += 1;
-	}
-
-	return $table;
 };
 
 $c->{pad_numeric_parts} = sub
@@ -459,7 +490,7 @@ $c->{render_refrain_browse} = sub
 		my $refrain_box_title = $xml->create_text_node($refrain->value('instance_number') . ': In ' . $refrain->value('manuscript_collocation'));
 
 		my $parent = $repo->call('refrain_parent', $refrain);
-		my $parent_box_title = $xml->create_text_node('Parent Work: ' . $parent->value('title'));
+		my $parent_box_title = $xml->create_text_node('Parent Work: ' . $parent->value('abstract_work_title'));
 		my $parent_frags = {};
 		my $parent_box_id = $refrain_box_id . '--' . $parent->value('work_id') . '-' . $parent->value('instance_number');
 
@@ -467,7 +498,7 @@ $c->{render_refrain_browse} = sub
 		if ($host)
 		{
 			my $host_box_id = $parent_box_id . '--' . $host->value('work_id') . '-' . $parent->value('instance_number');
-			my $host_box_title = $xml->create_text_node('Hosted in: ' . $host->value('title'));
+			my $host_box_title = $xml->create_text_node('Hosted in: ' . $host->value('abstract_work_title'));
 			$parent_frags->{host_box} = $repo->call('render_work_for_browse_box', $host, $host_box_title, $host_box_id, {}, 1);
 		}
 
@@ -504,7 +535,7 @@ $c->{render_work_browse} = sub
 		foreach my $hosted_work (@{$hosted_works})
 		{
 			my $hosted_work_frags = {};
-			my $hosted_work_box_title = $xml->create_text_node('Hosted Work: ' . $hosted_work->value('title'));
+			my $hosted_work_box_title = $xml->create_text_node('Hosted Work: ' . $hosted_work->value('abstract_work_title'));
 			my $hosted_work_box_id = $work_box_id . '--' . $hosted_work->value('work_id') . '-' . $hosted_work->value('instance_number');
 
 			$hosted_work_frags->{child_refrains_boxes} = $repo->call('render_work_browse_render_child_refrains', $hosted_work, $hosted_work_box_id);

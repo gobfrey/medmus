@@ -13,6 +13,54 @@
 */
 
 
+.visible-xs,
+.visible-sm,
+.visible-sl,
+.visible-md,
+.visible-lg {
+  display: none !important;
+}
+@media (max-width: 730px) {
+  .visible-xs {
+    display: block !important;
+  }
+}
+@media (min-width: 731px) and (max-width: 829px) {
+  .visible-sl {
+    display: block !important;
+  }
+}
+@media (min-width: 830px) and (max-width: 991px) {
+  .visible-sm {
+    display: block !important;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .visible-md {
+    display: block !important;
+  }
+}
+@media (min-width: 1200px) {
+  .visible-lg {
+    display: block !important;
+  }
+} 
+
+img.middle
+{
+	margin-left: auto; 
+	margin-right: auto;
+}
+
+
+
+.branding
+{
+	padding-bottom: 0 !important;
+	padding-top: 5px !important;
+	background: #fff !important;
+}
+
 .music
 {
 	width: 100%;
