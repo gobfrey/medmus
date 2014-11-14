@@ -8,18 +8,18 @@
     <epp:phrase id="view_abstract_item_tabtitle_refrain">Refrain<br/>by&#160;vdB&#160;index</epp:phrase>
     <epp:phrase id="view_abstract_item_tabtitle_song">Indexed<br/>Song</epp:phrase>
     <epp:phrase id="view_abstract_item_tabtitle_song_no_rs">Unindexed<br/>Song</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_2_part_motets">2 Part <br/>Motet</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_3_part_motets">3 Part <br/>Motet</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_4_part_motets">4 Part <br/>Motet</epp:phrase>
     <epp:phrase id="view_abstract_item_tabtitle_motet">Motet<br/>by&#160;title</epp:phrase>
+    <epp:phrase id="view_abstract_item_tabtitle_motet_by_parts">Motet<br/>by&#160;Parts</epp:phrase>
     <epp:phrase id="view_abstract_item_tabtitle_motet_parts">Motet&#160;Part<br/>by&#160;M&#160;index</epp:phrase>
     <epp:phrase id="view_abstract_item_tabtitle_narrative">Narrative<br/>by&#160;title</epp:phrase>
-
 
 
     <epp:phrase id="viewname_eprint_abstract_item">Refrains and Works</epp:phrase>
     <epp:phrase id="viewtitle_eprint_abstract_item_list"></epp:phrase>
 
-    <epp:phrase id="viewname_eprint_words">Words in Manuscript Reading</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_words"></epp:phrase>
-    <epp:phrase id="viewtitle_eprint_words_list">Refrains with Readings Containing "<epc:pin name="value1"/>"</epp:phrase>
     <epp:phrase id="render_refrain_browse_parent_missing">Couldn't find Parent: <epc:pin name="parent"/></epp:phrase>
     <epp:phrase id="bin/generate_views:blurb"></epp:phrase>
     <epp:phrase id="eprint_fieldname_manuscript_collocation">Manuscript Collocation</epp:phrase>
@@ -30,6 +30,9 @@
     <epp:phrase id="viewtitle_eprint_refrain_list"></epp:phrase>
     <epp:phrase id="eprint_fieldname_medmus_type">Item Type</epp:phrase>
     <epp:phrase id="lib/metafield:join_id"> and </epp:phrase>
+    <epp:phrase id="lib/metafield:join_text"> ; </epp:phrase>
+    <epp:phrase id="lib/metafield:join_longtext"> ; </epp:phrase>
+    <epp:phrase id="lib/metafield:join_set"> ; </epp:phrase>
     <epp:phrase id="eprint_fieldopt_medmus_type_refrain">Refrain</epp:phrase>
     <epp:phrase id="eprint_fieldopt_medmus_type_work">Work</epp:phrase>
     <epp:phrase id="eprint_fieldname_instance_number">Instance</epp:phrase>
@@ -80,9 +83,9 @@
     <epp:phrase id="eprint_fieldname_singer">Singer</epp:phrase>
     <epp:phrase id="eprint_fieldname_audience">Audience</epp:phrase>
     <epp:phrase id="eprint_fieldname_function">Function</epp:phrase>
-    <epp:phrase id="eprint_fieldname_function">Function</epp:phrase>
-    <epp:phrase id="eprint_fieldname_preceeding_lyric">Preceeding Lyric</epp:phrase>
-    <epp:phrase id="eprint_fieldname_succeeding_lyric">Succeeding Lyric</epp:phrase>
+    <epp:phrase id="eprint_fieldname_preceeding_lyric">Preceeding Context</epp:phrase>
+    <epp:phrase id="eprint_fieldname_preceeding_lyric">Preceeding Context</epp:phrase>
+    <epp:phrase id="eprint_fieldname_succeeding_lyric">Succeeding Context</epp:phrase>
     <epp:phrase id="eprint_fieldname_mark_of_discourse">Mark of Discourse</epp:phrase>
     <epp:phrase id="eprint_fieldname_meter">Meter</epp:phrase>
     <epp:phrase id="eprint_fieldname_other_refrain_data">Other Refrain Data</epp:phrase>
@@ -91,6 +94,7 @@
     <epp:phrase id="eprint_fieldname_manuscript_id">Manuscript ID</epp:phrase>
 
     <epp:phrase id="eprint_fieldname_work_id">Work ID</epp:phrase>
+    <epp:phrase id="eprint_fieldname_work_type">Work Type</epp:phrase>
     <epp:phrase id="eprint_fieldname_number_of_stanzas">Number of Stanzas</epp:phrase>
     <epp:phrase id="eprint_fieldname_number_of_envois">Number of Envois</epp:phrase>
     <epp:phrase id="eprint_fieldname_rs_index">RS Index</epp:phrase>
@@ -138,37 +142,53 @@
     <epp:phrase id="reading_box_heading_reading_metadata"><h3>Other Reading Information</h3></epp:phrase>
     <epp:phrase id="reading_box_heading_text"><h3>Manuscript Reading</h3></epp:phrase>
     <epp:phrase id="refrain_abstract_readings_heading">Readings:</epp:phrase>
-    <epp:phrase id="viewname_eprint_author">Author</epp:phrase>
     <epp:phrase id="viewname_eprint_type">Type</epp:phrase>
     <epp:phrase id="viewname_eprint_work_id">Work ID</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_author_list">Works authored by <epc:pin name="value1"/></epp:phrase>
     <epp:phrase id="viewtitle_eprint_type_list">Items of type <epc:pin name="value1"/></epp:phrase>
     <epp:phrase id="viewtitle_eprint_work_id_list"><epc:pin name="value1"/></epp:phrase>
     <epp:phrase id="metapage_title_refrain_core">Core</epp:phrase>
 
-    <epp:phrase id="viewname_eprint_manuscript">Manuscript</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_manuscript_menu_2"><epc:pin name="value1"/>s by Manuscript</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_manuscript_list"><epc:pin name="value1"/>s in Manuscript <epc:pin name="value2"/></epp:phrase>
+    <epp:phrase id="viewname_eprint_author">Author</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_author_menu_1">Works by Author</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_author_menu_2">Works by <epc:pin name="value1"/></epp:phrase>
+    <epp:phrase id="viewtitle_eprint_author_menu_3">"<epc:pin name="value2"/>" items by <epc:pin name="value1"/></epp:phrase>
+    <epp:phrase id="viewtitle_eprint_author_list">"<epc:pin name="value3"/>", authored by <epc:pin name="value1"/></epp:phrase>
+
+    <epp:phrase id="viewname_eprint_words">Words in Manuscript Reading</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_words_menu_2">Refrains with Readings Containing "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_words_list">"<epc:pin name="value2"/>" Containing "<epc:pin name="value1"/>"</epp:phrase>
+
+    <epp:phrase id="viewname_eprint_work_manuscript">Manuscript</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_work_manuscript_menu_2"><epc:pin name="value1"/>s by Manuscript</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_work_manuscript_list"><epc:pin name="value1"/>s in Manuscript <epc:pin name="value2"/></epp:phrase>
+    <epp:phrase id="viewname_eprint_refrain_manuscript">Manuscript</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_refrain_manuscript_menu_2"><epc:pin name="value1"/>s by Manuscript</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_refrain_manuscript_list"><epc:pin name="value1"/>s in Manuscript <epc:pin name="value2"/></epp:phrase>
 
     <epp:phrase id="viewname_eprint_singer">Singer</epp:phrase>
     <epp:phrase id="viewtitle_eprint_singer_menu_1">Refrains by Singer</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_singer_list">Refrains sung by <epc:pin name="value1"/></epp:phrase>
+    <epp:phrase id="viewtitle_eprint_singer_menu_2">Refrains sung by <epc:pin name="value1"/></epp:phrase>
+    <epp:phrase id="viewtitle_eprint_singer_list">"<epc:pin name="value2"/>" sung by <epc:pin name="value1"/></epp:phrase>
 
     <epp:phrase id="viewname_eprint_generic_descriptor">Generic Descriptor</epp:phrase>
     <epp:phrase id="viewtitle_eprint_generic_descriptor_menu_1">Works by Generic Descriptor</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_generic_descriptor_list">Works Described as "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_generic_descriptor_menu_2">Works Described as "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_generic_descriptor_list">"<epc:pin name="value2"/>", described as "<epc:pin name="value1"/>"</epp:phrase>
 
     <epp:phrase id="viewname_eprint_circumstance">Circumstance</epp:phrase>
     <epp:phrase id="viewtitle_eprint_circumstance_menu_1">Refrains by Circumstance</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_circumstance_list">Refrains with Circumstance: "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_circumstance_menu_2">Refrains with Circumstance: "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_circumstance_list">"<epc:pin name="value1"/>" in "<epc:pin name="value2"/>"</epp:phrase>
 
     <epp:phrase id="viewname_eprint_voice_in_polyphony">Voice in Polyphony</epp:phrase>
     <epp:phrase id="viewtitle_eprint_voice_in_polyphony_menu_1">Works by Voice in Polyphony</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_voice_in_polyphony_list">Works in Voice: "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_voice_in_polyphony_menu_2">Works in Voice: "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_voice_in_polyphony_list">"<epc:pin name="value2"/>" in Voice: "<epc:pin name="value1"/>"</epp:phrase>
 
     <epp:phrase id="viewname_eprint_refrain_location">Location</epp:phrase>
     <epp:phrase id="viewtitle_eprint_refrain_location_menu_1">Refrains by Location</epp:phrase>
-    <epp:phrase id="viewtitle_eprint_refrain_location_list">Refrains at Location: "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_refrain_location_menu_2">Refrains at Location: "<epc:pin name="value1"/>"</epp:phrase>
+    <epp:phrase id="viewtitle_eprint_refrain_location_list">Refrains at: "<epc:pin name="value1"/>" in: "<epc:pin name="value2"/></epp:phrase>
 
     <epp:phrase id="lib/lang/en/phrases:ep_tm_menu_browse">
     <div class="twelve columns menu horizontal">
@@ -208,19 +228,11 @@
     </div>
     </epp:phrase>
     <epp:phrase id="template_top_left_title">
-<table>
-<tr>
-<td>
-      <h1><epc:phrase ref="archive_name"/></h1>
-</td>
-<td>
-<p style="padding: 20px 10px 0px 10px; margin: 0px; color: #5D5D5D">
-Musique, poésie, citation: le refrain au moyen âge<br/>
-Music, Poetry, Citation: The Medieval Refrain
-</p>
-</td>
-</tr>
-</table>
+    <img class="middle visible-xs" src="/images/Refrain_600.jpg" alt="REFRAIN"/>
+    <img class="middle visible-sl" src="/images/Refrain_700.jpg" alt="REFRAIN"/>
+    <img class="middle visible-sm" src="/images/Refrain_800.jpg" alt="REFRAIN"/>
+    <img class="middle visible-md" src="/images/Refrain_950.jpg" alt="REFRAIN"/>
+    <img class="middle visible-lg" src="/images/Refrain_1150.jpg" alt="REFRAIN"/>
     </epp:phrase>
 
 

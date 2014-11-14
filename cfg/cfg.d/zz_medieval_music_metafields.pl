@@ -16,7 +16,7 @@ foreach my $field(
 
 
 #refrain data
-{ name => 'refrain_id', type => 'id', make_value_orderkey => 'medmus_id_orderval' },
+{ name => 'refrain_id', type => 'id', make_value_orderkey => 'medmus_id_orderval', browse_link => 'abstract_item' },
 { name => 'refrain_id_browse', type => 'text', volatile => 1, make_value_orderkey => 'medmus_id_orderval'}, #for rendering the links in the browse view
 
 
@@ -142,6 +142,7 @@ foreach my $field(
 #work fields
 { name => 'work_id', type => 'id', make_value_orderkey => 'medmus_id_orderval' },
 { name => 'work_id_browse', type => 'text', volatile => 1, make_value_orderkey => 'medmus_id_orderval'}, #for rendering the links in the browse view
+{ name => 'work_type', type => 'text', volatile => 1 }, #the type of work, used in some browse views
 
 #{ name => 'title', type => 'text' }, existing field
 { name => 'title_input', type => 'text' },

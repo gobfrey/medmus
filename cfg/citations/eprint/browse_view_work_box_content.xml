@@ -9,10 +9,13 @@
 <div class="twelve columns">
 
 <table>
+
+<!--
 <tr>
 <th align="right">ID:</th>
 <td valign="top"><epc:print expr="work_id" />/<epc:print expr="instance_number"/></td>
 </tr>
+-->
 
 <epc:foreach expr="$config{refrain_view_work_fields}" iterator="fieldname">
   <epc:if test="is_set($item.property($fieldname))">
