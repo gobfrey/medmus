@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+
+<!-- 
+	used to display the Abstract work box on the summary page
+-->
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+
+<div class="six columns">
+
+<table class="abstractbox">
+<caption>Work</caption>
+
+<epc:foreach expr="$config{abstract_work_summary_page_metadata}" iterator="fieldname">
+  <epc:if test="is_set($item.property($fieldname))">
+    <tr>
+      <th align="right"><epc:phrase ref="eprint_fieldname_{$fieldname}" />:</th>
+      <td valign="top"><epc:print expr="$item.property($fieldname)" /></td>
+    </tr>
+  </epc:if>
+</epc:foreach>
+
+      <th align="right">Instances:</th>
+      <td valign="top"><epc:print expr="$work_instances" /></td>
+
+
+
+</table>
+</div>
+
+<div class="six columns">
+<table class="abstractbox">
+<caption>Instance</caption>
+
+<epc:foreach expr="$config{work_summary_page_metadata}" iterator="fieldname">
+  <epc:if test="is_set($item.property($fieldname))">
+    <tr>
+      <th align="right"><epc:phrase ref="eprint_fieldname_{$fieldname}" />:</th>
+      <td valign="top"><epc:print expr="$item.property($fieldname)" /></td>
+    </tr>
+  </epc:if>
+</epc:foreach>
+
+<epc:if test="$flags{host}">
+<tr>
+<th align="right">Host Work:</th>
+<td valign="top"><epc:print expr="$host_work" /></td>
+</tr>
+</epc:if>
+
+<epc:if test="$flags{hosted}">
+<tr>
+<th align="right">Hosted Works:</th>
+<td valign="top"><epc:print expr="$hosted_works" /></td>
+</tr>
+</epc:if>
+
+<tr>
+<th align="right">Refrains:</th>
+<td valign="top"><epc:print expr="$refrains" /></td>
+</tr>
+
+
+</table>
+
+
+</div>
+
+</cite:citation>

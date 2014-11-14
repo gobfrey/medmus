@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works23.csv';
-my $refrains_file = 'new_refrains21.csv';
+my $works_file = 'new_works24.csv';
+my $refrains_file = 'new_refrains23.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
@@ -90,7 +90,7 @@ foreach my $row ( 1 .. $#{$tables->{refrains}} )
 					}
 					elsif ($part =~ m/envoi\s*([I]*)/)
 					{
-						$reading->{envoi} = lc($1);
+						$reading->{envoi} = $1;
 					}
 					elsif ($part eq 'Fatras')
 					{
@@ -305,7 +305,15 @@ sub construct_val
 		#exception for single questionmark in the number_of_stanzas tag
 		return $el if ($columns->{works}->{strip_questionmark_vals}->{$tagname} and $val eq '?');
 
-		$el->appendText($val);
+
+		if ($columns->{works}->{replace_questionmark_vals}->{$tagname} and $val eq '?')
+		{
+			$el->appendText($columns->{works}->{replace_questionmark_vals}->{$tagname});
+		}
+		else
+		{
+			$el->appendText($val);
+		}
 		return $el;
 	}
 
@@ -588,7 +596,12 @@ sub initialise_columns
 	#these fields may contain a '?' -- treat as undef
 	$c->{works}->{strip_questionmark_vals} = 
 	{
-		'number_of_stanzas' => 1,
+#		'number_of_stanzas' => 1,
+	};
+
+	$c->{works}->{replace_questionmark_vals} = 
+	{
+		'number_of_stanzas' => 'Inconnu',
 	};
 
 	return $c;

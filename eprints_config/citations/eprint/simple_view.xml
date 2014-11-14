@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<!-- 
+	Brief citation for an eprint. Just gives the title or the type and ID number.
+-->
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+
+<epc:choose>
+  <epc:when test="medmus_type='work'">
+	<cite:linkhere><epc:print expr="abstract_work_title"/></cite:linkhere>
+	<epc:if test="host_work">in <em><epc:print expr="host_work"/></em></epc:if>
+	[<epc:print expr="manuscript_collocation"/>]
+  </epc:when>
+  <epc:when test="medmus_type='refrain'">
+	<epc:print expr="refrain_id"/>: <cite:linkhere><epc:print expr="abstract_text"/></cite:linkhere>
+	in <em><epc:print expr="parent_work"/></em>
+	[<epc:print expr="manuscript_collocation"/>]
+  </epc:when>
+  <epc:otherwise>#<epc:print expr="eprintid"/></epc:otherwise>
+</epc:choose>
+</cite:citation>

@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+
+<!-- 
+	Brief citation for an eprint. Just gives the title or the type and ID number.
+-->
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:cite="http://eprints.org/ep3/citation" xmlns:epc="http://eprints.org/ep3/control">
+
+<div class="row">
+<div class="six columns">
+<h3>Details</h3>
+
+
+<table>
+
+<tr>
+<th align="right">Manuscript:</th>
+<td valign="top"><epc:print expr="manuscript_collocation" /></td>
+</tr>
+<epc:if test="is_set($item.property('other_manuscript_data'))">
+<tr>
+<th align="right"><epc:phrase ref="eprint_fieldname_other_manuscript_data" />:</th>
+<td valign="top"><epc:print expr="other_manuscript_data" /></td>
+</tr>
+</epc:if>
+
+<epc:foreach expr="$config{refrain_view_refrain_details_fields}" iterator="fieldname">
+  <epc:if test="is_set($item.property($fieldname))">
+    <tr>
+      <th align="right"><epc:phrase ref="eprint_fieldname_{$fieldname}" />:</th>
+      <td valign="top"><epc:print expr="$item.property($fieldname)" /></td>
+    </tr>
+  </epc:if>
+</epc:foreach>
+</table>
+
+
+</div>
+
+<div class="six columns">
+<h3>Reading Text(s)</h3>
+<epc:print expr="reading_texts"/>
+
+
+</div>
+
+<div class="twelve columns">
+<epc:if test="$flags{music_img}">
+<h3>Music</h3>
+<epc:print expr="$music_img"/>
+</epc:if>
+</div>
+
+<div class="twelve columns">
+<span class='record-link'><a href="{$item.url()}">[Detailed View]</a></span>
+</div>
+
+
+</div>
+
+<epc:if test="$flags{parent_box}">
+<div class="row">
+<div class="twelve columns">
+<epc:print expr="$parent_box"/>
+</div>
+</div>
+</epc:if>
+
+</cite:citation>

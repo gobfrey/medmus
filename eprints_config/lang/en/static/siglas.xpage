@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="iso-8859-1"  standalone="no"  ?>
+<!DOCTYPE page SYSTEM "entities.dtd" >
+<xpage:page xmlns="http://www.w3.org/1999/xhtml" xmlns:xpage="http://eprints.org/ep3/xpage" xmlns:epc="http://eprints.org/ep3/control">
+<xpage:head>
+</xpage:head>
+<xpage:title>Library Sigla and Collocations</xpage:title>
+<xpage:body>
+
+
+
+
+
+
+<div class="six columns">
+<table class="abstractbox">
+<caption>By Sigla</caption>
+<tr><td>
+<table>
+<tr><th>RISM Sigla</th><th>Library ID</th></tr>
+<tr><td>A-Wn</td><td>Wien, &Ouml;sterreichische Nationalbibliothek</td></tr>
+<tr><td>B-Br</td><td>Bruxelles, Biblioth&egrave;que royale de Belgique</td></tr>
+<tr><td>B-LEu</td><td>Leuven, Universiteitsbibliotheek</td></tr>
+<tr><td>B-Mbu</td><td>Mons, Biblioth&egrave;que de l&rsquo;Universit&eacute; UMONS</td></tr>
+<tr><td>CH-BEb</td><td>Bern, Burgerbibliothek</td></tr>
+<tr><td>CH-E</td><td>Einsiedeln, Kloster Einsiedeln, Musikbibliothek<sup><a href="#thanks">1</a></sup></td></tr>
+<tr><td>CH-N</td><td>Neuch&acirc;tel, Biblioth&egrave;que publique et universitaire</td></tr>
+<tr><td>Cheltenham Phill.</td><td>Formerly Phillips collection, now lost</td></tr>
+<tr><td>D-BAs</td><td>Bamberg, Staatsbibliothek</td></tr>
+<tr><td>D-DS</td><td>Darmstadt, Universit&auml;ts- und Landesbibliothek</td></tr>
+<tr><td>D-EFu</td><td>Erfurt, Universit&auml;tsbibliothek</td></tr>
+<tr><td>D-Mbs</td><td>M&uuml;nchen, Bayerische Staatsbibliothek</td></tr>
+<tr><td>D-W</td><td>Wolfenb&uuml;ttel, Herzog August Bibliothek</td></tr>
+<tr><td>DK-Kk</td><td>K&oslash;benhavn, Det Kongelige Bibliotek</td></tr>
+<tr><td>E-BUlh s/n (Codex Las Huelgas)</td><td>Burgos, Monasterio de Las Huelgas</td></tr>
+<tr><td>E-Mn</td><td>Madrid, Biblioteca Nacional</td></tr>
+<tr><td>F-AIXm</td><td>Aix-en-Provence, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-AN</td><td>Angers, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-AS</td><td>Arras, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-B</td><td>Besan&ccedil;on, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-BL</td><td>Blois, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-BSM</td><td>Boulogne-sur-mer, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-CA</td><td>Cambrai, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-CV</td><td>Charleville-M&eacute;zi&egrave;res, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-Dm</td><td>Dijon, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-Lm</td><td>Lille, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-ME</td><td>Metz, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-MO</td><td>Montpellier, Biblioth&egrave;que interuniversitaire, Facult&eacute; de M&eacute;decine</td></tr>
+<tr><td>F-PO</td><td>Poitiers, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-Pa</td><td>Paris, Biblioth&egrave;que de l&rsquo;Arsenal</td></tr>
+<tr><td>F-Pi</td><td>Paris, Biblioth&egrave;que de l&rsquo;Institut de France</td></tr>
+<tr><td>F-Pn</td><td>Paris, Biblioth&egrave;que nationale de France</td></tr>
+<tr><td>F-R</td><td>Rouen, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-RS</td><td>Reims, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-SOM</td><td>Saint-Omer, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-T</td><td>Troyes, Biblioth&egrave;que municipale</td></tr>
+<tr><td>F-TOm</td><td>Tours, Biblioth&egrave;que municipale</td></tr>
+<tr><td>Fragment de St. L&ocirc;</td><td>Saint-L&ocirc;, lost fragment</td></tr>
+<tr><td>GB-Ce</td><td>Cambridge, Emmanuel College</td></tr>
+<tr><td>GB-Cgc</td><td>Cambridge, Gonville and Caius College</td></tr>
+<tr><td>GB-Cpc</td><td>Cambridge, Pembroke College Library</td></tr>
+<tr><td>GB-Ctc</td><td>Cambridge, Trinity College Library</td></tr>
+<tr><td>GB-H</td><td>Hereford, Cathedral Library</td></tr>
+<tr><td>GB-Lbl</td><td>London, The British Library</td></tr>
+<tr><td>GB-Llp</td><td>London, Lambeth Palace Library</td></tr>
+<tr><td>GB-Ob</td><td>Oxford, Bodleian Library</td></tr>
+<tr><td>GB-Occc</td><td>Oxford, Corpus Christi College</td></tr>
+<tr><td>HR-Zu</td><td>Zagreb, Nacionalna i sveu&#x10D;ili&scaron;na knji&#x17E;nica</td></tr>
+<tr><td>I-Bc</td><td>Bologna, Museo internazionale e biblioteca della musica</td></tr>
+<tr><td>I-Fl</td><td>Firenze, Biblioteca Medicea-Laurenziana</td></tr>
+<tr><td>I-Fr</td><td>Firenze, Biblioteca Riccardiana e Moreniana</td></tr>
+<tr><td>I-IV</td><td>Ivrea, Biblioteca Capitolare</td></tr>
+<tr><td>I-MOe</td><td>Modena, Biblioteca Estense</td></tr>
+<tr><td>I-Rvat</td><td>Citt&agrave; del Vaticano, Biblioteca Apostolica Vaticana</td></tr>
+<tr><td>I-Sc</td><td>Siena, Biblioteca Comunale degli Intronati</td></tr>
+<tr><td>I-Tn</td><td>Torino, Biblioteca Nazionale Universitaria</td></tr>
+<tr><td>I-Tr</td><td>Torino, Biblioteca Reale</td></tr>
+<tr><td>PL-WRu</td><td>Wroclaw, Biblioteka Uniwersytecka</td></tr>
+<tr><td>RUS-SPsc</td><td>Sankt-Peterburg, Rossijskaja nacional&rsquo;naja biblioteka</td></tr>
+<tr><td>S-Uu</td><td>Uppsala, Universitetsbiblioteket</td></tr>
+<tr><td>US-BK</td><td>Brunswick, Bowdoin College Library</td></tr>
+<tr><td>US-NYpm</td><td>New York, The Morgan Library and Museum</td></tr>
+</table>
+</td></tr>
+</table>
+</div>
+<div class="six columns">
+<table class="abstractbox">
+<caption>By Library</caption>
+<tr><td>
+<table>
+<tr><th>Library ID</th><th>RISM Sigla</th></tr>
+<tr><td>Aix-en-Provence, Biblioth&egrave;que municipale</td><td>F-AIXm</td></tr>
+<tr><td>Angers, Biblioth&egrave;que municipale</td><td>F-AN</td></tr>
+<tr><td>Arras, Biblioth&egrave;que municipale</td><td>F-AS</td></tr>
+<tr><td>Bamberg, Staatsbibliothek</td><td>D-BAs</td></tr>
+<tr><td>Bern, Burgerbibliothek</td><td>CH-BEb</td></tr>
+<tr><td>Besan&ccedil;on, Biblioth&egrave;que municipale</td><td>F-B</td></tr>
+<tr><td>Blois, Biblioth&egrave;que municipale</td><td>F-BL</td></tr>
+<tr><td>Bologna, Museo internazionale e biblioteca della musica</td><td>I-Bc</td></tr>
+<tr><td>Boulogne-sur-mer, Biblioth&egrave;que municipale</td><td>F-BSM</td></tr>
+<tr><td>Brunswick, Bowdoin College Library</td><td>US-BK</td></tr>
+<tr><td>Bruxelles, Biblioth&egrave;que royale de Belgique</td><td>B-Br</td></tr>
+<tr><td>Burgos, Monasterio de Las Huelgas</td><td>E-BUlh s/n (Codex Las Huelgas)</td></tr>
+<tr><td>Cambrai, Biblioth&egrave;que municipale</td><td>F-CA</td></tr>
+<tr><td>Cambridge, Emmanuel College</td><td>GB-Ce</td></tr>
+<tr><td>Cambridge, Gonville and Caius College</td><td>GB-Cgc</td></tr>
+<tr><td>Cambridge, Pembroke College Library</td><td>GB-Cpc</td></tr>
+<tr><td>Cambridge, Trinity College Library</td><td>GB-Ctc</td></tr>
+<tr><td>Charleville-M&eacute;zi&egrave;res, Biblioth&egrave;que municipale</td><td>F-CV</td></tr>
+<tr><td>Citt&agrave; del Vaticano, Biblioteca Apostolica Vaticana</td><td>I-Rvat</td></tr>
+<tr><td>Darmstadt, Universit&auml;ts- und Landesbibliothek</td><td>D-DS</td></tr>
+<tr><td>Dijon, Biblioth&egrave;que municipale</td><td>F-Dm</td></tr>
+<tr><td>Einsiedeln, Kloster Einsiedeln, Musikbibliothek<sup><a href="#thanks">1</a></sup></td><td>CH-E</td></tr>
+<tr><td>Erfurt, Universit&auml;tsbibliothek</td><td>D-EFu</td></tr>
+<tr><td>Firenze, Biblioteca Medicea-Laurenziana</td><td>I-Fl</td></tr>
+<tr><td>Firenze, Biblioteca Riccardiana e Moreniana</td><td>I-Fr</td></tr>
+<tr><td>Formerly Phillips collection, now lost</td><td>Cheltenham Phill.</td></tr>
+<tr><td>Hereford, Cathedral Library</td><td>GB-H</td></tr>
+<tr><td>Ivrea, Biblioteca Capitolare</td><td>I-IV</td></tr>
+<tr><td>K&oslash;benhavn, Det Kongelige Bibliotek</td><td>DK-Kk</td></tr>
+<tr><td>Leuven, Universiteitsbibliotheek</td><td>B-LEu</td></tr>
+<tr><td>Lille, Biblioth&egrave;que municipale</td><td>F-Lm</td></tr>
+<tr><td>London, Lambeth Palace Library</td><td>GB-Llp</td></tr>
+<tr><td>London, The British Library</td><td>GB-Lbl</td></tr>
+<tr><td>Madrid, Biblioteca Nacional</td><td>E-Mn</td></tr>
+<tr><td>Metz, Biblioth&egrave;que municipale</td><td>F-ME</td></tr>
+<tr><td>Modena, Biblioteca Estense</td><td>I-MOe</td></tr>
+<tr><td>Mons, Biblioth&egrave;que de l&rsquo;Universit&eacute; UMONS</td><td>B-Mbu</td></tr>
+<tr><td>Montpellier, Biblioth&egrave;que interuniversitaire, Facult&eacute; de M&eacute;decine</td><td>F-MO</td></tr>
+<tr><td>M&uuml;nchen, Bayerische Staatsbibliothek</td><td>D-Mbs</td></tr>
+<tr><td>Neuch&acirc;tel, Biblioth&egrave;que publique et universitaire</td><td>CH-N</td></tr>
+<tr><td>New York, The Morgan Library and Museum</td><td>US-NYpm</td></tr>
+<tr><td>Oxford, Bodleian Library</td><td>GB-Ob</td></tr>
+<tr><td>Oxford, Corpus Christi College</td><td>GB-Occc</td></tr>
+<tr><td>Paris, Biblioth&egrave;que de l&rsquo;Arsenal</td><td>F-Pa</td></tr>
+<tr><td>Paris, Biblioth&egrave;que de l&rsquo;Institut de France</td><td>F-Pi</td></tr>
+<tr><td>Paris, Biblioth&egrave;que nationale de France</td><td>F-Pn</td></tr>
+<tr><td>Poitiers, Biblioth&egrave;que municipale</td><td>F-PO</td></tr>
+<tr><td>Reims, Biblioth&egrave;que municipale</td><td>F-RS</td></tr>
+<tr><td>Rouen, Biblioth&egrave;que municipale</td><td>F-R</td></tr>
+<tr><td>Saint-L&ocirc;, lost fragment</td><td>Fragment de St. L&ocirc;</td></tr>
+<tr><td>Saint-Omer, Biblioth&egrave;que municipale</td><td>F-SOM</td></tr>
+<tr><td>Sankt-Peterburg, Rossijskaja nacional&rsquo;naja biblioteka</td><td>RUS-SPsc</td></tr>
+<tr><td>Siena, Biblioteca Comunale degli Intronati</td><td>I-Sc</td></tr>
+<tr><td>Torino, Biblioteca Nazionale Universitaria</td><td>I-Tn</td></tr>
+<tr><td>Torino, Biblioteca Reale</td><td>I-Tr</td></tr>
+<tr><td>Tours, Biblioth&egrave;que municipale</td><td>F-TOm</td></tr>
+<tr><td>Troyes, Biblioth&egrave;que municipale</td><td>F-T</td></tr>
+<tr><td>Uppsala, Universitetsbiblioteket</td><td>S-Uu</td></tr>
+<tr><td>Wien, &Ouml;sterreichische Nationalbibliothek</td><td>A-Wn</td></tr>
+<tr><td>Wolfenb&uuml;ttel, Herzog August Bibliothek</td><td>D-W</td></tr>
+<tr><td>Wroclaw, Biblioteka Uniwersytecka</td><td>PL-WRu</td></tr>
+<tr><td>Zagreb, Nacionalna i sveu&#x10D;ili&scaron;na knji&#x17E;nica</td><td>HR-Zu</td></tr>
+</table>
+</td></tr>
+</table>
+</div>
+
+<p>
+<a name="thanks"></a>
+<sup>1</sup>I would thank Professor Robert Lug, who told me about the fragment preserved in this library.</p>
+
+
+
+</xpage:body>
+</xpage:page>

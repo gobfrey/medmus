@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+Action buttons (Previous/Save/Next) can be shown "top", "bottom" or "both":
+<stage name="type" action_buttons="both">
+  <component><field ref="type" required="yes" /></component>
+</stage>
+
+-->
+
+<workflow xmlns="http://eprints.org/ep3/workflow" xmlns:epc="http://eprints.org/ep3/control">
+  <flow>
+    <stage ref="type"/>
+    <epc:if test="medmus_type='work'">
+      <stage ref="work_core" />
+    </epc:if>
+    <epc:if test="medmus_type='refrain'">
+      <stage ref="refrain_core" />
+      <stage ref="files"/>
+    </epc:if>
+  </flow>
+
+  <stage name="type">
+    <component><field ref="medmus_type" required="yes" /></component>
+  </stage>
+
+  <stage name="files">
+    <component type="Upload" show_help="always" />
+    <component type="Documents">
+      <field ref="content" />
+      <field ref="format" />
+      <field ref="formatdesc" />
+      <field ref="security" />
+      <field ref="license" />
+      <field ref="date_embargo" />
+<!--  <field ref="relation" /> -->
+<!--  <field ref="language" /> --> 
+    </component>
+  </stage>
+
+  <stage name="refrain_core">
+    <component type="Field::Multi">
+      <title>Abstract Refrain</title>
+      <field ref="refrain_id" required="yes" />
+      <field ref="abstract_text" required="yes" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Parent Work</title>
+      <field ref="parent_work_id" required="yes" />
+      <field ref="parent_work_instance" required="yes" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Refrain Instance Core</title>
+      <field ref="instance_number" required="yes" />
+      <field ref="linker_number" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Manuscript</title>
+      <field ref="manuscript_id" required="yes" />
+      <field ref="manuscript_location" />
+      <field ref="other_manuscript_data" />
+    </component>
+  
+    <component type="Field::Multi">
+      <title>Refrain Meta</title>
+      <field ref="musical_structure" />
+      <field ref='meter'/>
+      <field ref='circumstance'/>
+      <field ref='function'/>
+      <field ref='singer'/>
+      <field ref='audience'/>
+      <field ref='preceeding_lyric'/>
+      <field ref='succeeding_lyric'/>
+      <field ref='mark_of_discourse'/>
+      <field ref='other_refrain_data'/>
+    </component>
+
+
+  </stage>
+
+  <stage name="work_core">
+    <component type="Field::Multi">
+      <title>Abstract Work</title>
+      <field ref="work_id" required="yes" />
+      <field ref="abstract_work_title" required="yes" />
+      <field ref="generic_descriptor" required="yes" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Work Instance Core</title>
+      <field ref="title_input" />
+      <field ref="instance_number" required="yes" />
+      <field ref="date_description" />
+      <field ref="authors" required="yes" />
+      <field ref="author_commentary" />
+      <field ref="edition" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Work Instance Indices</title>
+      <field ref="l_index"/>
+      <field ref="mw_index"/>
+      <field ref="rs_index"/>
+      <field ref="t_index_motets"/>
+      <field ref="t_index_songs"/>
+      <field ref="lu_index"/>
+      <field ref="m_index"/>
+      <field ref="vdb_index"/>
+    </component>
+
+    <component type="Field::Multi">
+      <title>Manuscript</title>
+      <field ref="manuscript_id" required="yes" />
+      <field ref="manuscript_location" />
+      <field ref="other_manuscript_data" />
+    </component>
+
+    <component type="Field::Multi">
+      <title>Host Work</title>
+      <field ref="host_work_id"/>
+      <field ref="host_work_instance"/>
+      <field ref="location_in_host"/>
+    </component>
+
+    <component type="Field::Multi">
+      <title>Other Instance Data</title>
+      <field ref="number_of_parts" />
+      <field ref="voice_in_polyphony" />
+      <field ref="primary_language" />
+      <field ref="secondary_language" />
+      <field ref="style_of_discourse" />
+      <field ref="number_of_stanzas" />
+      <field ref="number_of_envois" />
+      <field ref="other_data" />
+    </component>
+
+  </stage>
+
+</workflow>

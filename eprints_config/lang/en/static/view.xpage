@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1"  standalone="no"  ?>
+<!DOCTYPE page SYSTEM "entities.dtd" >
+<xpage:page xmlns="http://www.w3.org/1999/xhtml" xmlns:xpage="http://eprints.org/ep3/xpage" xmlns:epc="http://eprints.org/ep3/control">
+<xpage:head>
+</xpage:head>
+<xpage:title>Browse Refrains and Works</xpage:title>
+<xpage:body>
+<p>Items may be browsed by the following:</p>
+
+<h2>Refrains and Works</h2>
+<ul>
+<li><a href="{$config{base_url}}/view/abstract_item"><epc:phrase ref="viewname_eprint_abstract_item"/></a></li>
+</ul>
+
+<h2>Refrains</h2>
+<ul>
+<li><a href="{$config{base_url}}/view/singer">by Singer</a></li>
+<li><a href="{$config{base_url}}/view/refrain_manuscript">by Manuscript</a></li>
+<li><a href="{$config{base_url}}/view/words">by <epc:phrase ref="viewname_eprint_words"/></a></li>
+<li><a href="{$config{base_url}}/view/circumstance">by <epc:phrase ref="viewname_eprint_circumstance"/></a></li>
+<li><a href="{$config{base_url}}/view/refrain_location">by <epc:phrase ref="viewname_eprint_refrain_location"/></a></li>
+</ul>
+
+<h2>Works</h2>
+<ul>
+<li><a href="{$config{base_url}}/view/author/">by Author</a></li>
+<li><a href="{$config{base_url}}/view/work_manuscript">by Manuscript</a></li>
+<li><a href="{$config{base_url}}/view/generic_descriptor/">by Generic Descriptor</a></li>
+<li><a href="{$config{base_url}}/view/voice_in_polyphony">by <epc:phrase ref="viewname_eprint_voice_in_polyphony"/></a></li>
+</ul>
+
+</xpage:body>
+</xpage:page>
