@@ -20,7 +20,7 @@ use Text::Iconv;
 my $conv = Text::Iconv->new('utf8','utf16');
 
 my $repo_id = 'medmus';
-my $img_dir = '/home/eprints/medmus/TIFS';
+my $img_dir = '/home/eprints/micro-repositories/instances/medmus/TIFS';
 
 
 my $ep = EPrints->new;

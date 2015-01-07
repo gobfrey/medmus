@@ -11,8 +11,8 @@ use encoding qw(utf8);
 binmode STDOUT, ":utf8"; 
 binmode STDERR, ":utf8"; 
 
-my $works_file = 'new_works24.csv';
-my $refrains_file = 'new_refrains23.csv';
+my $works_file = 'new_works25.csv';
+my $refrains_file = 'new_refrains24.csv';
 
 die "cannot find files\n" unless (-e $works_file && -e $refrains_file);
 
